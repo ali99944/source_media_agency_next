@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { TrendingUp, Target, BarChart2, Users, Search, Mail, ArrowRight, CheckCircle, PieChart } from 'lucide-react'
+import {  Users, Search, Mail, ArrowRight, CheckCircle } from 'lucide-react'
 import { FaRocket, FaBrain, FaSearchDollar, FaRegLightbulb } from "react-icons/fa"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Footer from "@/src/components/shared/footer"
@@ -93,7 +93,7 @@ export default function IntelligentMarketing() {
         "زيادة متوسط قيمة الطلب بنسبة 35%",
         "زيادة حركة المرور العضوية بنسبة 200%"
       ],
-      image: "/placeholder.svg?height=600&width=800"
+      image: "/images/marketing-work/1.jpg"
     },
     {
       id: "case-2",
@@ -107,7 +107,7 @@ export default function IntelligentMarketing() {
         "زيادة الوعي بالعلامة التجارية بنسبة 300%",
         "تحقيق مبيعات تتجاوز التوقعات بنسبة 80%"
       ],
-      image: "/placeholder.svg?height=600&width=800"
+      image: "/images/marketing-work/2.jpg"
     },
     {
       id: "case-3",
@@ -121,19 +121,53 @@ export default function IntelligentMarketing() {
         "تحسين معدل الاحتفاظ بالعملاء بنسبة 45%",
         "زيادة قيمة العميل مدى الحياة بنسبة 60%"
       ],
-      image: "/placeholder.svg?height=600&width=800"
-    }
+      image: "/images/marketing-work/3.jpg"
+    },
+    {
+      id: "case-4",
+      title: "زيادة عدد العملاء الجدد بنسبة 50%",
+      client: "شركة خدمات طبية",
+      challenge: "كانت الشركة تواجه صعوبة في جذب عملاء جدد، مع معدل تحويل منخفض يبلغ 2.5%.",
+      solution: "طورنا استراتيجية تسويق مستهدفة تركز على تحسين محركات البحث، وحملات إعلانية مستهدفة، وتحسين تجربة المستخدم على الموقع، بالإضافة إلى حملات تسويق عبر البريد الإلكتروني والتواصل الاجتماعي.",
+      results: [
+        "زيادة عدد العملاء الجدد بنسبة 50% خلال 3 أشهر",
+        "تحسين معدل التحويل من 2.5% إلى 4.2%",
+        "زيادة متوسط قيمة الطلب بنسبة 25%",
+        "زيادة حركة المرور العضوية بنسبة 150%"
+      ],
+      image: "/images/marketing-work/4.jpg"
+    },
+    {
+      id: "case-5",
+      title: "زيادة معدل التحويل بنسبة 300%",
+      client: "شركة خدمات محاسبة",
+      challenge: "كانت الشركة تحصل على زيارات جيدة لموقعها ولكن معدل التحويل كان منخفضًا جدًا عند 1.5%.",
+      solution: "قمنا بإجراء تحليل شامل لرحلة المستخدم وتحسين نقاط الاتصال الرئيسية، مع تطوير استراتيجية محتوى تركز على حل مشكلات العملاء المحتملين وبناء الثقة.",
+      results: [
+        "زيادة معدل التحويل من 1.5% إلى 4.5%",
+        "زيادة عدد العملاء المحتملين بنسبة 200%",
+        "تحسين معدل الاحتفاظ بالعملاء بنسبة 50%",
+        "زيادة قيمة العميل مدى الحياة بنسبة 70%"
+      ],
+      image: "/images/marketing-work/5.jpg"
+    },
+    {
+      id: "case-6",
+      title: "زيادة المبيعات بنسبة 200%",
+      client: "متجر إلكتروني لبيع الملابس",
+      challenge: "كان العميل يواجه صعوبة في جذب الزوار وتحويلهم إلى مشترين، مع معدل تحويل منخفض يبلغ 1.8%.",
+      solution: "طورنا استراتيجية تسويق مستهدفة تركز على تحسين محركات البحث، وحملات إعلانية مستهدفة، وتحسين تجربة المستخدم على الموقع، بالإضافة إلى حملات تسويق عبر البريد الإلكتروني والتواصل الاجتماعي.",
+      results: [
+        "زيادة المبيعات بنسبة 200% خلال 6 أشهر",
+        "تحسين معدل التحويل من 1.8% إلى 3.5%",
+        "زيادة متوسط قيمة الطلب بنسبة 30%",
+        "زيادة حركة المرور العضوية بنسبة 220%"
+      ],
+      image: "/images/marketing-work/6.jpg"
+    },
+
   ]
 
-  // Analytics data for visualization
-  const analyticsData = [
-    { label: "زيارات الموقع", value: 65, color: "bg-blue-500" },
-    { label: "معدل التحويل", value: 40, color: "bg-green-500" },
-    { label: "معدل النقر", value: 75, color: "bg-yellow-500" },
-    { label: "معدل الارتداد", value: 25, color: "bg-red-500" },
-    { label: "مشاركات اجتماعية", value: 85, color: "bg-purple-500" },
-    { label: "وقت التصفح", value: 55, color: "bg-orange-500" },
-  ]
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -369,119 +403,6 @@ export default function IntelligentMarketing() {
         </div>
       </section>
 
-      {/* Analytics Visualization Section */}
-      <section className="py-20 bg-black/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              التسويق <span className="text-orange-500">المدعوم بالبيانات</span>
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full mb-6 mx-auto" />
-            <p className="text-xl max-w-3xl mx-auto text-gray-300" dir="rtl">
-              نستخدم البيانات والتحليلات المتقدمة لتحسين استراتيجياتنا التسويقية وتحقيق أفضل النتائج لعملائنا
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* Analytics Visualization */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="bg-white/5 backdrop-blur-sm rounded-lg p-8 border border-white/10"
-            >
-              <h3 className="text-2xl font-bold text-orange-500 mb-6 text-right">مؤشرات الأداء الرئيسية</h3>
-
-              <div className="space-y-6">
-                {analyticsData.map((item, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-gray-400">{item.value}%</div>
-                      <div className="text-white font-medium">{item.label}</div>
-                    </div>
-                    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        className={`h-full ${item.color}`}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${item.value}%` }}
-                        transition={{ duration: 1, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Analytics Benefits */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="space-y-6 text-right"
-              dir="rtl"
-            >
-              <div className="flex items-start gap-4">
-                <div className="mt-1">
-                  <div className="bg-orange-500 p-3 rounded-full">
-                    <BarChart2 className="h-6 w-6 text-black" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">تحليل دقيق للبيانات</h3>
-                  <p className="text-gray-300">نقوم بتحليل البيانات بدقة لفهم سلوك العملاء واتجاهات السوق واتخاذ قرارات تسويقية مدروسة.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="mt-1">
-                  <div className="bg-orange-500 p-3 rounded-full">
-                    <Target className="h-6 w-6 text-black" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">استهداف دقيق للجمهور</h3>
-                  <p className="text-gray-300">نحدد الجمهور المستهدف بدقة لضمان وصول رسالتك التسويقية إلى الأشخاص المهتمين فعلاً بمنتجاتك أو خدماتك.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="mt-1">
-                  <div className="bg-orange-500 p-3 rounded-full">
-                    <TrendingUp className="h-6 w-6 text-black" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">تحسين مستمر للأداء</h3>
-                  <p className="text-gray-300">نراقب أداء حملاتك التسويقية باستمرار ونجري التعديلات اللازمة لتحسين النتائج وزيادة العائد على الاستثمار.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="mt-1">
-                  <div className="bg-orange-500 p-3 rounded-full">
-                    <PieChart className="h-6 w-6 text-black" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">تقارير شاملة ومفصلة</h3>
-                  <p className="text-gray-300">نقدم تقارير دورية مفصلة توضح أداء حملاتك التسويقية وتمنحك رؤية واضحة عن نتائج استثمارك التسويقي.</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Case Studies Section */}
       <section className="py-20 relative overflow-hidden">
