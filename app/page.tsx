@@ -10,6 +10,7 @@ import { FaRocket, FaBrain, FaFilm, FaCode, FaUtensils, FaInstagram, FaLayerGrou
 import Navbar from "@/src/components/shared/navbar"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
+import Image from "next/image"
 
 // Service type definition
 type Service = {
@@ -22,24 +23,12 @@ type Service = {
   discount: number
 }
 
-// Project type definition
-type Project = {
-  id: string
-  title: string
-  category: string
-  description: string
-  image: string
-  link: string
-}
 
 // Testimonial type definition
 type Testimonial = {
   id: string
   name: string
-  company: string
   text: string
-  image: string
-  rating: number
 }
 
 export default function Home() {
@@ -87,7 +76,7 @@ export default function Home() {
     {
       id: "followers-increase",
       title: "زيادة متابعين",
-      description: "نقدم خدمات تسويقية متكاملة لزيادة متابعين لموقعك الالكتروني وتحسين تواجدك الرقمي",
+      description: "نقدم خدمات تزويد المتابعين في جميع منصات السوشيال ميديا",
       icon: <Globe className="h-6 w-6" />,
       color: "from-green-600 to-emerald-500",
       link: "/followers-increase-service",
@@ -150,67 +139,104 @@ export default function Home() {
     
   ]
 
-  // Projects data
+    interface Project {
+    id: string
+    title: string
+    category: string
+    description: string
+    image: string
+    link: string
+  }
+
   const projects: Project[] = [
     {
       id: "project-1",
-      title: "تطوير موقع إلكتروني لشركة عقارية",
-      category: "حلول برمجية",
-      description: "تصميم وتطوير موقع إلكتروني متكامل لشركة عقارية رائدة في المملكة العربية السعودية",
-      image: "/placeholder.svg?height=600&width=800",
+      title: "تصميم هوية بصرية",
+      category: "هوية بصرية",
+      description: "تصميم هوية بصرية لمؤسسة القزاز",
+      image: "https://scontent.fcai21-3.fna.fbcdn.net/v/t39.30808-6/481452991_1150098580459538_8320511544421649290_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=jJ3Yqi62E7YQ7kNvgEw_7Cw&_nc_oc=AdiU97esr2ysLGtmiwOQ03pEwapnleNcSFUGUpnko9LjWJZ9v9tvLVcV4rWOcf6F3GQ&_nc_zt=23&_nc_ht=scontent.fcai21-3.fna&_nc_gid=AMbtve6_mcDG_cNC0gvCkzp&oh=00_AYE2XOQO7H1ASgifVVVB92Rhwq35qDqzKGV1KUvg9AEdfg&oe=67D3F694",
       link: "#",
     },
     {
       id: "project-2",
-      title: "حملة تسويقية لإطلاق منتج جديد",
-      category: "التسويق الذكي",
-      description: "استراتيجية تسويقية متكاملة لإطلاق منتج جديد في السوق السعودي حققت نتائج استثنائية",
-      image: "/placeholder.svg?height=600&width=800",
+      title: "عروضنا",
+      category: "عروضنا الجديدة",
+      description: "نفخر بتقديمنا احدث العروض",
+      image: "https://scontent.fcai21-2.fna.fbcdn.net/v/t39.30808-6/480204308_1139799931489403_7966414510906009334_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=GIAVaR_Gz9wQ7kNvgFJv390&_nc_oc=Adg7YZbYRGgAzuhzlqLAAYkF2Sf1WQv--CtXzrflhe1KtWEHV_DcXe4ettwRAKRumns&_nc_zt=23&_nc_ht=scontent.fcai21-2.fna&_nc_gid=AO70wdoW3WWin3LSt7MBpvZ&oh=00_AYHLojwIJ2fX82plEG7-_yWVj0NyvCnQVrFhS9g3wRR0Kg&oe=67D3C4B0",
       link: "#",
     },
     {
       id: "project-3",
-      title: "فيديو تعريفي لشركة تقنية",
-      category: "الفيديو والمونتاج",
-      description: "إنتاج فيديو تعريفي احترافي لشركة تقنية رائدة يعرض خدماتها ومنتجاتها بطريقة إبداعية",
-      image: "/placeholder.svg?height=600&width=800",
+      title: "احدث شركاءالنجاح",
+      category: "شركاء النجاح",
+      description: "Baby Shark",
+      image: "https://scontent.fcai21-3.fna.fbcdn.net/v/t39.30808-6/472796940_1111387040997359_4008093723179473963_n.jpg?stp=dst-jpg_p600x600_tt6&_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_ohc=Ppl8yMCBnYcQ7kNvgEKfvKQ&_nc_oc=Adg9Au83i5g17hXZFZn8XqtljaLKIelVk3EtHOQNkeELOHQOaziJbWY7Ob3ZvgWi8W0&_nc_zt=23&_nc_ht=scontent.fcai21-3.fna&_nc_gid=AJXpvHIH5PGbTLhmE3R3EkY&oh=00_AYGaEIwfdlvfd8o9IL40o_Al-J-ItEOhjufN-vJzgB96oA&oe=67D3ED3D",
       link: "#",
     },
     {
       id: "project-4",
-      title: "بطاقات أعمال رقمية لفريق مبيعات",
-      category: "بطاقات أعمال رقمية",
-      description: "تصميم وتطوير بطاقات أعمال رقمية لفريق مبيعات مكون من 50 موظف في شركة كبرى",
-      image: "/placeholder.svg?height=600&width=800",
+      title: "تصميم سوشيال ميديا",
+      category: "تصاميم سوشيال ميديا",
+      description: "تصميم سوشيال ميديا الحسن للبصريات",
+      image: "https://scontent.fcai21-4.fna.fbcdn.net/v/t39.30808-6/469325869_1081376770665053_3226490873864975555_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=rIYqo5_NJgcQ7kNvgHPg39m&_nc_oc=AdjrD1xXfADLilzIqYRDKk97DF0pPgvZNIVOFdsCdj_n7pExP7FJ1mJKSVJktnBuZg4&_nc_zt=23&_nc_ht=scontent.fcai21-4.fna&_nc_gid=AqE2GcDMATy_35lfX7Ktqgf&oh=00_AYE2vUhutyhRaKndJsZpuR2Ms2Bg5lysTCcF5Tq--wzuWQ&oe=67D3F013",
       link: "#",
     },
+    {
+      id: "project-5",
+      title: "تزويد متابعين تيك توك",
+      category: "تزويد متابعين",
+      description: "تزويد متابعين تيك توك لضمان نجاح صفحتك",
+      image: 'https://scontent.fcai21-3.fna.fbcdn.net/v/t39.30808-6/473333526_1111414134327983_8032942371085697576_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=xp3tcP-bhqMQ7kNvgGlEdQq&_nc_oc=AdgNnVCHfv5cVDdpKCCMnpr6GdxIKHnuXc-j66x-q158KINrkZpiYPiHFp_eaPua40s&_nc_zt=23&_nc_ht=scontent.fcai21-3.fna&_nc_gid=AvUp9x61dMsQzEAh-9Usdzn&oh=00_AYFcjhjsaCmI8EhduZj1zlrOYTX_kAf7wYQbaolRA6VqYA&oe=67D3CE19',
+      link: "#",
+    },
+    {
+      id: "project-6",
+      title: "شركاء النجاح",
+      category: "شركاء النجاح",
+      description: "انضم الينا و كن واحد من شركاء نجاحنا",
+      link: "#",
+      image: 'https://scontent.fcai21-4.fna.fbcdn.net/v/t39.30808-6/473451663_1116541473815249_7651795983223593930_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=MgDCvX62yFgQ7kNvgFW0mk5&_nc_oc=AdgF1F6FqkbS63unvHdD0axJ0yEBomUkXhEvVwtgDsVny9LSJvOeH3o060R9UdqglWU&_nc_zt=23&_nc_ht=scontent.fcai21-4.fna&_nc_gid=AMHfzIMSrao7S5BdLb-32Bh&oh=00_AYHJoE7Jr9TUVjMAVAOakdiEt4zvxExC0dvppY5rPgx5Wg&oe=67D3E67A'
+    },
   ]
+
+
 
   // Testimonials data
   const testimonials: Testimonial[] = [
     {
       id: "testimonial-1",
-      name: "محمد أحمد",
-      company: "شركة الفا للتجارة",
-      text: "تعاملت مع Source Media لإدارة حملات التسويق الرقمي، وكانت سرعة التنفيذ مذهلة! خلال 24 ساعة فقط كانت الحملة جاهزة وبدأت في تحقيق نتائج.",
-      image: "/placeholder.svg?height=100&width=100",
-      rating: 5,
+      name: "Mohamed Sayed",
+      text: `بجد تسلم أيديكم أنا مبسوط من التعامل أكتر من الرفيوهات 😂❤️
+بجد ربنا يسعدكم و يرزقكم من فضله و بالتوفيق بجد مصداقية و تعامل رقي و عروض ممتازة ❤️`,
     },
     {
       id: "testimonial-2",
-      name: "سارة خالد",
-      company: "مطعم الشرق",
-      text: "أكثر ما أعجبني في التعامل مع Source Media هو سرعة الاستجابة وتنفيذ التعديلات. فريق محترف يقدر قيمة الوقت.",
-      image: "/placeholder.svg?height=100&width=100",
-      rating: 5,
+      name: "Car Rental",
+      text: `مشاء الله عليهم في الإعلانات الممولة كان من الصعب اننا نحقق الوصول للعملاء الي احنا محتجنهم بس بفضلهم بعد ربنا وصلنا للهدف المطلوب وبنشكر أستاذ عبدالسلام علي متابعته معانا اول بأول 😊🥰
+وبرشحهم جدا لأي حد في مجال تأجير السيارات`
     },
     {
       id: "testimonial-3",
-      name: "عمر محمود",
-      company: "متجر ديجيتال",
-      text: "كنت بحاجة إلى إطلاق حملة إعلانية بشكل عاجل، وتمكن فريق Source Media من إنجازها خلال ساعات قليلة وبجودة عالية.",
-      image: "/placeholder.svg?height=100&width=100",
-      rating: 5,
+      name: "Adel Mohamed",
+      text: `والله العظيم من احسن الشركات الي اتعاملت معاهم وشغلهم تحفه وسرعه في التصاميم وشغلهم مميز بصراحه انا مسكتهم الصفحه بتاعتي خلال يومين بقيت براند وحاجه محترمه وفريق عمل محترم جدا بصراحه والاخص كمان المهندس عبدالله والمهندس عبدالسلام قمه في الادب والاخلاق في التعامل والله بجد انا سعيد جدا بشغلهم حاجه تحفه تسلمو بصراحه ومهما اقول مش هوفي حقهم والله  انا بتكلم وعن تجربه بصراحه شركه محترمه جدا جدا جدا`
+    },
+    {
+      id: "testimonial-4",
+      name: "Adel Mohamed",
+      text: `اقسم بالله شركه محترمه فوق الوصف ربنا يكرمكم ويرزقكم يا رب وناس سهله في التعامل بالتوفيق ان شاء الله`
+    },
+    {
+      id: "testimonial-5",
+      name: "Midway Workspace",
+      text: `مشاء الله مشاء الله بارك الله فيكم جميعا وزود من رزقكم انتو فعلا شركة محترمة جدا 
+حابب اشكركم علي التصميمات اولا والاعلانات
+والموت الخاصه بالمكان انشاء الله ده مش هيكون اول ولا اخر شغل لينا مع بعض ❤️🤩`
+    },
+    {
+      id: "testimonial-6",
+      name: "El daoudi -الداودي",
+      text: `عاش جدا علي المجهود الي صنعتوه معانا احناا براند متخصص في الملابس ولسا بادئ جديد وانشاء الله أيدينا في ايد بعض ومتابعتكم لينا هنوصل في حته تانيه خالص 
+شكرا فريق Source Media 🥰🥰🥰`
     },
   ]
 
@@ -499,7 +525,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-right text-orange-500" dir="rtl">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center text-orange-500" dir="rtl">
                 من نحن
               </h2>
               <p className="text-lg mb-6 text-right" dir="rtl">
@@ -513,9 +539,18 @@ export default function Home() {
                 دائماً لتقديم أفضل الخدمات التسويقية المبتكرة التي تساعد عملائنا على النمو وتحقيق أهدافهم.
               </p>
 
-              <div className="mt-8 flex justify-end">
+              <div className="flex justify-center mb-8">
+                <Image 
+                    src="/images/logo.png" 
+                    alt="Source Media Logo" 
+                    width={252}
+                    height={64}
+                 />
+              </div>
+
+              <div className="mt-8 flex justify-center">
                 <Link href="/about-us">
-                  <button className="bg-orange-500 text-black px-6 py-3 rounded-full hover:bg-orange-600 transition duration-300 cursor-pointer font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40">
+                  <button className="bg-orange-500 text-black px-6 py-2 rounded-full hover:bg-orange-600 transition duration-300 cursor-pointer font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40">
                     <span>اقرأ المزيد عنا</span>
                   </button>
                 </Link>
@@ -524,80 +559,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Projects Showcase */}
-      <section id="projects" className="py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              أحدث <span className="text-orange-500">أعمالنا</span>
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full mb-6 mx-auto" />
-            <p className="text-xl max-w-3xl mx-auto text-gray-300" dir="rtl">
-              نماذج من أعمالنا المميزة التي نفخر بها ونعتز بثقة عملائنا
-            </p>
-          </motion.div>
 
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                className="relative group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <Link href={project.link}>
-                  <div className="relative overflow-hidden rounded-lg">
-                    <img
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70" />
-
-                    {/* Category Badge */}
-                    <div className="absolute top-4 right-4">
-                      <div className="bg-orange-500 text-black text-xs font-bold px-3 py-1 rounded-full">
-                        {project.category}
-                      </div>
-                    </div>
-
-                    {/* Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="bg-orange-500 rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300">
-                        <ExternalLink className="h-6 w-6 text-black" />
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                      <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link href="/projects">
-              <button className="bg-transparent border-2 border-orange-500 text-orange-500 px-8 py-4 rounded-full hover:bg-orange-500 hover:text-black transition duration-300 cursor-pointer font-bold flex items-center gap-2 mx-auto">
-                <span>عرض جميع الأعمال</span>
-                <ArrowRight size={18} />
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* Testimonials Section */}
       <section className="py-20 bg-black/50 relative overflow-hidden">
@@ -649,33 +611,10 @@ export default function Home() {
                         </div>
 
                         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                          <div className="md:w-1/4 flex flex-col items-center">
-                            <div className="relative">
-                              <div className="absolute -inset-1 bg-orange-500 rounded-full opacity-20 blur-sm"></div>
-                              <img
-                                src={testimonial.image || "/placeholder.svg"}
-                                alt={testimonial.name}
-                                className="w-24 h-24 rounded-full object-cover relative z-10 border-2 border-orange-500"
-                              />
-                            </div>
-                            <h3 className="text-xl font-bold mt-4">{testimonial.name}</h3>
-                            <p className="text-sm text-gray-400">{testimonial.company}</p>
-                            <div className="flex mt-2">
-                              {[...Array(testimonial.rating)].map((_, i) => (
-                                <svg
-                                  key={i}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-5 w-5 text-orange-500"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                >
-                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                              ))}
-                            </div>
-                          </div>
 
-                          <div className="md:w-3/4">
+                          <div>
+                          <h3 className="text-xl font-bold mb-4">{testimonial.name}</h3>
+
                             <p className="text-xl text-gray-300 leading-relaxed">&quot;{testimonial.text}&quot;</p>
                           </div>
                         </div>
@@ -698,6 +637,80 @@ export default function Home() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+              <section id="projects" className="py-20 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              أحدث <span className="text-orange-500">أعمالنا</span>
+            </h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full mb-6 mx-auto" />
+            <p className="text-xl max-w-3xl mx-auto text-gray-300" dir="rtl">
+              نماذج من أعمالنا المميزة التي نفخر بها ونعتز بثقة عملائنا
+            </p>
+          </motion.div>
+
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                className="relative group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Link href={project.link}>
+                  <div className="relative overflow-hidden rounded-lg">
+                    <img
+                      src={project.image || "/placeholder.svg"}
+                      alt={project.title}
+                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70" />
+
+                    {/* Category Badge */}
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-orange-500 text-black text-xs font-bold px-3 py-1 rounded-full">
+                        {project.category}
+                      </div>
+                    </div>
+
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-orange-500 rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300">
+                        <ExternalLink className="h-6 w-6 text-black" />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                      <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link href="/projects">
+              <button className="bg-transparent border-2 border-orange-500 text-orange-500 px-6 py-2 rounded-full hover:bg-orange-500 hover:text-black transition duration-300 cursor-pointer font-bold flex items-center gap-2 mx-auto">
+                <span>عرض جميع الأعمال</span>
+                <ArrowRight size={18} />
+              </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -731,6 +744,7 @@ export default function Home() {
           ))}
         </div>
 
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto bg-black/50 backdrop-blur-md rounded-2xl p-10 border border-orange-500/20">
             <motion.div
@@ -751,13 +765,12 @@ export default function Home() {
 
               <div className="flex flex-wrap justify-center gap-4">
                 <Link href="/contact-us">
-                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-4 rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transform hover:-translate-y-1">
+                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transform hover:-translate-y-1">
                     <span>تواصل معنا الآن</span>
-                    <ArrowRight size={18} />
                   </button>
                 </Link>
                 <a href="https://wa.me/+201278183718">
-                  <button className="bg-green-500 text-white px-8 py-4 rounded-full hover:bg-green-600 transition duration-300 font-bold flex items-center gap-2 shadow-lg shadow-green-500/20 hover:shadow-green-500/40 transform hover:-translate-y-1">
+                  <button className="bg-green-500 text-white px-8 py-2 rounded-full hover:bg-green-600 transition duration-300 font-bold flex items-center gap-2 shadow-lg shadow-green-500/20 hover:shadow-green-500/40 transform hover:-translate-y-1">
                     <span>واتساب</span>
                     <Phone size={18} />
                   </button>
