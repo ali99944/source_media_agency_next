@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { TrendingUp, Target, BarChart2, Users, Search, Mail, Instagram, ArrowRight, CheckCircle, PieChart } from 'lucide-react'
-import { FaRocket, FaBrain, FaSearchDollar, FaRegLightbulb, FaAngleRight } from "react-icons/fa"
+import { TrendingUp, Target, BarChart2, Users, Search, Mail, ArrowRight, CheckCircle, PieChart } from 'lucide-react'
+import { FaRocket, FaBrain, FaSearchDollar, FaRegLightbulb } from "react-icons/fa"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Footer from "@/src/components/shared/footer"
 import Navbar from "@/src/components/shared/navbar"
@@ -14,7 +14,6 @@ type MarketingService = {
   title: string
   description: string
   icon: React.ReactNode
-  features: string[]
 }
 
 // Case Study type
@@ -29,13 +28,8 @@ type CaseStudy = {
 }
 
 export default function IntelligentMarketing() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [activeCaseStudy, setActiveCaseStudy] = useState<number>(0)
 
-  // Toggle service details
-  const toggleService = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index)
-  }
 
   // Auto-rotate case studies
   useEffect(() => {
@@ -48,88 +42,40 @@ export default function IntelligentMarketing() {
   // Marketing services data
   const services: MarketingService[] = [
     {
-      id: "social-media",
-      title: "إدارة وسائل التواصل الاجتماعي",
-      description: "استراتيجيات ذكية لإدارة منصات التواصل الاجتماعي وزيادة التفاعل وبناء جمهور مستهدف",
-      icon: <Instagram className="h-6 w-6 text-white" />,
-      features: [
-        "إنشاء وتنفيذ استراتيجيات محتوى مخصصة",
-        "جدولة ونشر المحتوى بشكل منتظم",
-        "تحليل أداء المنشورات وتحسينها",
-        "التفاعل مع الجمهور وبناء مجتمع نشط",
-        "تصميم محتوى إبداعي جذاب",
-        "إدارة الإعلانات المدفوعة على المنصات"
-      ],
+      id: "whatsapp-sender",
+      title: "واتساب سيندر",
+      description: "دلوقتي تقدر ترسل رسالة لكل عملائك عن طريق الواتساب بضغطة زر واحدة مع واتساب سيندر برو قم باعادة استهداف عملائك من جديد لزيادة نسبة المبيعات",
+      icon: <FaRocket className="h-6 w-6 text-white" />
     },
     {
       id: "seo",
       title: "تحسين محركات البحث (SEO)",
       description: "استراتيجيات ذكية لتحسين ظهور موقعك في نتائج البحث وزيادة الزيارات العضوية",
       icon: <Search className="h-6 w-6 text-white" />,
-      features: [
-        "تحليل الكلمات المفتاحية المستهدفة",
-        "تحسين هيكلة الموقع وسرعة التحميل",
-        "بناء روابط خلفية عالية الجودة",
-        "تحسين المحتوى لمحركات البحث",
-        "تقارير أداء شهرية مفصلة",
-        "استراتيجيات SEO محلية للأعمال المحلية"
-      ],
     },
     {
-      id: "ppc",
-      title: "إعلانات الدفع لكل نقرة (PPC)",
-      description: "حملات إعلانية ذكية تستهدف الجمهور المناسب في الوقت المناسب لتحقيق أقصى عائد على الاستثمار",
-      icon: <FaSearchDollar className="h-6 w-6 text-white" />,
-      features: [
-        "إنشاء حملات إعلانية مستهدفة",
-        "اختيار الكلمات المفتاحية المناسبة",
-        "تصميم إعلانات جذابة وفعالة",
-        "تحسين معدل التحويل",
-        "تتبع وتحليل أداء الحملات",
-        "تحسين العائد على الاستثمار الإعلاني"
-      ],
+      id: "canva-pro",
+      title: "اشتراك كانفا برو",
+      description: "اشتراك كانفا برو مدى الحياة باستخدام الذكاء الاصطناعي للتطوير من تصميماتك و انشاء التصميم ابتدائيا",
+      icon: <FaSearchDollar className="h-6 w-6 text-white" />
     },
     {
-      id: "email-marketing",
-      title: "التسويق عبر البريد الإلكتروني",
-      description: "استراتيجيات ذكية للتواصل مع العملاء وتنمية قاعدة البيانات وزيادة المبيعات",
-      icon: <Mail className="h-6 w-6 text-white" />,
-      features: [
-        "بناء قوائم بريدية مستهدفة",
-        "تصميم قوالب بريدية جذابة",
-        "إنشاء محتوى بريدي مخصص",
-        "أتمتة حملات البريد الإلكتروني",
-        "تحليل معدلات الفتح والنقر",
-        "اختبار A/B لتحسين الأداء"
-      ],
+      id: "sms-marketing",
+      title: "تسويق عبر sms",
+      description: "دلوقتي تقدر ترسل رسالة جماعية لعملائك عن طريق ال sms باستخدام رقم الهاتف فقط",
+      icon: <Mail className="h-6 w-6 text-white" />
     },
     {
       id: "content-marketing",
-      title: "التسويق بالمحتوى",
-      description: "استراتيجيات محتوى ذكية لجذب العملاء المحتملين وتحويلهم إلى عملاء دائمين",
-      icon: <FaRegLightbulb className="h-6 w-6 text-white" />,
-      features: [
-        "إنشاء استراتيجية محتوى متكاملة",
-        "كتابة مقالات ومدونات احترافية",
-        "إنتاج محتوى فيديو وصور جذاب",
-        "تحسين المحتوى لمحركات البحث",
-        "نشر المحتوى على المنصات المناسبة",
-        "قياس أداء المحتوى وتحسينه"
-      ],
+      title: "بوت الرد علي التعليقات",
+      description: "دلوقتي تقدر ترسل رسالة رد علي كل تعليق علي الفيسبوك باستخدام بوت الرد علي التعليقات",
+      icon: <FaRegLightbulb className="h-6 w-6 text-white" />
     },
     {
       id: "influencer-marketing",
-      title: "التسويق عبر المؤثرين",
-      description: "استراتيجيات ذكية للتعاون مع المؤثرين المناسبين لعلامتك التجارية وجمهورك المستهدف",
-      icon: <Users className="h-6 w-6 text-white" />,
-      features: [
-        "تحديد المؤثرين المناسبين لعلامتك التجارية",
-        "التفاوض وإدارة العلاقات مع المؤثرين",
-        "تصميم حملات تسويقية مبتكرة",
-        "تتبع وقياس أداء حملات المؤثرين",
-        "تحليل العائد على الاستثمار",
-        "بناء علاقات طويلة الأمد مع المؤثرين"
-      ],
+      title: "ارسال رسالة جماعية",
+      description: "دلوقتي تقدر تبعت رسالة لكل عملائك اللي اتواصلو معاك علي ماسنجر من اول بداية انشاء الصفحة لاخر عميل تم التواصل معه",
+      icon: <Users className="h-6 w-6 text-white" />
     }
   ]
 
@@ -414,34 +360,6 @@ export default function IntelligentMarketing() {
                   <div className="p-6 relative">
                     <p className="text-gray-300 mb-4 text-right" dir="rtl">{service.description}</p>
 
-                    {/* Expandable Features */}
-                    <div className="overflow-hidden transition-all duration-300" style={{ maxHeight: activeIndex === index ? '1000px' : '0px' }}>
-                      <div className="pt-4 border-t border-white/10">
-                        <h4 className="text-lg font-semibold text-orange-500 mb-3 text-right">المميزات:</h4>
-                        <ul className="space-y-2 text-right" dir="rtl">
-                          {service.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-center justify-end gap-2">
-                              <span className="text-gray-300">{feature}</span>
-                              <CheckCircle className="h-4 w-4 text-orange-500 flex-shrink-0" />
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Toggle Button */}
-                    <button
-                      onClick={() => toggleService(index)}
-                      className="mt-4 text-orange-500 hover:text-orange-400 transition-colors flex items-center justify-end gap-1 w-full"
-                    >
-                      <span>{activeIndex === index ? "عرض أقل" : "عرض المزيد"}</span>
-                      <motion.div
-                        animate={{ rotate: activeIndex === index ? 90 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <FaAngleRight className="h-4 w-4" />
-                      </motion.div>
-                    </button>
                   </div>
                 </div>
 
