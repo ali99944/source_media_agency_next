@@ -67,12 +67,12 @@ export default function Home() {
   // Services data
   const services: Service[] = [
     {
-      id: "programming-solutions",
+      id: "sponsored-ads",
       title: "اعلانات ممولة",
       description: "انشاء الاعلانات الممولة علي جميع منصات السوشيال ميديا باحترافية و جودة عالية للوصول الي عميلك المحتمل باقل تكلفة و اعلي جودة",
       icon: <FaCode className="h-6 w-6" />,
       color: "from-blue-600 to-cyan-500",
-      link: "/programming-solutions",
+      link: "/sponsored-ads",
       discount: 10,
     },
     {
@@ -82,7 +82,7 @@ export default function Home() {
       icon: <FaBrain className="h-6 w-6" />,
       color: "from-purple-600 to-pink-500",
       link: "/intelligent-marketing-service",
-      discount: 20,
+      discount: 10,
     },
     {
       id: "followers-increase",
@@ -91,7 +91,7 @@ export default function Home() {
       icon: <Globe className="h-6 w-6" />,
       color: "from-green-600 to-emerald-500",
       link: "/followers-increase-service",
-      discount: 30,
+      discount: 10,
     },
     {
       id: "video-montage",
@@ -100,7 +100,7 @@ export default function Home() {
       icon: <FaFilm className="h-6 w-6" />,
       color: "from-red-600 to-orange-500",
       link: "/video-montage",
-      discount: 40,
+      discount: 10,
     },
     {
       id: "business-cards",
@@ -109,7 +109,7 @@ export default function Home() {
       icon: <Globe className="h-6 w-6" />,
       color: "from-green-600 to-emerald-500",
       link: "/business-cards",
-      discount: 50,
+      discount: 10,
     },
     {
       id: "emenu",
@@ -118,34 +118,34 @@ export default function Home() {
       icon: <FaUtensils className="h-6 w-6" />,
       color: "from-yellow-600 to-orange-500",
       link: "/emenu",
-      discount: 60,
+      discount: 10,
     },
     {
-      id: "social-media",
+      id: "/designs/social-media",
       title: "تصاميم السوشيال ميديا",
       description: "تصاميم إبداعية لمنصات التواصل الاجتماعي تجذب الجمهور وتعزز تفاعلهم",
       icon: <FaInstagram className="h-6 w-6" />,
       color: "from-purple-600 to-pink-500",
       link: "/social-media",
-      discount: 70,
+      discount: 10,
     },
     {
-      id: "logos",
+      id: "/designs/logos",
       title: "تصميم الشعارات",
       description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
       icon: <FaLayerGroup className="h-6 w-6" />,
       color: "from-blue-600 to-cyan-500",
       link: "/logos",
-      discount: 80,
+      discount: 10,
     },
     {
-        id: 'make-websites',
+        id: '/programming-solutions',
         title: 'تصميم مواقع ويب',
         description: 'تصميم مواقع ويب سهلة ومميزة تمكنك من تحقيق نجاحك التجاري',
         icon: <FaGlobe className="h-6 w-6" />,
         color: 'from-green-600 to-emerald-500',
-        link: '/make-websites',
-        discount: 90
+        link: '/programming-solutions',
+        discount: 10
     }
     
   ]
