@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight, MessageSquare, Globe, ExternalLink, Phone } from "lucide-react"
-import { FaRocket, FaBrain, FaFilm, FaCode, FaUtensils, FaInstagram, FaLayerGroup, FaGlobe } from "react-icons/fa"
+import { FaRocket, FaBrain, FaFilm, FaCode, FaUtensils, FaLayerGroup, FaGlobe } from "react-icons/fa"
 import Navbar from "@/src/components/shared/navbar"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
@@ -110,21 +110,12 @@ export default function Home() {
       discount: 10,
     },
     {
-      id: "/designs/social-media",
-      title: "تصاميم السوشيال ميديا",
-      description: "تصاميم إبداعية لمنصات التواصل الاجتماعي تجذب الجمهور وتعزز تفاعلهم",
-      icon: <FaInstagram className="h-6 w-6" />,
-      color: "from-purple-600 to-pink-500",
-      link: "/social-media",
-      discount: 10,
-    },
-    {
-      id: "/designs/logos",
-      title: "تصميم الشعارات",
+      id: "/designs",
+      title: "قسم التصميمات",
       description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
       icon: <FaLayerGroup className="h-6 w-6" />,
       color: "from-blue-600 to-cyan-500",
-      link: "/logos",
+      link: "/designs",
       discount: 10,
     },
     {
@@ -478,7 +469,7 @@ export default function Home() {
               >
                 <Link href={service.link}>
                   <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl border border-white/10 group-hover:border-white/30 transition-all duration-300 relative z-10 h-full">
-                    <div className={`bg-gradient-to-r bg-orange-600 p-2 flex items-center justify-between`}>
+                    <div className={`bg-gradient-to-r ${service.color} p-2 flex items-center justify-between`}>
                       <h3 className="text-md font-bold text-white">{service.title}</h3>
                       <div className="bg-white/20 p-2 rounded-full ">
                       {service.icon}
@@ -508,7 +499,10 @@ export default function Home() {
                     />
                   </div>
                 </Link>
-
+                {/* Animated Glow Effect on Hover */}
+                <div
+                  className={`absolute -inset-0.5 bg-gradient-to-r ${service.color} rounded-lg blur opacity-0 group-hover:opacity-30 transition duration-1000 group-hover:duration-200 animate-tilt`}
+                ></div>
               </motion.div>
             ))}
           </div>
