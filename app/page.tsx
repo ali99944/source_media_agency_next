@@ -5,8 +5,8 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, ChevronRight, MessageSquare, Globe, ExternalLink, Phone } from "lucide-react"
-import { FaRocket, FaBrain, FaFilm, FaCode, FaUtensils } from "react-icons/fa"
+import { ArrowRight, MessageSquare, Globe, ExternalLink, Phone } from "lucide-react"
+import { FaRocket, FaBrain, FaFilm, FaCode, FaUtensils, FaInstagram, FaLayerGroup, FaGlobe } from "react-icons/fa"
 import Navbar from "@/src/components/shared/navbar"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
@@ -19,6 +19,7 @@ type Service = {
   icon: React.ReactNode
   color: string
   link: string
+  discount: number
 }
 
 // Project type definition
@@ -68,18 +69,20 @@ export default function Home() {
     {
       id: "programming-solutions",
       title: "اعلانات ممولة",
-      description: "خدمات التسويق الذكي والفيديو والمونتاج والبرمجة والتصاميم والتطبيقات لمساعدة عملك على النمو",
+      description: "انشاء الاعلانات الممولة علي جميع منصات السوشيال ميديا باحترافية و جودة عالية للوصول الي عميلك المحتمل باقل تكلفة و اعلي جودة",
       icon: <FaCode className="h-6 w-6" />,
       color: "from-blue-600 to-cyan-500",
       link: "/programming-solutions",
+      discount: 10,
     },
     {
       id: "intelligent-marketing",
-      title: "انشاء مواقع",
+      title: "ادوات التسويق ذكي",
       description: "استراتيجيات تسويقية ذكية مدعومة بالبيانات والتحليلات لمساعدة عملك على النمو",
       icon: <FaBrain className="h-6 w-6" />,
       color: "from-purple-600 to-pink-500",
       link: "/intelligent-marketing-service",
+      discount: 20,
     },
     {
       id: "followers-increase",
@@ -88,6 +91,7 @@ export default function Home() {
       icon: <Globe className="h-6 w-6" />,
       color: "from-green-600 to-emerald-500",
       link: "/followers-increase-service",
+      discount: 30,
     },
     {
       id: "video-montage",
@@ -96,6 +100,7 @@ export default function Home() {
       icon: <FaFilm className="h-6 w-6" />,
       color: "from-red-600 to-orange-500",
       link: "/video-montage",
+      discount: 40,
     },
     {
       id: "business-cards",
@@ -104,6 +109,7 @@ export default function Home() {
       icon: <Globe className="h-6 w-6" />,
       color: "from-green-600 to-emerald-500",
       link: "/business-cards",
+      discount: 50,
     },
     {
       id: "emenu",
@@ -112,7 +118,35 @@ export default function Home() {
       icon: <FaUtensils className="h-6 w-6" />,
       color: "from-yellow-600 to-orange-500",
       link: "/emenu",
+      discount: 60,
     },
+    {
+      id: "social-media",
+      title: "تصاميم السوشيال ميديا",
+      description: "تصاميم إبداعية لمنصات التواصل الاجتماعي تجذب الجمهور وتعزز تفاعلهم",
+      icon: <FaInstagram className="h-6 w-6" />,
+      color: "from-purple-600 to-pink-500",
+      link: "/social-media",
+      discount: 70,
+    },
+    {
+      id: "logos",
+      title: "تصميم الشعارات",
+      description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
+      icon: <FaLayerGroup className="h-6 w-6" />,
+      color: "from-blue-600 to-cyan-500",
+      link: "/logos",
+      discount: 80,
+    },
+    {
+        id: 'make-websites',
+        title: 'تصميم مواقع ويب',
+        description: 'تصميم مواقع ويب سهلة ومميزة تمكنك من تحقيق نجاحك التجاري',
+        icon: <FaGlobe className="h-6 w-6" />,
+        color: 'from-green-600 to-emerald-500',
+        link: '/make-websites',
+        discount: 90
+    }
     
   ]
 
@@ -264,7 +298,7 @@ export default function Home() {
           ))}
 
           {/* Glowing orbs */}
-          {[...Array(5)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <motion.div
               key={`orb-${i}`}
               className="absolute rounded-full bg-orange-500/10 blur-3xl"
@@ -340,7 +374,6 @@ export default function Home() {
             <a href="#services">
               <button className="bg-orange-500 text-black px-8 py-2 rounded-full hover:bg-orange-600 transition duration-300 cursor-pointer font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40">
                 <span>خدماتنا</span>
-                <ArrowRight size={18} />
               </button>
             </a>
             <a href="#projects">
@@ -353,7 +386,7 @@ export default function Home() {
 
           {/* Animated Stats Counter */}
           <motion.div
-            className="absolute bottom-20 left-0 right-0 flex justify-center gap-8 flex-wrap"
+            className="mt-8 flex justify-center gap-8 flex-wrap"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
@@ -369,13 +402,6 @@ export default function Home() {
                 >
                   <motion.div
                     className="text-3xl md:text-4xl font-bold text-orange-500"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{
-                      duration: 2,
-                      repeat: Number.POSITIVE_INFINITY,
-                      repeatType: "reverse",
-                      delay: index,
-                    }}
                   >
                     {stat.value}
                   </motion.div>
@@ -426,23 +452,23 @@ export default function Home() {
               >
                 <Link href={service.link}>
                   <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl border border-white/10 group-hover:border-white/30 transition-all duration-300 relative z-10 h-full">
-                    <div className={`bg-gradient-to-r ${service.color} p-2 flex items-center justify-between`}>
-                      <h3 className="text-xl font-bold text-white">{service.title}</h3>
-                      <div className="bg-white/20 p-2 rounded-full">{service.icon}</div>
+                    <div className={`bg-gradient-to-r bg-orange-600 p-2 flex items-center justify-between`}>
+                      <h3 className="text-md font-bold text-white">{service.title}</h3>
+                      <div className="bg-white/20 p-2 rounded-full ">
+                      {service.icon}
+                      </div>
+
                     </div>
 
-                    <div className="p-6 relative">
+                    <div className="p-4 relative">
                       <p className="text-gray-300 mb-6 text-right" dir="rtl">
                         {service.description}
                       </p>
+                      <p className="text-sm font-bold text-white bg-destructive p-1 px-2 rounded-full text-center">%{service.discount}  خصم</p>
 
-                      <div className="flex justify-end">
-                        <div className="flex items-center text-orange-500 hover:text-orange-400 transition-colors gap-1 group-hover:gap-2 duration-300">
-                          <span>المزيد</span>
-                          <ChevronRight size={16} />
-                        </div>
-                      </div>
                     </div>
+
+                    
 
                     {/* Hover Animation */}
                     <motion.div
@@ -457,10 +483,6 @@ export default function Home() {
                   </div>
                 </Link>
 
-                {/* Animated Glow Effect on Hover */}
-                <div
-                  className={`absolute -inset-0.5 bg-gradient-to-r ${service.color} rounded-lg blur opacity-0 group-hover:opacity-30 transition duration-1000 group-hover:duration-200 animate-tilt`}
-                ></div>
               </motion.div>
             ))}
           </div>
