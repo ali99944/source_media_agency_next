@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import {
   FaUsers, FaAward, FaHandshake, FaGlobe, FaLightbulb,
-  FaRocket, FaBolt, FaClock, FaThumbsUp, FaStar, FaQuoteRight
+  FaRocket, FaBolt, FaClock, FaThumbsUp
 } from "react-icons/fa"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageSquare, Zap, CheckCircle, ListChecks, BookIcon, HeartIcon, LinkedinIcon, TwitterIcon, MailIcon, ChevronDown } from 'lucide-react'
@@ -13,7 +13,6 @@ import Footer from "@/src/components/shared/footer"
 
 export default function AboutContent() {
   const [isVisible, setIsVisible] = useState(false)
-  const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const speedometerRef = useRef<HTMLDivElement>(null)
   const [speedValue, setSpeedValue] = useState(0)
@@ -48,13 +47,6 @@ export default function AboutContent() {
     }
   }, [isVisible])
 
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [])
 
   const teamMembers = [
     {
@@ -143,29 +135,6 @@ export default function AboutContent() {
     },
   ]
 
-  const testimonials = [
-    {
-      name: "محمد أحمد",
-      company: "شركة الفا للتجارة",
-      text: "تعاملت مع Source Media لإدارة حملات التسويق الرقمي، وكانت سرعة التنفيذ مذهلة! خلال 24 ساعة فقط كانت الحملة جاهزة وبدأت في تحقيق نتائج.",
-      image: "/placeholder.svg?height=100&width=100",
-      rating: 5
-    },
-    {
-      name: "سارة خالد",
-      company: "مطعم الشرق",
-      text: "أكثر ما أعجبني في التعامل مع Source Media هو سرعة الاستجابة وتنفيذ التعديلات. فريق محترف يقدر قيمة الوقت.",
-      image: "/placeholder.svg?height=100&width=100",
-      rating: 5
-    },
-    {
-      name: "عمر محمود",
-      company: "متجر ديجيتال",
-      text: "كنت بحاجة إلى إطلاق حملة إعلانية بشكل عاجل، وتمكن فريق Source Media من إنجازها خلال ساعات قليلة وبجودة عالية.",
-      image: "/placeholder.svg?height=100&width=100",
-      rating: 5
-    },
-  ]
 
   const speedMetrics = [
     {
@@ -237,57 +206,8 @@ export default function AboutContent() {
       </div>
 
       {/* Hero Section with Animated Elements */}
-      <div className="h-screen bg-[url('/images/covers/home.jpg')] bg-no-repeat bg-cover bg-center relative overflow-hidden">
+      <div className="h-screen bg-black bg-no-repeat bg-cover bg-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90 z-0"></div>
-
-        {/* Animated Particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(30)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute h-1 w-1 rounded-full bg-orange-500"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.5 + 0.3,
-              }}
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.3, 0.8, 0.3],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Speed Lines */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={`line-${i}`}
-              className="absolute h-0.5 bg-orange-500 opacity-70"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: '-10%',
-                width: `${Math.random() * 20 + 10}%`,
-              }}
-              animate={{
-                left: '120%',
-              }}
-              transition={{
-                duration: Math.random() * 2 + 1,
-                repeat: Infinity,
-                repeatType: 'loop',
-                ease: 'linear',
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
 
         <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-4 z-10">
           <motion.div
@@ -544,82 +464,6 @@ export default function AboutContent() {
         </div>
       </section>
 
-      {/* Testimonials about Speed */}
-      <section className="py-16 px-4 bg-white/5 relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden opacity-5">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('/placeholder.svg?height=500&width=500')] bg-repeat opacity-10"></div>
-        </div>
-
-        <div className="container mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-orange-500">ماذا يقول عملاؤنا عن سرعتنا</h2>
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <div className="h-1 w-12 bg-gradient-to-r from-transparent to-orange-500"></div>
-              <FaUsers className="text-orange-500" size={20} />
-              <div className="h-1 w-12 bg-gradient-to-l from-transparent to-orange-500"></div>
-            </div>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTestimonial}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-white/5 rounded-xl p-8 backdrop-blur-sm shadow-xl border border-white/10 relative"
-                  dir="rtl"
-                >
-                  <div className="absolute -top-6 right-8 text-orange-500 opacity-30">
-                    <FaQuoteRight size={50} />
-                  </div>
-
-                  <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                    <div className="md:w-1/4 flex flex-col items-center">
-                      <div className="relative">
-                        <div className="absolute -inset-1 bg-orange-500 rounded-full opacity-20 blur-sm"></div>
-                        <img
-                          src={testimonials[activeTestimonial].image || "/placeholder.svg"}
-                          alt={testimonials[activeTestimonial].name}
-                          className="w-24 h-24 rounded-full object-cover relative z-10 border-2 border-orange-500"
-                        />
-                      </div>
-                      <h3 className="text-xl font-bold mt-4">{testimonials[activeTestimonial].name}</h3>
-                      <p className="text-sm text-gray-400">{testimonials[activeTestimonial].company}</p>
-                      <div className="flex mt-2">
-                        {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                          <FaStar key={i} className="text-orange-500" />
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="md:w-3/4">
-                      <p className="text-xl text-gray-300 leading-relaxed">&quot;{testimonials[activeTestimonial].text}&quot;</p>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Testimonial Navigation */}
-              <div className="flex justify-center mt-8 gap-2">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      activeTestimonial === index ? "bg-orange-500 w-8" : "bg-gray-500"
-                    }`}
-                    aria-label={`View testimonial ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Our Story Section */}
       <section id="our-story" className="py-16 px-4 bg-black relative overflow-hidden" dir="rtl">
@@ -862,23 +706,6 @@ export default function AboutContent() {
 
       {/* Call to Action */}
       <section id="contact" className="py-16 px-4 bg-gradient-to-r from-orange-300 to-orange-400 text-black relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden opacity-10">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute bg-white"
-              style={{
-                height: '2px',
-                width: `${Math.random() * 300 + 50}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                transform: `rotate(${Math.random() * 360}deg)`,
-                opacity: Math.random() * 0.5 + 0.1,
-              }}
-            ></div>
-          ))}
-        </div>
 
         <div className="container mx-auto text-center relative z-10">
           <motion.div

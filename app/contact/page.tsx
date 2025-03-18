@@ -3,13 +3,15 @@
 import type React from "react"
 
 import { useEffect, useRef, useState } from "react"
-import { Phone, Mail, MapPin, Clock, Send, MessageSquare, CheckCircle, ChevronDown, ChevronUp, MessageCircle } from "lucide-react"
+import { Phone, Mail, MapPin, Send, CheckCircle, ChevronDown, ChevronUp, MessageCircle } from "lucide-react"
 import { FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Navbar from "@/src/components/shared/navbar"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import useGetServerData from "@/src/hooks/use-get-server-data"
+import { getContactsData } from "@/src/server-actions/contacts-data-actions"
 
 export default function ContactUs() {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
@@ -87,6 +89,17 @@ export default function ContactUs() {
       setParticles([])
     }
   }, [])
+
+  const { data: contacts_data } = useGetServerData(getContactsData, {
+    facebook_account_link: "",
+    instagram_account_link: "",
+    location: "",
+    phone_number: "",
+    tiktok_account_link: "",
+    whatsapp_phone: "",
+    email: "",
+    id: 0
+  })
 
   return (
     <div className="min-h-screen bg-black text-white"
@@ -215,13 +228,8 @@ export default function ContactUs() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.8 }}
             >
-              <a href="#contact-form">
-                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-black gap-2 rounded-full px-6">
-                  <MessageSquare size={18} />
-                  <span>راسلنا</span>
-                </Button>
-              </a>
-              <a href="https://wa.me/+201278183718">
+
+              <a href={`https://wa.me/${contacts_data?.phone_number}`}>
                 <Button
                   size="lg"
                   variant="outline"
@@ -249,7 +257,7 @@ export default function ContactUs() {
               </div>
               <h3 className="text-xl font-bold text-center mb-2">اتصل بنا</h3>
               <p className="text-center text-gray-300 mb-4">نحن متاحون للرد على استفساراتك</p>
-              <p className="text-center text-orange-500 font-bold">+966 123 456 789</p>
+              <p className="text-center text-orange-500 font-bold">{contacts_data?.phone_number}</p>
             </div>
 
             {/* Email Card */}
@@ -259,7 +267,7 @@ export default function ContactUs() {
               </div>
               <h3 className="text-xl font-bold text-center mb-2">البريد الإلكتروني</h3>
               <p className="text-center text-gray-300 mb-4">راسلنا عبر البريد الإلكتروني</p>
-              <p className="text-center text-orange-500 font-bold">info@sourcemedia.com</p>
+              <p className="text-center text-orange-500 font-bold">{contacts_data?.email}</p>
             </div>
 
             {/* Location Card */}
@@ -279,10 +287,10 @@ export default function ContactUs() {
 
       {/* Contact Form and Info Section */}
       <section id="contact-form" className="py-16 px-4 bg-white/5">
-        <div className="container mx-auto">
-          <div className="flex flex-col lg:flex-row gap-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="">
             {/* Contact Form */}
-            <div className="lg:w-7/12">
+            <div className="">
               <div className="bg-white/10 rounded-lg p-4 shadow-xl">
                 <h2 className="text-3xl font-bold mb-6 text-orange-500 text-right" dir="rtl">
                   أرسل لنا رسالة
@@ -378,56 +386,31 @@ export default function ContactUs() {
               </div>
             </div>
 
-            {/* Contact Info */}
-            <div className="lg:w-5/12">
-              {/* Working Hours */}
-              <div className="bg-white/10 rounded-lg p-6 shadow-xl mb-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <Clock className="text-orange-500" size={24} />
-                  <h3 className="text-xl font-bold">ساعات العمل</h3>
-                </div>
-                <ul className="space-y-3" dir="rtl">
-                  <li className="flex justify-between">
-                    <span>الأحد - الخميس</span>
-                    <span>9:00 صباحاً - 6:00 مساءً</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span>الجمعة</span>
-                    <span>مغلق</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span>السبت</span>
-                    <span>10:00 صباحاً - 2:00 مساءً</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Social Media */}
-              <div className="bg-white/10 rounded-lg p-6 shadow-xl mb-8">
+            <div className="bg-white/10 rounded-lg p-6 shadow-xl my-8">
                 <h3 className="text-xl font-bold mb-4 text-right" dir="rtl">
                   تابعنا على وسائل التواصل الاجتماعي
                 </h3>
                 <div className="flex justify-center gap-6">
                   <a
-                    href="#"
+                    href={contacts_data?.facebook_account_link}
                     className="bg-white/20 hover:bg-orange-500 text-white hover:text-black p-3 rounded-full transition duration-300"
                   >
                     <FaFacebook size={24} />
                   </a>
                   <a
-                    href="#"
+                    href={contacts_data?.instagram_account_link}
                     className="bg-white/20 hover:bg-orange-500 text-white hover:text-black p-3 rounded-full transition duration-300"
                   >
                     <FaInstagram size={24} />
                   </a>
                   <a
-                    href="#"
+                    href={contacts_data?.tiktok_account_link}
                     className="bg-white/20 hover:bg-orange-500 text-white hover:text-black p-3 rounded-full transition duration-300"
                   >
                     <FaTiktok size={24} />
                   </a>
                   <a
-                    href="https://wa.me/+201278183718"
+                    href={`https://wa.me/${contacts_data?.phone_number}`}
                     className="bg-white/20 hover:bg-green-500 text-white hover:text-white p-3 rounded-full transition duration-300"
                   >
                     <FaWhatsapp size={24} />
@@ -435,21 +418,6 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              {/* Map */}
-              <div className="bg-white/10 rounded-lg p-6 shadow-xl">
-                <h3 className="text-xl font-bold mb-4 text-right" dir="rtl">
-                  موقعنا على الخريطة
-                </h3>
-                <div className="rounded-lg overflow-hidden h-64 bg-gray-800 flex items-center justify-center">
-                  {/* Replace with actual map embed */}
-                  <div className="text-center p-4">
-                    <MapPin className="mx-auto mb-2 text-orange-500" size={32} />
-                    <p>خريطة تفاعلية ستظهر هنا</p>
-                    <p className="text-sm text-gray-400">يمكنك استبدال هذا بخريطة Google Maps</p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -494,13 +462,7 @@ export default function ContactUs() {
             نحن متحمسون للعمل معك وتحقيق أهدافك التسويقية. تواصل معنا اليوم لبدء رحلة النجاح.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="#contact-form">
-              <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition duration-300 font-bold flex items-center gap-2">
-                <MessageSquare size={18} />
-                <span>تواصل معنا</span>
-              </button>
-            </a>
-            <a href="https://wa.me/+201278183718">
+            <a href={`https://wa.me/${contacts_data?.phone_number}`}>
               <button className="bg-green-500 text-white px-8 py-3 rounded-full hover:bg-green-600 transition duration-300 font-bold flex items-center gap-2">
                 <FaWhatsapp size={18} />
                 <span>واتساب</span>

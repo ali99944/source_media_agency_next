@@ -5,6 +5,16 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "50mb",
     }
+  },
+
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+        {
+            protocol: "https",
+            hostname: "images.unsplash.com",
+        },
+    ]
   }
 };
 

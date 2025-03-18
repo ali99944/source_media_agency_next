@@ -5,23 +5,15 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, MessageSquare, Globe, ExternalLink, Phone } from "lucide-react"
-import { FaRocket, FaBrain, FaFilm, FaCode, FaUtensils, FaLayerGroup, FaGlobe } from "react-icons/fa"
+import { ArrowRight, MessageSquare, ExternalLink, Phone, Globe } from "lucide-react"
+import { FaBrain, FaCode, FaFilm, FaGlobe, FaLayerGroup, FaRocket, FaUtensils } from "react-icons/fa"
 import Navbar from "@/src/components/shared/navbar"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Image from "next/image"
+import EMenuPromo from "@/components/custom/emenu-promotion"
 
-// Service type definition
-type Service = {
-  id: string
-  title: string
-  description: string
-  icon: React.ReactNode
-  color: string
-  link: string
-  discount: number
-}
+
 
 
 // Testimonial type definition
@@ -32,18 +24,10 @@ type Testimonial = {
 }
 
 export default function Home() {
-  const [activeService, setActiveService] = useState<string | null>(null)
   const [activeTestimonial, setActiveTestimonial] = useState<number>(0)
   const heroRef = useRef<HTMLDivElement>(null)
   const servicesRef = useRef<HTMLDivElement>(null)
-//   const { scrollYProgress } = useScroll({
-//     target: heroRef,
-//     offset: ["start end", "end start"],
-//   })
 
-//   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0])
-//   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.9])
-//   const y = useTransform(scrollYProgress, [0, 0.5, 1], [0, 50, 100])
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -53,82 +37,6 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  // Services data
-  const services: Service[] = [
-    {
-      id: "sponsored-ads",
-      title: "اعلانات ممولة",
-      description: "انشاء الاعلانات الممولة علي جميع منصات السوشيال ميديا باحترافية و جودة عالية للوصول الي عميلك المحتمل باقل تكلفة و اعلي جودة",
-      icon: <FaCode className="h-6 w-6" />,
-      color: "from-blue-600 to-cyan-500",
-      link: "/sponsored-ads",
-      discount: 10,
-    },
-    {
-      id: "intelligent-marketing",
-      title: "ادوات التسويق ذكي",
-      description: "استراتيجيات تسويقية ذكية مدعومة بالبيانات والتحليلات لمساعدة عملك على النمو",
-      icon: <FaBrain className="h-6 w-6" />,
-      color: "from-purple-600 to-pink-500",
-      link: "/intelligent-marketing-service",
-      discount: 10,
-    },
-    {
-      id: "followers-increase",
-      title: "زيادة متابعين",
-      description: "نقدم خدمات تزويد المتابعين في جميع منصات السوشيال ميديا",
-      icon: <Globe className="h-6 w-6" />,
-      color: "from-green-600 to-emerald-500",
-      link: "/followers-increase-service",
-      discount: 10,
-    },
-    {
-      id: "video-montage",
-      title: "الفيديو والمونتاج",
-      description: "خدمات إنتاج فيديو ومونتاج احترافية لتحويل أفكارك إلى محتوى مرئي مؤثر",
-      icon: <FaFilm className="h-6 w-6" />,
-      color: "from-red-600 to-orange-500",
-      link: "/video-montage",
-      discount: 10,
-    },
-    {
-      id: "business-cards",
-      title: "بطاقات أعمال رقمية",
-      description: "بطاقات أعمال رقمية مع رموز QR لمشاركة معلومات التواصل بطريقة عصرية وفعالة",
-      icon: <Globe className="h-6 w-6" />,
-      color: "from-green-600 to-emerald-500",
-      link: "/business-cards",
-      discount: 10,
-    },
-    {
-      id: "emenu",
-      title: "قائمة إلكترونية",
-      description: "قائمة إلكترونية متكاملة لمطاعمك مع إمكانية تحويلها إلى تطبيق جوال",
-      icon: <FaUtensils className="h-6 w-6" />,
-      color: "from-yellow-600 to-orange-500",
-      link: "/emenu",
-      discount: 10,
-    },
-    {
-      id: "/designs",
-      title: "قسم التصميمات",
-      description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
-      icon: <FaLayerGroup className="h-6 w-6" />,
-      color: "from-blue-600 to-cyan-500",
-      link: "/designs",
-      discount: 10,
-    },
-    {
-        id: '/programming-solutions',
-        title: 'تصميم مواقع ويب',
-        description: 'تصميم مواقع ويب سهلة ومميزة تمكنك من تحقيق نجاحك التجاري',
-        icon: <FaGlobe className="h-6 w-6" />,
-        color: 'from-green-600 to-emerald-500',
-        link: '/programming-solutions',
-        discount: 10
-    }
-    
-  ]
 
     interface Project {
     id: string
@@ -238,6 +146,96 @@ export default function Home() {
     { label: "دول", value: "+10" },
     { label: "سنوات خبرة", value: "+8" },
   ]
+
+  // Service type definition
+type Service = {
+  id: string
+  title: string
+  description: string
+  icon: React.ReactNode
+  color: string
+  link: string
+  discount: number
+}
+
+// Services data
+const services: Service[] = [
+  {
+    id: "sponsored-ads",
+    title: "اعلانات ممولة",
+    description: "انشاء الاعلانات الممولة علي جميع منصات السوشيال ميديا باحترافية و جودة عالية للوصول الي عميلك المحتمل باقل تكلفة و اعلي جودة",
+    icon: <FaCode className="h-6 w-6" />,
+    color: "from-blue-600 to-cyan-500",
+    link: "/sponsored-ads",
+    discount: 10,
+  },
+  {
+    id: "intelligent-marketing",
+    title: "ادوات التسويق ذكي",
+    description: "استراتيجيات تسويقية ذكية مدعومة بالبيانات والتحليلات لمساعدة عملك على النمو",
+    icon: <FaBrain className="h-6 w-6" />,
+    color: "from-purple-600 to-pink-500",
+    link: "/intelligent-marketing-service",
+    discount: 10,
+  },
+  {
+    id: "followers-increase",
+    title: "زيادة متابعين",
+    description: "نقدم خدمات تزويد المتابعين في جميع منصات السوشيال ميديا",
+    icon: <Globe className="h-6 w-6" />,
+    color: "from-green-600 to-emerald-500",
+    link: "/followers-increase-service",
+    discount: 10,
+  },
+  {
+    id: "video-montage",
+    title: "الفيديو والمونتاج",
+    description: "خدمات إنتاج فيديو ومونتاج احترافية لتحويل أفكارك إلى محتوى مرئي مؤثر",
+    icon: <FaFilm className="h-6 w-6" />,
+    color: "from-red-600 to-orange-500",
+    link: "/video-montage",
+    discount: 10,
+  },
+  {
+    id: "business-cards",
+    title: "بطاقات أعمال رقمية",
+    description: "بطاقات أعمال رقمية مع رموز QR لمشاركة معلومات التواصل بطريقة عصرية وفعالة",
+    icon: <Globe className="h-6 w-6" />,
+    color: "from-green-600 to-emerald-500",
+    link: "/business-cards",
+    discount: 10,
+  },
+  {
+    id: "emenu",
+    title: "قائمة إلكترونية",
+    description: "قائمة إلكترونية متكاملة لمطاعمك مع إمكانية تحويلها إلى تطبيق جوال",
+    icon: <FaUtensils className="h-6 w-6" />,
+    color: "from-yellow-600 to-orange-500",
+    link: "/emenu",
+    discount: 10,
+  },
+  {
+    id: "/designs",
+    title: "قسم التصميمات",
+    description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
+    icon: <FaLayerGroup className="h-6 w-6" />,
+    color: "from-blue-600 to-cyan-500",
+    link: "/designs",
+    discount: 10,
+  },
+  {
+      id: '/programming-solutions',
+      title: 'تصميم مواقع ويب',
+      description: 'تصميم مواقع ويب سهلة ومميزة تمكنك من تحقيق نجاحك التجاري',
+      icon: <FaGlobe className="h-6 w-6" />,
+      color: 'from-green-600 to-emerald-500',
+      link: '/programming-solutions',
+      discount: 10
+  }
+  
+]
+
+const [activeService, setActiveService] = useState<string | null>(null)
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -432,8 +430,8 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* Services Section */}
-      <section id="services" ref={servicesRef} className="py-20 relative overflow-hidden">
+{/* Services Section */}
+<section id="services" ref={servicesRef} className="py-20 relative overflow-hidden">
         {/* Background Elements */}
 
 
@@ -509,6 +507,10 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="py-20 bg-black/50 relative overflow-hidden mx-auto px-4 max-w-7xl">
+        <EMenuPromo />
+      </section>
+
       {/* About Us Brief Section */}
       <section className="py-20 bg-black/50 relative overflow-hidden">
 
@@ -557,7 +559,6 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <section className="py-20 bg-black/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black" />
 
         <div className="container mx-auto px-4 relative z-10">
           <motion.div

@@ -7,8 +7,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card: #ffffff;
+  --card-foreground: rgb(185, 184, 184);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
   --primary: #1B468F;
@@ -38,6 +38,8 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --switch: #70B77E;
+
 }
 
 @theme inline {
@@ -81,6 +83,7 @@
   --radius-xl: calc(var(--radius) + 4px);
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --color-switch: var(--switch);
 
   @keyframes accordion-down {
     from {
@@ -116,13 +119,14 @@
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.129 0.042 264.695);
-  --card-foreground: oklch(0.984 0.003 247.858);
+  --background: #000;
+  --foreground: #d3d1d1;
+  --card: #d3d1d1;
+  --card-foreground: rgb(185, 184, 184);
   --popover: oklch(0.129 0.042 264.695);
   --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.984 0.003 247.858);
+  --primary: #FE6800;
+  --switch: #70B77E;
   --primary-foreground: oklch(0.208 0.042 265.755);
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);
@@ -132,8 +136,8 @@
   --accent-foreground: oklch(0.984 0.003 247.858);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.279 0.041 260.031);
-  --input: oklch(0.279 0.041 260.031);
+  --border: #ffffff22;
+  --input: #ffffff22;
   --ring: oklch(0.446 0.043 257.281);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -184,10 +188,6 @@
 
 @layer base {
   body {
-      background-image: url('/images/background.png');
-      background-size: cover;
-      background-repeat: no-repeat;
       font-family: 'alilato', sans-serif;
-
   }
 }

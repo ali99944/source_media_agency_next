@@ -9,130 +9,165 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+//- tasks
+
+enum task_status {
+  pending
+  completed
+}
+
+model tasks {
+  id Int @id @default(autoincrement())
+}
+
+
+//- storage
+
+model Folder {
+  id Int @id @default(autoincrement())
+}
+
+
+//- main models
+
+
+model service_categories {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+  page String @unique
+  description String
+  icon String
+
+  is_active Boolean @default(true)
+  services services[]  
+
+  created_at String
+}
+
+model services {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+
+  is_active Boolean @default(true)
+
+  service_category_id Int
+  service_category service_categories @relation(fields: [service_category_id], references: [id])
+
+  image String
+
+  client_feedbacks client_feedbacks[]
+
+  created_at String
+}
+
+
+model service_showcases {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  image String
+}
+
+model client_feedbacks {
+  id Int @id @default(autoincrement())
+  client_name String
+  client_message String
+  client_page_name String
+
+  service_id Int
+  service services @relation(fields: [service_id], references: [id])
+
+  sent_at String
+}
+
+
 model contact_messages {
-  id         Int    @id @default(autoincrement())
-  name       String    @db.VarChar(255)
-  email      String    @db.VarChar(255)
-  phone      String?   @db.VarChar(255)
-  subject    String    @db.VarChar(255)
-  message    String
+  id Int @id @default(autoincrement())
+  title String
+  content String
+  subject String
+  client_name String
+  client_phone String
+  client_email String
+  sent_at String
+}
+
+model pages_seo_content {
+  id Int @id @default(autoincrement())
+  page_code String @unique
+  title String
+  description String
+  keywords String
+  page_content String
+}
+
+
+model contact_data {
+  id Int @id @default(0)
+  whatsapp_phone String
+  email String
+  location String
+  phone_number String
+
+  tiktok_account_link String
+  instagram_account_link String
+  facebook_account_link String
 }
 
 model faqs {
-  id         Int    @id @default(autoincrement())
-  question   String    @db.VarChar(255)
-  answer     String
+  id        Int     @id @default(autoincrement())
+  question  String
+  answer    String
+  is_active Boolean @default(true)
+
+  created_at String
 }
 
-model tour_addons {
-  id          Int    @id @default(autoincrement())
-  name        String    @db.VarChar(255)
-  price       Float  
-  description String
-  tour_id     Int
-  tour tours @relation(fields: [tour_id], references: [id])
-}
 
-model tour_gallery_images {
+//- emenu work
+
+model emenu_feedbacks {
   id Int @id @default(autoincrement())
-  src String
-
-  tour_id Int
-  tour tours @relation(fields: [tour_id], references: [id])
+  client_name String
+  position String
+  feedback_message String
 }
 
-model tour_includes {
+model emenu_faqs {
   id Int @id @default(autoincrement())
-  name String @db.VarChar(255)
-
-  tour_id Int
-  tour tours @relation(fields: [tour_id], references: [id])  
+  question String
+  answer String
 }
 
-
-model tour_special_offers {
+model emenu_design_types {
   id Int @id @default(autoincrement())
-
-  tour_id Int
-  tour tours  @relation(fields: [tour_id], references: [id])
-
   name String
   description String
-  price Float
+  image String
+
+  showcases emenu_showcase[]
 }
 
-
-model tours {
-  id               Int    @id @default(autoincrement())
-  name             String    @db.VarChar(255)
-  description      String
-  price_per_person Float  
-  city             String    @db.VarChar(255)
-  includes         tour_includes[]
-  duration         Int   
-  location         String    @db.VarChar(255)
-  special_offers   tour_special_offers[]
-  main_image       String    @db.VarChar(255)
-  gallery_images   tour_gallery_images[]
-  addons tour_addons[]
-
-
-  seo_title String
-  seo_description String
-  seo_keywords String
-}
-
-
-model seo_contents {
+model emenu_showcase {
   id Int @id @default(autoincrement())
+  page_name String
+  page_image String
+  page_description String
+  page_logo String
+  qrcode_image String
+  emenu_link String
 
-  key String
-
-  name String
-  description String
-  keywords String
-
-  meta_tags String
-  canonical_url String
-  og_title String
-  og_description String
-  og_image String
-  twitter_title String
-  twitter_description String
-  twitter_image String
-  schema_markup String
-  robots_meta String @default("index, follow")
+  emenu_design_type_id Int
+  emenu_design_type emenu_design_types @relation(fields: [emenu_design_type_id], references: [id])
 }
 
-model contact_settings {
-  id Int @id @default(1)
-
-  support_phone String
-  booking_phone String
-  urgent_phone_number String
-  support_email String
-  booking_email String
-  address String
-  city String
-  facebook_account String
-  instagram_account String
-  tiktok_account String
-  google_maps_link String
-  working_hours String
-  working_days String
-  weekend String
-}
-
-enum manager_role {
-  admin
-  supervisor
-}
 
 model managers {
   id Int @id @default(autoincrement())
   name String
   email String
   password String
-
-  role manager_role
 }

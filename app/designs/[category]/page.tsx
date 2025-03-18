@@ -7,10 +7,8 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import {
-  ArrowRight,
   ChevronRight,
   X,
-  Zap,
 } from "lucide-react"
 import { FaFigma, FaInstagram, FaLayerGroup, FaPaintBrush } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
@@ -19,6 +17,7 @@ import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Footer from "@/src/components/shared/footer"
 import { CardLoader, CircularLoader } from "@/src/components/shared/loaders"
 import Navbar from "@/src/components/shared/navbar"
+import Image from "next/image"
 
 // Design category type
 type DesignCategory = {
@@ -548,7 +547,9 @@ export default function DesignShowcasePage() {
                 className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 "
               >
                 <div className={`relative h-72 overflow-hidden`}>
-                  <img
+                  <Image
+                    fill
+                    
                     src={'https://img.freepik.com/free-vector/abstract-colorful-geometric-isometric-background_8829-2711.jpg?ga=GA1.1.259795667.1741285641&semt=ais_hybrid'}
                     alt={project.title}
                     className="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110"
@@ -557,15 +558,6 @@ export default function DesignShowcasePage() {
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60" />
 
-                  {/* Featured Badge */}
-                  {project.featured && (
-                    <div className="absolute top-3 left-3 z-10">
-                      <div className="bg-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                        <Zap size={10} />
-                        <span>مميز</span>
-                      </div>
-                    </div>
-                  )}
 
 
                   {/* Content */}
@@ -600,7 +592,7 @@ export default function DesignShowcasePage() {
                 <Button
                   onClick={loadMoreProjects}
                   disabled={loadingMore}
-                  className="bg-transparent border-2 border-orange-500 text-orange-500 px-8 py-2 rounded-full hover:bg-orange-500 hover:text-black transition duration-300 cursor-pointer font-bold flex items-center gap-2 mx-auto h-auto"
+                  className="bg-orange-500 border-2 px-8 py-1.5 rounded-full hover:bg-orange-600 transition duration-300 cursor-pointer font-bold flex items-center gap-2 mx-auto h-auto"
                 >
                   {loadingMore ? (
                     <>
@@ -610,7 +602,6 @@ export default function DesignShowcasePage() {
                   ) : (
                     <>
                       <span>تحميل المزيد</span>
-                      <ArrowRight size={18} />
                     </>
                   )}
                 </Button>

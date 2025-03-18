@@ -35,6 +35,9 @@ import PaymentPageMockup from "./mockups/payment-mockup"
 import OrderReceivedMockup from "./mockups/order-recieved-mockup"
 import ProductDetailsMockup from "./mockups/product-details-mockup"
 import ControlPanelMockup from "./mockups/control-panel-mockup"
+import useGetServerData from "@/src/hooks/use-get-server-data"
+import { getMenuDesignTypes, getMenuShowcases } from "@/src/server-actions/emenu-actions"
+import Link from "next/link"
 
 export default function EMenuPage() {
   const [activeTab, setActiveTab] = useState("simple")
@@ -64,36 +67,8 @@ export default function EMenuPage() {
   }, [])
 
   // Menu templates
-  const menuTemplates = [
-    {
-      name: "الكلاسيكي",
-      bgColor: "bg-white",
-      textColor: "text-black",
-      accentColor: "bg-orange-500",
-      headerColor: "bg-orange-500",
-    },
-    {
-      name: "الداكن",
-      bgColor: "bg-gray-900",
-      textColor: "text-white",
-      accentColor: "bg-orange-500",
-      headerColor: "bg-gray-800",
-    },
-    {
-      name: "الأنيق",
-      bgColor: "bg-gradient-to-b from-gray-50 to-gray-100",
-      textColor: "text-gray-800",
-      accentColor: "bg-emerald-500",
-      headerColor: "bg-emerald-500",
-    },
-    {
-      name: "الحيوي",
-      bgColor: "bg-gradient-to-r from-purple-600 to-blue-500",
-      textColor: "text-white",
-      accentColor: "bg-yellow-400",
-      headerColor: "bg-purple-700",
-    },
-  ]
+  const { data: design_types } = useGetServerData(getMenuDesignTypes, [])
+  const { data: menu_showcases } = useGetServerData(getMenuShowcases, [])
 
   // Menu categories
   const menuCategories = [
@@ -460,16 +435,16 @@ export default function EMenuPage() {
                     {/* Menu UI */}
                     <div className="h-full pt-6 overflow-hidden">
                       {/* Restaurant Header */}
-                      <div className={`${menuTemplates[selectedTemplate].headerColor} p-4 text-center`}>
+                      <div className={`bg-orange-500 p-4 text-center`}>
                         <div className="w-16 h-16 bg-white rounded-full mx-auto mb-2 flex items-center justify-center">
                           <FaUtensils className="text-gray-800" size={30} />
                         </div>
-                        <h3 className={`text-xl font-bold ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-black' : 'text-white'}`}>مطعم الذواقة</h3>
-                        <p className={`text-sm ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-black/70' : 'text-white/70'}`}>المأكولات العالمية</p>
+                        <h3 className={`text-xl font-bold text-black`}>مطعم الذواقة</h3>
+                        <p className={`text-sm text-black`}>المأكولات العالمية</p>
                       </div>
                       
                       {/* Categories */}
-                      <div className={`${menuTemplates[selectedTemplate].bgColor} h-full`}>
+                      <div className={`bg-white h-full`}>
                         <div className="flex overflow-hidden p-2 space-x-2 space-x-reverse">
                           {menuCategories.map((category) => (
                             <button
@@ -477,8 +452,8 @@ export default function EMenuPage() {
                               onClick={() => setActiveCategory(category.id)}
                               className={`px-3 py-2 rounded-full text-sm whitespace-nowrap ${
                                 activeCategory === category.id
-                                  ? `${menuTemplates[selectedTemplate].accentColor} ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-white' : 'text-black'}`
-                                  : `bg-gray-200/10 ${menuTemplates[selectedTemplate].textColor}`
+                                  ? `bg-orange-500 text-black`
+                                  : `bg-gray-200/10 text-black`
                               }`}
                             >
                               {category.name}
@@ -487,7 +462,7 @@ export default function EMenuPage() {
                         </div>
                         
                         {/* Menu Items */}
-                        <div className={`p-4 overflow-hidden ${menuTemplates[selectedTemplate].textColor}`} style={{ height: "calc(100% - 120px)" }}>
+                        <div className={`p-4 overflow-hidden text-black`} style={{ height: "calc(100% - 120px)" }}>
                           {menuItems[activeCategory as keyof typeof menuItems].map((item) => (
                             <div key={item.id} className="mb-4 bg-black/10 rounded-lg p-3 flex">
                               <img src={item.image || "/placeholder.svg"} alt={item.name} className="w-16 h-16 rounded-lg object-cover" />
@@ -508,7 +483,7 @@ export default function EMenuPage() {
                     <div
                       className={`bg-white p-2 rounded ${isQrAnimating ? 'animate-pulse' : ''}`}
                     >
-                      <img src="/images/source_media_qrcode.png" alt="QR Code" className="h-20 w-20" />
+                      <img src="/qrcode-example.jpg" alt="QR Code" className="h-20 w-20" />
                     </div>
                   </div>
                 </div>
@@ -518,19 +493,73 @@ export default function EMenuPage() {
               <div className="mb-16">
                 <h3 className="text-2xl font-bold text-center mb-8">اختر التصميم المناسب لمطعمك</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {menuTemplates.map((template, index) => (
+                  {design_types.map((template, index) => (
                     <div
                       key={index}
                       className={`cursor-pointer rounded-lg transition-all duration-300 ${selectedTemplate === index ? 'ring-2 ring-orange-500' : ''}`}
                       onClick={() => setSelectedTemplate(index)}
                     >
-                      <div className={`w-full aspect-video rounded-lg ${template.bgColor} flex items-center justify-center`}>
-                        <span className={`font-bold ${template.textColor}`}>{template.name}</span>
+                      <div className={`w-full aspect-video rounded-lg bg-white/5 flex items-center justify-center`}>
+                        <span className={`font-bold text-black`}>{template.name}</span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
+
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8">نماذج من اعمالنا السابقة</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {menu_showcases.map((showcase) => (
+                    <div key={showcase.id} className="border rounded-lg overflow-hidden group relative">
+                    <div className="aspect-video bg-gray-100 relative">
+                    <Link href={showcase.emenu_link}>
+
+                      <img
+                        src={showcase.page_image}
+                        alt={`قائمة ${showcase.page_name}`}
+                        width={400}
+                        height={200}
+                        className="object-cover w-full h-full"
+                      />
+                      </Link>
+                      <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
+                        <img
+                          src={showcase.page_logo}
+                          alt="شعار المطعم"
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-lg">
+                        {showcase.page_name}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {showcase.page_description}
+                      </p>
+                      <div className="flex justify-between items-center mt-4">
+                        <div className="bg-gray-100 p-2 rounded-md">
+                          <img 
+                            src={showcase.qrcode_image}
+                            alt="رمز QR"
+                            width={60}
+                            height={60}
+                          />
+                        </div>
+                        <span className="text-sm bg-orange-100 text-orange-800 px-2 py-1 rounded">
+                          {showcase.emenu_design_type.name}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  ))}
+                </div>
+              </div>
+
+
 
               {/* Features List */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
@@ -569,7 +598,7 @@ export default function EMenuPage() {
                 <p className="text-lg mb-8 max-w-2xl mx-auto">
                   احصل على قائمة إلكترونية بسيطة وسهلة الاستخدام تعرض أطباقك بطريقة جذابة وعصرية.
                 </p>
-                <a href="#contact">
+                <a href="/contact">
                   <button className="bg-orange-500 text-black px-8 py-3 rounded-full hover:bg-orange-600 transition duration-300 font-bold">
                     احصل على عرض سعر
                   </button>
@@ -595,16 +624,16 @@ export default function EMenuPage() {
                     {/* Menu UI */}
                     <div className="h-full pt-6 overflow-hidden">
                       {/* Restaurant Header */}
-                      <div className={`${menuTemplates[selectedTemplate].headerColor} p-4 text-center`}>
+                      <div className={`bg-orange-500 p-4 text-center`}>
                         <div className="w-16 h-16 bg-white rounded-full mx-auto mb-2 flex items-center justify-center">
                           <FaUtensils className="text-gray-800" size={30} />
                         </div>
-                        <h3 className={`text-xl font-bold ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-black' : 'text-white'}`}>مطعم الذواقة</h3>
-                        <p className={`text-sm ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-black/70' : 'text-white/70'}`}>المأكولات العالمية</p>
+                        <h3 className={`text-xl font-bold text-black`}>مطعم الذواقة</h3>
+                        <p className={`text-sm text-black`}>المأكولات العالمية</p>
                       </div>
                       
                       {/* Categories */}
-                      <div className={`${menuTemplates[selectedTemplate].bgColor} h-full`}>
+                      <div className={`bg-white h-full`}>
                         <div className="flex overflow-hidden p-2 space-x-2 space-x-reverse">
                           {menuCategories.map((category) => (
                             <button
@@ -612,8 +641,8 @@ export default function EMenuPage() {
                               onClick={() => setActiveCategory(category.id)}
                               className={`px-3 py-2 rounded-full text-sm whitespace-nowrap ${
                                 activeCategory === category.id
-                                  ? `${menuTemplates[selectedTemplate].accentColor} ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-white' : 'text-black'}`
-                                  : `bg-gray-200/10 ${menuTemplates[selectedTemplate].textColor}`
+                                  ? `bg-orange-500 text-black`
+                                  : `bg-gray-200/10 text-black`
                               }`}
                             >
                               {category.name}
@@ -622,7 +651,7 @@ export default function EMenuPage() {
                         </div>
                         
                         {/* Menu Items with Add to Cart */}
-                        <div className={`p-4 overflow-hidden ${menuTemplates[selectedTemplate].textColor}`} style={{ height: "calc(100% - 170px)" }}>
+                        <div className={`p-4 overflow-hidden text-black`} style={{ height: "calc(100% - 170px)" }}>
                           {menuItems[activeCategory as keyof typeof menuItems].map((item) => (
                             <div key={item.id} className="mb-4 bg-black/10 rounded-lg p-3">
                               <div className="flex">
@@ -634,7 +663,7 @@ export default function EMenuPage() {
                                 </div>
                               </div>
                               <div className="mt-2 flex justify-end">
-                                <button className={`${menuTemplates[selectedTemplate].accentColor} ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-white' : 'text-black'} px-3 py-1 rounded-full text-sm flex items-center`}>
+                                <button className={`bg-orange-500 text-black px-3 py-1 rounded-full text-sm flex items-center`}>
                                   <PlusCircle className="h-4 w-4 ml-1" />
                                   إضافة للسلة
                                 </button>
@@ -644,7 +673,7 @@ export default function EMenuPage() {
                         </div>
                         
                         {/* Cart Button */}
-                        <div className={`absolute bottom-0 left-0 right-0 p-4 ${menuTemplates[selectedTemplate].headerColor} ${menuTemplates[selectedTemplate].textColor === 'text-black' ? 'text-black' : 'text-white'}`}>
+                        <div className={`absolute bottom-0 left-0 right-0 p-4 bg-orange-500 text-black`}>
                           <button className="w-full bg-white text-black py-2 rounded-full font-bold flex items-center justify-center">
                             <ShoppingCart className="h-5 w-5 ml-2" />
                             عربة التسوق (3)
@@ -1007,9 +1036,6 @@ export default function EMenuPage() {
                   <p className="text-lg mb-4">
                     لوحة التحكم سهلة الاستخدام ولا تتطلب أي خبرة تقنية. يمكنك إدارة قائمتك الإلكترونية بنفسك في أي وقت ومن أي مكان.
                   </p>
-                  <button className="bg-orange-500 text-black px-6 py-2 rounded-lg hover:bg-orange-600 transition duration-300">
-                    طلب عرض توضيحي
-                  </button>
                 </div>
               </motion.div>
             )}
@@ -1250,7 +1276,7 @@ export default function EMenuPage() {
             <div className="relative">
               <div className="absolute inset-0 bg-orange-500 blur-3xl opacity-20 rounded-full"></div>
               <div className={`bg-white mx-auto mb-8 p-4 rounded-lg ${isQrAnimating ? "animate-pulse" : ""}`}>
-                <img src="/images/source_media_qrcode.png" alt="QR Code" className="h-48 w-48" />
+                <img src="/qrcode-example.jpg" alt="QR Code" className="h-48 w-48" />
                 <div className="text-center mt-2 text-black font-bold">امسح للاطلاع على القائمة</div>
               </div>
               <div className="absolute -top-4 -right-4 bg-orange-500 text-black font-bold px-4 py-2 rounded-full text-sm animate-bounce">
@@ -1409,14 +1435,9 @@ export default function EMenuPage() {
         تجربة عملائك.
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="#contact">
+        <a href="/contact">
           <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition duration-300 font-bold w-full sm:w-auto">
             تواصل معنا الآن
-          </button>
-        </a>
-        <a href="#samples">
-          <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-gray-100 transition duration-300 font-bold w-full sm:w-auto">
-            مشاهدة نماذج أعمالنا
           </button>
         </a>
       </div>

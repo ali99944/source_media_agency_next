@@ -1,9 +1,22 @@
 import React from 'react';
 import { Facebook, Instagram } from 'lucide-react';
 import { FaTiktok, FaWhatsapp } from "react-icons/fa";
+import { getContactsData } from '@/src/server-actions/contacts-data-actions';
+import useGetServerData from '@/src/hooks/use-get-server-data';
+import Link from 'next/link';
 
 
 const Footer: React.FC = () => {
+    const { data: contacts_data } = useGetServerData(getContactsData, {
+      facebook_account_link: "",
+      instagram_account_link: "",
+      location: "",
+      phone_number: "",
+      tiktok_account_link: "",
+      whatsapp_phone: "",
+      email: "",
+      id: 0
+    })
   return (
     <footer className="bg-black text-white py-12" dir='rtl'>
       <div className="container mx-auto px-4">
@@ -30,24 +43,19 @@ const Footer: React.FC = () => {
             <h3 className="text-orange-500 font-semibold text-lg">روابط سريعة</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-400 hover:text-orange-500 transition">
+                <Link href="/" className="text-gray-400 hover:text-orange-500 transition">
                   الرئيسية
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-orange-500 transition">
-                  الخدمات
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-orange-500 transition">
+                <Link href="/about" className="text-gray-400 hover:text-orange-500 transition">
                   عنا
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-orange-500 transition">
+                <Link href="/contact" className="text-gray-400 hover:text-orange-500 transition">
                   اتصل بنا
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -57,26 +65,26 @@ const Footer: React.FC = () => {
             <h3 className="text-orange-500 font-semibold text-lg">تابعنا</h3>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href={contacts_data?.facebook_account_link}
                 className="text-gray-400 hover:text-orange-500 transition"
               >
                 <Facebook size={24} />
               </a>
               <a
-                href="#"
+                href={contacts_data?.tiktok_account_link}
                 className="text-gray-400 hover:text-orange-500 transition"
               >
                 <FaTiktok size={24} />
               </a>
               <a
-                href="#"
+                href={contacts_data?.instagram_account_link}
                 className="text-gray-400 hover:text-orange-500 transition"
               >
                 <Instagram size={24} />
               </a>
 
               <a
-                href="https://wa.me/+201278183718"
+                href={`https://wa.me/${contacts_data?.phone_number}`}
                 className="text-gray-400 hover:text-orange-500 transition"
               >
                 <FaWhatsapp className='text-green-500 hover:text-green-600' size={24} />
@@ -88,8 +96,8 @@ const Footer: React.FC = () => {
           {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="text-orange-500 font-semibold text-lg">تواصل معنا</h3>
-            <p className="text-gray-400">البريد الإلكتروني: info@sourcemedia.com</p>
-            <p className="text-gray-400">الهاتف: +966 123 456 789</p>
+            <p className="text-gray-400">البريد الإلكتروني: {contacts_data?.email}</p>
+            <p className="text-gray-400">الهاتف: {contacts_data?.phone_number}</p>
           </div>
         </div>
 

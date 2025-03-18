@@ -2,26 +2,18 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useMemo } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, ChevronRight, Download, ExternalLink, Heart, MessageSquare, Zap } from "lucide-react"
-import { FaFigma, FaInstagram, FaLayerGroup, FaPaintBrush } from "react-icons/fa"
+import { ArrowRight, ExternalLink, MessageSquare } from "lucide-react"
+import { FaFigma, FaLayerGroup, FaPaintBrush } from "react-icons/fa"
 import { CardLoader } from "@/src/components/shared/loaders"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Navbar from "@/src/components/shared/navbar"
-
-// Design category type
-type DesignCategory = {
-  id: string
-  title: string
-  description: string
-  icon: React.ReactNode
-  color: string
-  image: string
-}
-
+import { getServicesByPage } from "@/src/server-actions/service-actions"
+import useGetServerData from "@/src/hooks/use-get-server-data"
+import Image from "next/image"
 // Design project type
 type DesignProject = {
   id: string
@@ -35,8 +27,7 @@ type DesignProject = {
 }
 
 export default function DesignsPage() {
-  const [, setActiveCategory] = useState<string>("all")
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading] = useState<boolean>(false)
   const [, setHoveredProject] = useState<string | null>(null)
   const heroRef = useRef<HTMLDivElement>(null)
 
@@ -49,73 +40,16 @@ export default function DesignsPage() {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.9])
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [0, 50, 100])
 
-  // Design categories
-  const designCategories: DesignCategory[] = [
-    {
-      id: "social-media",
-      title: "تصاميم السوشيال ميديا",
-      description: "تصاميم إبداعية لمنصات التواصل الاجتماعي تجذب الجمهور وتعزز تفاعلهم",
-      icon: <FaInstagram className="h-6 w-6" />,
-      color: "from-purple-600 to-pink-500",
-      image: "/placeholder.svg?height=400&width=600",
+  const getServices = useMemo(
+    () => async () => {
+      const services = await getServicesByPage('designs')
+
+      return services
     },
-    {
-      id: "logos",
-      title: "تصميم الشعارات",
-      description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
-      icon: <FaLayerGroup className="h-6 w-6" />,
-      color: "from-blue-600 to-cyan-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "branding",
-      title: "الهوية البصرية",
-      description: "هوية بصرية متكاملة تعزز حضور علامتك التجارية وتميزها عن المنافسين",
-      icon: <FaPaintBrush className="h-6 w-6" />,
-      color: "from-orange-600 to-amber-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "ui-ux",
-      title: "تصميم واجهات المستخدم",
-      description: "واجهات مستخدم جذابة وسهلة الاستخدام تحسن تجربة المستخدم وتزيد من معدلات التحويل",
-      icon: <FaFigma className="h-6 w-6" />,
-      color: "from-green-600 to-emerald-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "motion-graphics",
-      title: "موشن جرافيك",
-      description: "تصاميم متحركة تجذب الانتباه وتوصل رسالتك بطريقة مبتكرة وملفتة",
-      icon: <Zap className="h-6 w-6" />,
-      color: "from-yellow-600 to-amber-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "print-design",
-      title: "تصاميم المطبوعات",
-      description: "تصاميم احترافية للمطبوعات تشمل البروشورات والكتالوجات وبطاقات العمل والمزيد",
-      icon: <Download className="h-6 w-6" />,
-      color: "from-red-600 to-rose-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "packaging",
-      title: "تصميم العبوات",
-      description: "تصاميم مبتكرة للعبوات والتغليف تجذب العملاء وتعزز قيمة المنتج",
-      icon: <MessageSquare className="h-6 w-6" />,
-      color: "from-teal-600 to-emerald-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "illustrations",
-      title: "الرسوم التوضيحية",
-      description: "رسوم توضيحية فريدة تضيف لمسة إبداعية وتساعد في توصيل الأفكار بشكل مرئي جذاب",
-      icon: <Heart className="h-6 w-6" />,
-      color: "from-indigo-600 to-violet-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-  ]
+    [],
+  )
+
+  const { data: services } = useGetServerData(getServices, [])
 
   // Design projects
   const designProjects: DesignProject[] = [
@@ -176,16 +110,6 @@ export default function DesignsPage() {
       views: 1790,
     },
   ]
-  // Handle category change
-  const handleCategoryChange = (categoryId: string) => {
-    setIsLoading(true)
-    setActiveCategory(categoryId)
-
-    // Simulate loading
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 800)
-  }
 
 
   return (
@@ -322,30 +246,6 @@ export default function DesignsPage() {
             >
               <FaFigma className="text-orange-500 h-6 w-6" />
             </motion.div>
-
-            {/* Decorative circles */}
-            {[...Array(24)].map((_, i) => (
-              <motion.div
-                key={`circle-${i}`}
-                className="absolute rounded-full border border-orange-500/60"
-                style={{
-                  width: `${Math.random() * 100 + 50}px`,
-                  height: `${Math.random() * 100 + 50}px`,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.1, 0.3, 0.1],
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  duration: Math.random() * 10 + 15,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: "reverse",
-                }}
-              />
-            ))}
           </div>
         </div>
 
@@ -436,7 +336,7 @@ export default function DesignsPage() {
 
           {/* Categories Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {designCategories.map((category, index) => (
+            {services.map((category, index) => (
               <motion.div
                 key={category.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -448,33 +348,25 @@ export default function DesignsPage() {
                 <div className="relative h-64 overflow-hidden">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0">
-                    <img
-                      src={'/images/covers/designs.jpg'}
+                    <Image
+                      fill
+                      src={category.image}
                       alt={category.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-80" />
                   </div>
 
                   {/* Content */}
-                  <div className="absolute inset-0 p-4 flex flex-col justify-between">
-                    <div
-                      className={`bg-gradient-to-r bg-orange-500 w-12 h-12 rounded-full flex items-center justify-center mb-4 transform group-hover:scale-105 transition-transform duration-300`}
-                    >
-                      {category.icon}
-                    </div>
+                  <div className="absolute inset-0 p-4 flex flex-col justify-end">
 
                     <div>
+                      <Link href={`/designs/${category.id}`}>
                       <h3 className="text-xl font-bold mb-2 group-hover:text-orange-500 transition-colors duration-300">
                         {category.title}
                       </h3>
-                      <p className="text-gray-300 text-sm mb-4 line-clamp-3">{category.description}</p>
-                      <Link href={`#portfolio`} onClick={() => handleCategoryChange(category.id)}>
-                        <div className="inline-flex items-center text-orange-500 hover:text-orange-400 transition-colors gap-1 group-hover:gap-2 duration-300">
-                          <span>عرض الأعمال</span>
-                          <ChevronRight size={16} />
-                        </div>
                       </Link>
+                      <p className="text-gray-300 text-sm line-clamp-3">{category.description}</p>
                     </div>
                   </div>
                 </div>
@@ -512,59 +404,45 @@ export default function DesignsPage() {
           {isLoading ? (
             <CardLoader count={4} />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
               {designProjects.map((project, index) => (
-                <motion.div
-                  key={project.id}
+                <Link key={project.id} href={`/designs/${project.category}`}>
+                  <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="relative group"
+                  className="relative group cursor-pointer"
                   onMouseEnter={() => setHoveredProject(project.id)}
                   onMouseLeave={() => setHoveredProject(null)}
                 >
                   <div className="relative overflow-hidden rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 ">
-                    {/* Featured Badge */}
-                    {project.featured && (
-                      <div className="absolute top-4 left-4 z-20">
-                        <div className="bg-orange-500 text-black text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                          <Zap size={12} />
-                          <span>مميز</span>
-                        </div>
-                      </div>
-                    )}
 
                     {/* Image */}
                     <div className="relative h-64 overflow-hidden">
                       <img
                         src={'/images/covers/designs.jpg'}
                         alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-700"
                       />
-
+                      <div className="absolute inset-0 bg-black/20 bg-opacity-50 transition-opacity duration-700"></div>
                       
+                      <div className="absolute inset-0 flex items-end justify-start p-4">
+                        <div className="text-right">
+                          <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+                          <p className="text-gray-400 text-sm line-clamp-2">{project.description}</p>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Content */}
-                    <div className="p-4 text-right">
-                      <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                      <p className="text-gray-400 text-sm mb-4 line-clamp-2">{project.description}</p>
-                    </div>
                   </div>
 
                 </motion.div>
+                </Link>
               ))}
             </div>
           )}
 
-          {/* Load More Button */}
-          <div className="mt-12 text-center">
-            <button className="bg-transparent border-2 border-orange-500 text-orange-500 px-8 py-2 rounded-full hover:bg-orange-500 hover:text-black transition duration-300 cursor-pointer font-bold flex items-center gap-2 mx-auto">
-              <span>عرض المزيد</span>
-              <ArrowRight size={18} />
-            </button>
-          </div>
         </div>
       </section>
 
@@ -573,10 +451,9 @@ export default function DesignsPage() {
 
       {/* Call to Action */}
       <section className="py-20 bg-black/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto bg-white/5 backdrop-blur-md rounded-2xl p-10 border border-orange-500/20">
+          <div className="max-w-4xl mx-auto bg-white/5 backdrop-blur-md rounded-2xl p-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -594,16 +471,9 @@ export default function DesignsPage() {
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/contact-us">
-                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/20 cursor-pointer">
+                <Link href="/contact">
+                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 font-bold flex items-center gap-2 shadow shadow hover:shadow-orange-500/20 cursor-pointer">
                     <span>احصل على عرض سعر</span>
-                    <ArrowRight size={18} />
-                  </button>
-                </Link>
-                <Link href="/portfolio">
-                  <button className="bg-transparent border-2 border-orange-500 text-orange-500 px-8 py-2 rounded-full hover:bg-orange-500 hover:text-black transition duration-300 font-bold flex items-center gap-2 cursor-pointer">
-                    <span>استعرض المزيد من الأعمال</span>
-                    <ExternalLink size={18} />
                   </button>
                 </Link>
               </div>

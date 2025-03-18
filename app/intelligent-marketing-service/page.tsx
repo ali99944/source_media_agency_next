@@ -369,7 +369,7 @@ export default function IntelligentMarketing() {
           </motion.div>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative">
             {services.map((service, index) => (
               <motion.div
                 key={service.id}
@@ -381,7 +381,7 @@ export default function IntelligentMarketing() {
               >
                 {/* Gradient Border */}
 
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl border border-white/10 group-hover:border-white/30 transition-all duration-300 relative z-10">
+                <div className="bg-white/5 h-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl border border-white/10 transition-all duration-300 relative z-10">
                   {/* Service Header */}
                   <div className={`bg-gradient-to-r p-6 flex items-center justify-between`}>
                     <h3 className="text-xl font-bold text-white">{service.title}</h3>

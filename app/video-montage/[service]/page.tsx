@@ -4,10 +4,12 @@ import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 
-import { CheckCircle, ChevronDown, ChevronUp, Film, Video, Camera, Edit, Play, Tv, Scissors } from 'lucide-react'
+import { CheckCircle, Film, Video, Camera, Edit, Play, Tv, Scissors } from 'lucide-react'
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Navbar from "@/src/components/shared/navbar"
+import FaqItem from "@/components/custom/faq-item"
+import Image from "next/image"
 
 // Service type definition
 type VideoService = {
@@ -17,24 +19,11 @@ type VideoService = {
   longDescription: string
   icon: React.ReactNode
   benefits: string[]
-  process: {
-    title: string
-    description: string
-  }[]
-  equipment: {
-    title: string
-    items: string[]
-  }[]
   faqs: {
     question: string
     answer: string
   }[]
-  pricing: {
-    title: string
-    price: string
-    features: string[]
-    recommended?: boolean
-  }[]
+
   portfolio: {
     title: string
     category: string
@@ -47,13 +36,10 @@ export default function ServiceDetails() {
   const params = useParams()
   const router = useRouter()
   const [service, setService] = useState<VideoService | null>(null)
-  const [activeAccordion, setActiveAccordion] = useState<number | null>(null)
   const [, setActiveVideo] = useState<string | null>(null)
 
   // Toggle accordion
-  const toggleAccordion = (index: number) => {
-    setActiveAccordion(activeAccordion === index ? null : index)
-  }
+  
 
   // Open video modal
   const openVideo = (videoUrl: string) => {
@@ -78,70 +64,6 @@ export default function ServiceDetails() {
         "تحسين معدلات التحويل وزيادة المبيعات",
         "تمييز علامتك التجارية عن المنافسين"
       ],
-      process: [
-        {
-          title: "الاجتماع الأولي",
-          description: "نجتمع معك لفهم أهدافك واحتياجاتك وتحديد نوع الفيديو المناسب لشركتك"
-        },
-        {
-          title: "كتابة السيناريو",
-          description: "نقوم بكتابة سيناريو متكامل يعكس رسالة شركتك ويستهدف جمهورك بفعالية"
-        },
-        {
-          title: "التخطيط والإعداد",
-          description: "نخطط لجلسة التصوير ونحدد المواقع والمعدات والفريق اللازم للتنفيذ"
-        },
-        {
-          title: "التصوير",
-          description: "نقوم بتصوير المشاهد باستخدام معدات احترافية وفريق متخصص"
-        },
-        {
-          title: "المونتاج",
-          description: "نجمع اللقطات ونحررها ونضيف المؤثرات البصرية والصوتية والرسومات"
-        },
-        {
-          title: "المراجعة والتسليم",
-          description: "نراجع الفيديو معك ونجري التعديلات اللازمة قبل تسليم النسخة النهائية"
-        }
-      ],
-      equipment: [
-        {
-          title: "كاميرات",
-          items: [
-            "Sony A7S III",
-            "Canon C300 Mark III",
-            "Blackmagic URSA Mini Pro",
-            "RED Komodo 6K"
-          ]
-        },
-        {
-          title: "إضاءة",
-          items: [
-            "Aputure 600d Pro",
-            "Godox SL-60W",
-            "ARRI SkyPanel S60-C",
-            "Nanlite Forza 500"
-          ]
-        },
-        {
-          title: "صوت",
-          items: [
-            "Rode NTG5",
-            "Sennheiser MKH 416",
-            "Zoom F6 Field Recorder",
-            "Wireless Lavalier Systems"
-          ]
-        },
-        {
-          title: "معدات إضافية",
-          items: [
-            "DJI Ronin 2 Gimbal",
-            "Slider Systems",
-            "Tripods and Monopods",
-            "Teleprompters"
-          ]
-        }
-      ],
       faqs: [
         {
           question: "كم من الوقت يستغرق إنتاج فيديو شركة؟",
@@ -158,53 +80,6 @@ export default function ServiceDetails() {
         {
           question: "هل يمكنني إجراء تعديلات على الفيديو بعد الانتهاء منه؟",
           answer: "نعم، نقدم جولتين من التعديلات مجانًا ضمن السعر الأساسي. نحن نعمل بشكل وثيق معك خلال مرحلة المونتاج لضمان أن الفيديو النهائي يلبي توقعاتك تمامًا. التعديلات الإضافية بعد الجولتين الأوليتين قد تكون بتكلفة إضافية."
-        }
-      ],
-      pricing: [
-        {
-          title: "الباقة الأساسية",
-          price: "5,000 ريال",
-          features: [
-            "فيديو بطول 1-2 دقيقة",
-            "يوم تصوير واحد",
-            "كتابة سيناريو أساسي",
-            "مونتاج احترافي",
-            "تصحيح الألوان الأساسي",
-            "موسيقى ترخيص مجاني",
-            "جولتان من التعديلات"
-          ]
-        },
-        {
-          title: "الباقة المتقدمة",
-          price: "10,000 ريال",
-          recommended: true,
-          features: [
-            "فيديو بطول 2-3 دقائق",
-            "يومان تصوير",
-            "كتابة سيناريو متقدم",
-            "مونتاج احترافي متقدم",
-            "تصحيح ألوان متقدم",
-            "موسيقى مرخصة",
-            "رسومات متحركة بسيطة",
-            "تعليق صوتي احترافي",
-            "ثلاث جولات من التعديلات"
-          ]
-        },
-        {
-          title: "الباقة الاحترافية",
-          price: "20,000 ريال",
-          features: [
-            "فيديو بطول 3-5 دقائق",
-            "ثلاثة أيام تصوير",
-            "كتابة سيناريو احترافي",
-            "مونتاج احترافي متميز",
-            "تصحيح ألوان سينمائي",
-            "موسيقى مخصصة",
-            "رسومات متحركة متقدمة",
-            "تعليق صوتي احترافي",
-            "تصوير جوي بالدرون",
-            "تعديلات غير محدودة"
-          ]
         }
       ],
       portfolio: [
@@ -242,70 +117,6 @@ export default function ServiceDetails() {
         "تمييز العلامة التجارية بأسلوب إبداعي",
         "سهولة المشاركة على منصات التواصل الاجتماعي"
       ],
-      process: [
-        {
-          title: "فهم المشروع",
-          description: "نجتمع معك لفهم أهدافك والرسالة التي تريد إيصالها والجمهور المستهدف"
-        },
-        {
-          title: "كتابة النص",
-          description: "نقوم بكتابة نص واضح وموجز يشرح الفكرة بطريقة بسيطة وجذابة"
-        },
-        {
-          title: "إنشاء السيناريو المصور",
-          description: "نصمم سيناريو مصور يوضح تسلسل المشاهد والرسومات والحركات"
-        },
-        {
-          title: "التصميم",
-          description: "نصمم الشخصيات والعناصر والخلفيات بما يتناسب مع هوية علامتك التجارية"
-        },
-        {
-          title: "التحريك",
-          description: "نقوم بتحريك العناصر وإضافة التأثيرات البصرية لإنشاء فيديو ديناميكي"
-        },
-        {
-          title: "الصوت والموسيقى",
-          description: "نضيف التعليق الصوتي والموسيقى والمؤثرات الصوتية لتعزيز تأثير الفيديو"
-        }
-      ],
-      equipment: [
-        {
-          title: "برامج التصميم",
-          items: [
-            "Adobe After Effects",
-            "Adobe Illustrator",
-            "Adobe Photoshop",
-            "Cinema 4D"
-          ]
-        },
-        {
-          title: "برامج التحريك",
-          items: [
-            "Adobe Animate",
-            "Toon Boom Harmony",
-            "Blender",
-            "Autodesk Maya"
-          ]
-        },
-        {
-          title: "برامج الصوت",
-          items: [
-            "Adobe Audition",
-            "Logic Pro X",
-            "Pro Tools",
-            "Audacity"
-          ]
-        },
-        {
-          title: "أجهزة",
-          items: [
-            "محطات عمل عالية الأداء",
-            "شاشات عالية الدقة",
-            "أجهزة تسجيل صوت احترافية",
-            "أجهزة تخزين عالية السرعة"
-          ]
-        }
-      ],
       faqs: [
         {
           question: "كم من الوقت يستغرق إنتاج فيديو موشن جرافيك؟",
@@ -324,48 +135,7 @@ export default function ServiceDetails() {
           answer: "نعم، يمكنك الحصول على ملفات المصدر كجزء من الباقة الاحترافية. في الباقات الأخرى، يمكن إضافة هذه الخدمة برسوم إضافية. ملفات المصدر تتيح لك إجراء تعديلات مستقبلية على الفيديو إذا كان لديك الخبرة والبرامج اللازمة."
         }
       ],
-      pricing: [
-        {
-          title: "الباقة الأساسية",
-          price: "3,000 ريال",
-          features: [
-            "فيديو بطول 30-60 ثانية",
-            "أسلوب تصميم 2D بسيط",
-            "كتابة نص أساسي",
-            "تعليق صوتي",
-            "موسيقى ترخيص مجاني",
-            "جولتان من التعديلات"
-          ]
-        },
-        {
-          title: "الباقة المتقدمة",
-          price: "6,000 ريال",
-          recommended: true,
-          features: [
-            "فيديو بطول 60-90 ثانية",
-            "أسلوب تصميم 2D متقدم",
-            "كتابة نص احترافي",
-            "تعليق صوتي احترافي",
-            "موسيقى مرخصة",
-            "تأثيرات بصرية متقدمة",
-            "ثلاث جولات من التعديلات"
-          ]
-        },
-        {
-          title: "الباقة الاحترافية",
-          price: "12,000 ريال",
-          features: [
-            "فيديو بطول 90-180 ثانية",
-            "أسلوب تصميم 2D/3D مخصص",
-            "كتابة نص احترافي",
-            "تعليق صوتي باللغتين",
-            "موسيقى مخصصة",
-            "تأثيرات بصرية متميزة",
-            "تعديلات غير محدودة",
-            "ملفات المصدر"
-          ]
-        }
-      ],
+
       portfolio: [
         {
           title: "شرح خدمة مالية جديدة",
@@ -401,70 +171,6 @@ export default function ServiceDetails() {
         "تحسين إيقاع الفيديو للحفاظ على اهتمام المشاهد",
         "توفير الوقت والجهد مقارنة بالمونتاج الذاتي"
       ],
-      process: [
-        {
-          title: "استلام المواد",
-          description: "نستلم اللقطات الخام والمواد الأخرى ونقوم بتنظيمها وتصنيفها"
-        },
-        {
-          title: "المونتاج المبدئي",
-          description: "نقوم بتجميع اللقطات وترتيبها حسب السيناريو أو القصة المطلوبة"
-        },
-        {
-          title: "تصحيح الألوان",
-          description: "نصحح ألوان الفيديو ونضبط التباين والسطوع لإعطاء مظهر متناسق واحترافي"
-        },
-        {
-          title: "معالجة الصوت",
-          description: "نعالج الصوت ونضيف الموسيقى والمؤثرات الصوتية ونضبط مستويات الصوت"
-        },
-        {
-          title: "إضافة العناصر",
-          description: "نضيف النصوص والعناوين والرسومات والتأثيرات البصرية حسب الحاجة"
-        },
-        {
-          title: "المراجعة والتسليم",
-          description: "نراجع الفيديو ونجري التعديلات اللازمة قبل تسليم النسخة النهائية"
-        }
-      ],
-      equipment: [
-        {
-          title: "برامج المونتاج",
-          items: [
-            "Adobe Premiere Pro",
-            "Final Cut Pro X",
-            "DaVinci Resolve",
-            "Avid Media Composer"
-          ]
-        },
-        {
-          title: "برامج التأثيرات",
-          items: [
-            "Adobe After Effects",
-            "Nuke",
-            "Fusion",
-            "Mocha Pro"
-          ]
-        },
-        {
-          title: "برامج تصحيح الألوان",
-          items: [
-            "DaVinci Resolve",
-            "FilmConvert",
-            "Magic Bullet Looks",
-            "Lumetri Color"
-          ]
-        },
-        {
-          title: "برامج الصوت",
-          items: [
-            "Adobe Audition",
-            "Pro Tools",
-            "iZotope RX",
-            "Waves Plugins"
-          ]
-        }
-      ],
       faqs: [
         {
           question: "كم من الوقت يستغرق مونتاج فيديو؟",
@@ -481,48 +187,6 @@ export default function ServiceDetails() {
         {
           question: "هل يمكنكم إضافة تأثيرات خاصة معقدة؟",
           answer: "نعم، يمكننا إضافة مجموعة واسعة من التأثيرات البصرية والرسومات المتحركة حسب احتياجات المشروع. التأثيرات البسيطة مشمولة في جميع الباقات، بينما التأثيرات المعقدة أو ثلاثية الأبعاد قد تتطلب تكلفة إضافية أو تكون متاحة في الباقات المتقدمة."
-        }
-      ],
-      pricing: [
-        {
-          title: "الباقة الأساسية",
-          price: "1,500 ريال",
-          features: [
-            "مونتاج فيديو حتى 5 دقائق",
-            "تصحيح ألوان أساسي",
-            "معالجة صوت أساسية",
-            "إضافة نصوص وعناوين بسيطة",
-            "موسيقى ترخيص مجاني",
-            "جولتان من التعديلات"
-          ]
-        },
-        {
-          title: "الباقة المتقدمة",
-          price: "3,000 ريال",
-          recommended: true,
-          features: [
-            "مونتاج فيديو حتى 10 دقائق",
-            "تصحيح ألوان متقدم",
-            "معالجة صوت احترافية",
-            "إضافة رسومات وتأثيرات بصرية",
-            "موسيقى مرخصة",
-            "مقدمة وخاتمة متحركة",
-            "ثلاث جولات من التعديلات"
-          ]
-        },
-        {
-          title: "الباقة الاحترافية",
-          price: "6,000 ريال",
-          features: [
-            "مونتاج فيديو حتى 20 دقيقة",
-            "تصحيح ألوان سينمائي",
-            "معالجة صوت متقدمة",
-            "تأثيرات بصرية متقدمة",
-            "رسومات متحركة مخصصة",
-            "موسيقى مخصصة",
-            "تعديلات غير محدودة",
-            "تسليم بصيغ متعددة"
-          ]
         }
       ],
       portfolio: [
@@ -676,16 +340,16 @@ export default function ServiceDetails() {
 
       {/* Benefits Section */}
       <section className="py-16 bg-gradient-to-b from-black to-gray-900 relative">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto max-w-7xl px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
             <span className="text-orange-500">فوائد</span> {service.title}
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {service.benefits.map((benefit, index) => (
               <motion.div
                 key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-orange-500/30 transition-all duration-300"
+                className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 transition-all duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -703,81 +367,7 @@ export default function ServiceDetails() {
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-16 bg-black relative">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            <span className="text-orange-500">عملية</span> العمل
-          </h2>
-          
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500/20 via-orange-500 to-orange-500/20 z-0" />
-            
-            <div className="space-y-24">
-              {service.process.map((step, index) => (
-                <motion.div
-                  key={index}
-                  className="relative flex items-center"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {/* Center Node */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
-                    <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-black rounded-full w-12 h-12 flex items-center justify-center shadow-lg shadow-orange-500/20">
-                      <span className="font-bold">{index + 1}</span>
-                    </div>
-                  </div>
-                  
-                  {/* Content - Alternating Sides */}
-                  <div className={`w-full flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                    <div className={`w-5/12 ${index % 2 === 0 ? 'text-right' : 'text-left'} ${index % 2 === 0 ? 'mr-auto' : 'ml-auto'}`}>
-                      <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-orange-500/30 transition-all duration-300" dir="rtl">
-                        <h3 className="text-xl font-bold text-orange-500 mb-2">{step.title}</h3>
-                        <p className="text-gray-300">{step.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Equipment Section */}
-      <section className="py-16 bg-gradient-to-b from-gray-900 to-black relative">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            <span className="text-orange-500">المعدات</span> والتقنيات
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {service.equipment.map((category, index) => (
-              <motion.div
-                key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-orange-500/30 transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-xl font-bold text-orange-500 mb-4 text-right" dir="rtl">{category.title}</h3>
-                <ul className="space-y-2 text-right" dir="rtl">
-                  {category.items.map((item, idx) => (
-                    <li key={idx} className="flex items-center justify-end gap-2">
-                      <span className="text-gray-300">{item}</span>
-                      <CheckCircle className="h-4 w-4 text-orange-500 flex-shrink-0" />
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Portfolio Section */}
       <section className="py-16 bg-black relative">
@@ -798,7 +388,7 @@ export default function ServiceDetails() {
                 onClick={() => openVideo(item.videoUrl || "")}
               >
                 <div className="relative overflow-hidden rounded-lg">
-                  <img 
+                  <Image 
                     src={item.thumbnail || "/placeholder.svg"} 
                     alt={item.title} 
                     className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
@@ -830,56 +420,6 @@ export default function ServiceDetails() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-16 bg-gradient-to-b from-black to-gray-900 relative">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            <span className="text-orange-500">باقات</span> الأسعار
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {service.pricing.map((plan, index) => (
-              <motion.div
-                key={index}
-                className={`bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border ${plan.recommended ? 'border-orange-500' : 'border-white/10'} transition-all duration-300 relative h-full flex flex-col`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                {plan.recommended && (
-                  <div className="bg-orange-500 text-black text-sm font-bold py-1 px-4 absolute top-0 right-0 left-0 text-center">
-                    الباقة الموصى بها
-                  </div>
-                )}
-                
-                <div className={`p-6 ${plan.recommended ? 'pt-10' : ''}`}>
-                  <h3 className="text-2xl font-bold text-center mb-2">{plan.title}</h3>
-                  <p className="text-orange-500 text-2xl font-bold text-center mb-6">{plan.price}</p>
-                  
-                  <ul className="space-y-3 mb-8 text-right" dir="rtl">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center justify-end gap-2">
-                        <span className="text-gray-300">{feature}</span>
-                        <CheckCircle className="h-5 w-5 text-orange-500 flex-shrink-0" />
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="mt-auto">
-                    <a href="#contact-form">
-                      <button className={`w-full py-3 px-6 rounded-full font-bold ${plan.recommended ? 'bg-orange-500 text-black hover:bg-orange-600' : 'bg-white/10 text-white hover:bg-white/20'} transition duration-300`}>
-                        اطلب الآن
-                      </button>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <section className="py-16 bg-black relative">
@@ -890,33 +430,7 @@ export default function ServiceDetails() {
           
           <div className="max-w-3xl mx-auto space-y-4" dir="rtl">
             {service.faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <button
-                  className="w-full px-6 py-4 text-right flex items-center justify-between focus:outline-none"
-                  onClick={() => toggleAccordion(index)}
-                >
-                  <span className="text-lg font-medium">{faq.question}</span>
-                  {activeAccordion === index ? (
-                    <ChevronUp className="text-orange-500" size={20} />
-                  ) : (
-                    <ChevronDown className="text-orange-500" size={20} />
-                  )}
-                </button>
-                <div
-                  className={`px-6 overflow-hidden transition-all duration-300 ${
-                    activeAccordion === index ? "max-h-96 pb-4" : "max-h-0"
-                  }`}
-                >
-                  <p className="text-gray-300">{faq.answer}</p>
-                </div>
-              </motion.div>
+              <FaqItem key={index} faq={faq} />
             ))}
           </div>
         </div>

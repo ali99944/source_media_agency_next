@@ -7,20 +7,17 @@ import { motion } from "framer-motion"
 import {
   Film,
   Camera,
-  Edit,
   Play,
   ArrowRight,
-  CheckCircle,
-  Zap,
   Tv,
   Scissors,
-  Volume2,
   Monitor,
   Instagram,
 } from "lucide-react"
 import { FaFilm, FaPlay } from "react-icons/fa"
 import Footer from "@/src/components/shared/footer"
 import Navbar from "@/src/components/shared/navbar"
+import Image from "next/image"
 
 // Service type definition
 type VideoService = {
@@ -197,42 +194,6 @@ export default function VideoMontage() {
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
     }
   ]
-
-  // Production process steps
-  const productionSteps = [
-    {
-      title: "التخطيط والإعداد",
-      description: "نحدد أهدافك ونطور فكرة الفيديو وكتابة السيناريو وإعداد خطة التصوير",
-      icon: <Edit className="w-6 h-6" />
-    },
-    {
-      title: "التصوير",
-      description: "نقوم بتصوير المشاهد باستخدام معدات احترافية وفريق متخصص",
-      icon: <Camera className="w-6 h-6" />
-    },
-    {
-      title: "المونتاج",
-      description: "نقوم بتجميع اللقطات وتحريرها وإضافة المؤثرات البصرية والصوتية",
-      icon: <Scissors className="w-6 h-6" />
-    },
-    {
-      title: "الصوت والموسيقى",
-      description: "نضيف التعليق الصوتي والموسيقى والمؤثرات الصوتية المناسبة",
-      icon: <Volume2 className="w-6 h-6" />
-    },
-    {
-      title: "المراجعة والتعديل",
-      description: "نراجع الفيديو معك ونجري التعديلات اللازمة حتى الوصول للنتيجة المطلوبة",
-      icon: <CheckCircle className="w-6 h-6" />
-    },
-    {
-      title: "التسليم النهائي",
-      description: "نسلم الفيديو بالصيغة المطلوبة وبجودة عالية جاهزًا للنشر",
-      icon: <Zap className="w-6 h-6" />
-    }
-  ]
-
-    
   
 
   return (
@@ -416,7 +377,7 @@ export default function VideoMontage() {
           </motion.div>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative">
             {services.map((service, index) => (
               <motion.div
                 key={service.id}
@@ -427,20 +388,17 @@ export default function VideoMontage() {
                 viewport={{ once: true }}
               >
                 {/* Service Card */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl border border-white/10 transition-all duration-300 relative z-10 h-full flex flex-col">
+                <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden shadow border border-white/10 transition-all duration-300 relative z-10 h-full flex flex-col">
                   {/* Service Image */}
                   <div className="relative h-60 overflow-hidden">
-                    <img 
+                    <Image
+                      fill 
                       src={service.image || "/placeholder.svg"} 
                       alt={service.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                      className="w-full h-full object-cover transition-transform duration-700" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
                     
-                    {/* Icon Overlay */}
-                    <div className="absolute top-4 right-4 bg-orange-500 p-3 rounded-full">
-                      {service.icon}
-                    </div>
                     
                     <div className="absolute bottom-4 right-4">
                       <h3 className="text-xl font-bold text-white">{service.title}</h3>
@@ -448,8 +406,8 @@ export default function VideoMontage() {
                   </div>
                   
                   {/* Content */}
-                  <div className="p-6 flex-grow flex flex-col">
-                    <p className="text-gray-300 mb-4 text-right" dir="rtl">{service.description}</p>
+                  <div className="p-4 flex-grow flex flex-col">
+                    <p className="text-gray-300text-right" dir="rtl">{service.description}</p>
                     
                     
     
@@ -464,64 +422,6 @@ export default function VideoMontage() {
         </div>
       </section>
 
-      {/* Production Process Section */}
-      <section className="py-20 bg-black/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              عملية <span className="text-orange-500">الإنتاج</span>
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full mb-6 mx-auto" />
-            <p className="text-xl max-w-3xl mx-auto text-gray-300" dir="rtl">
-              نتبع منهجية عمل احترافية ومنظمة لضمان تقديم محتوى فيديو عالي الجودة يلبي توقعاتك
-            </p>
-          </motion.div>
-          
-          {/* Process Timeline */}
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500/20 via-orange-500 to-orange-500/20 z-0" />
-            
-            <div className="space-y-24">
-              {productionSteps.map((step, index) => (
-                <motion.div
-                  key={index}
-                  className="relative flex items-center"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {/* Center Node */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
-                    <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-black rounded-full w-16 h-16 flex items-center justify-center shadow-lg shadow-orange-500/20">
-                      {step.icon}
-                    </div>
-                  </div>
-                  
-                  {/* Content - Alternating Sides */}
-                  <div className={`w-full flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                    <div className={`w-5/12 ${index % 2 === 0 ? 'text-right' : 'text-left'} ${index % 2 === 0 ? 'mr-auto' : 'ml-auto'}`}>
-                      <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-orange-500/30 transition-all duration-300" dir="rtl">
-                        <h3 className="text-2xl font-bold text-orange-500 mb-2">{step.title}</h3>
-                        <p className="text-gray-300">{step.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Portfolio Section */}
       <section id="portfolio" className="py-20 relative overflow-hidden">
@@ -543,7 +443,7 @@ export default function VideoMontage() {
           </motion.div>
           
           {/* Portfolio Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {portfolioItems.map((item, index) => (
               <motion.div
                 key={item.id}
@@ -554,20 +454,15 @@ export default function VideoMontage() {
                 viewport={{ once: true }}
                 onClick={() => openVideo(item)}
               >
-                <div className="relative overflow-hidden rounded-lg">
-                  <img 
+                <div className="relative overflow-hidden rounded-lg h-64 w-full">
+                  <Image
+                    fill
                     src={item.thumbnail || "/placeholder.svg"} 
                     alt={item.title} 
-                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" 
+                    className="w-full h-64  object-cover" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70" />
                   
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-orange-500 rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300">
-                      <Play className="h-8 w-8 text-black" />
-                    </div>
-                  </div>
                   
                   {/* Category Badge */}
                   <div className="absolute top-4 right-4">
@@ -577,7 +472,7 @@ export default function VideoMontage() {
                   </div>
                   
                   {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
                     <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
                     <p className="text-gray-300 text-sm line-clamp-2">{item.description}</p>
                   </div>

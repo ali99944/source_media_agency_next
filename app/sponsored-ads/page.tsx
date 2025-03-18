@@ -8,7 +8,6 @@ import Link from "next/link"
 import {
   ArrowRight,
   BarChart2,
-  CheckCircle,
   DollarSign,
   ExternalLink,
   Eye,
@@ -21,13 +20,13 @@ import {
   Target,
   Zap,
 } from "lucide-react"
-import { FaAd, FaFacebook, FaInstagram, FaStar, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa"
-import { Button } from "@/components/ui/button"
+import { FaAd, FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Footer from "@/src/components/shared/footer"
 import Navbar from "@/src/components/shared/navbar"
+import Image from "next/image"
+import TestimonialCard from "@/components/custom/testimonial-card"
 
 // Ad Platform type
 type AdPlatform = {
@@ -59,16 +58,6 @@ type AdCampaign = {
   }
   tags: string[]
   featured?: boolean
-}
-
-// Ad Package type
-type AdPackage = {
-  id: string
-  title: string
-  price: string
-  description: string
-  features: string[]
-  popular?: boolean
 }
 
 // Ad platforms data
@@ -244,55 +233,6 @@ const adCampaigns: AdCampaign[] = [
   },
 ]
 
-// Ad packages data
-const adPackages: AdPackage[] = [
-  {
-    id: "basic",
-    title: "الباقة الأساسية",
-    price: "1,500 ريال",
-    description: "مناسبة للشركات الصغيرة والمشاريع الناشئة",
-    features: [
-      "إدارة حملة إعلانية على منصة واحدة",
-      "تصميم 5 إعلانات",
-      "استهداف جمهور محدد",
-      "تقرير أداء أسبوعي",
-      "دعم فني عبر البريد الإلكتروني",
-    ],
-  },
-  {
-    id: "pro",
-    title: "الباقة الاحترافية",
-    price: "3,500 ريال",
-    description: "مناسبة للشركات المتوسطة والعلامات التجارية النامية",
-    features: [
-      "إدارة حملات إعلانية على 3 منصات",
-      "تصميم 10 إعلانات",
-      "استهداف متقدم للجمهور",
-      "تقرير أداء يومي",
-      "دعم فني عبر الواتساب",
-      "تحسين مستمر للحملات",
-      "إعادة استهداف العملاء المحتملين",
-    ],
-    popular: true,
-  },
-  {
-    id: "premium",
-    title: "الباقة المتميزة",
-    price: "7,000 ريال",
-    description: "مناسبة للشركات الكبيرة والعلامات التجارية الراسخة",
-    features: [
-      "إدارة حملات إعلانية على جميع المنصات",
-      "تصميم إعلانات غير محدود",
-      "استهداف متقدم مع تحليل البيانات",
-      "تقارير أداء مخصصة",
-      "مدير حساب مخصص",
-      "استراتيجية إعلانية متكاملة",
-      "تحليل المنافسين",
-      "اختبار A/B للإعلانات",
-      "تحسين معدل التحويل",
-    ],
-  },
-]
 
 // Testimonials data
 const testimonials = [
@@ -327,7 +267,6 @@ const testimonials = [
 
 export default function SponsoredAdsPage() {
   const [activeTestimonial, setActiveTestimonial] = useState<number>(0)
-  const [activePlatform, setActivePlatform] = useState<string>("instagram")
   const heroRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -514,7 +453,7 @@ export default function SponsoredAdsPage() {
 
           {/* Animated Metrics */}
           <motion.div
-            className="flex flex-wrap justify-center gap-8 mb-10"
+            className="flex flex-wrap justify-center gap-12 mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
@@ -522,8 +461,6 @@ export default function SponsoredAdsPage() {
             <div className="text-center">
               <motion.div
                 className="text-3xl md:text-4xl font-bold text-orange-500 flex items-center gap-2 justify-center"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
               >
                 <Target size={24} />
                 <span>+250%</span>
@@ -534,8 +471,6 @@ export default function SponsoredAdsPage() {
             <div className="text-center">
               <motion.div
                 className="text-3xl md:text-4xl font-bold text-orange-500 flex items-center gap-2 justify-center"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", delay: 0.3 }}
               >
                 <Eye size={24} />
                 <span>+500K</span>
@@ -546,8 +481,6 @@ export default function SponsoredAdsPage() {
             <div className="text-center">
               <motion.div
                 className="text-3xl md:text-4xl font-bold text-orange-500 flex items-center gap-2 justify-center"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", delay: 0.6 }}
               >
                 <DollarSign size={24} />
                 <span>+320%</span>
@@ -580,192 +513,6 @@ export default function SponsoredAdsPage() {
         </motion.div>
       </div>
 
-      {/* Ad Platforms Section */}
-      <section id="platforms" className="py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              منصات <span className="text-orange-500">الإعلان</span>
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full mb-6 mx-auto" />
-            <p className="text-xl max-w-3xl mx-auto text-gray-300" dir="rtl">
-              نقدم خدمات إعلانية على جميع منصات التواصل الاجتماعي ومحركات البحث لضمان وصول رسالتك إلى جمهورك المستهدف
-            </p>
-          </motion.div>
-
-          {/* Platforms Tabs */}
-          <Tabs defaultValue="instagram" value={activePlatform} onValueChange={setActivePlatform} className="mb-12">
-            <TabsList className="bg-white/5 p-1 rounded-full flex flex-wrap justify-center">
-              {adPlatforms.map((platform) => (
-                <TabsTrigger
-                  key={platform.id}
-                  value={platform.id}
-                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-black rounded-full px-6"
-                >
-                  <div className="flex items-center gap-2">
-                    {platform.icon}
-                    <span>{platform.name}</span>
-                  </div>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {adPlatforms.map((platform) => (
-              <TabsContent key={platform.id} value={platform.id} className="mt-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}
-                    className="text-right"
-                    dir="rtl"
-                  >
-                    <h3 className="text-3xl font-bold mb-4">{platform.name}</h3>
-                    <div className={`h-1 w-16 bg-gradient-to-r ${platform.color} rounded-full mb-6`} />
-                    <p className="text-lg text-white/80 mb-8">{platform.description}</p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                      <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                        <h4 className="text-orange-500 font-bold mb-2">الوصول</h4>
-                        <p className="text-2xl font-bold">{platform.metrics.reach}</p>
-                        <p className="text-sm text-white/60">مستخدم نشط</p>
-                      </div>
-
-                      <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                        <h4 className="text-orange-500 font-bold mb-2">التفاعل</h4>
-                        <p className="text-2xl font-bold">{platform.metrics.engagement}</p>
-                        <p className="text-sm text-white/60">معدل التفاعل</p>
-                      </div>
-
-                      <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                        <h4 className="text-orange-500 font-bold mb-2">التحويل</h4>
-                        <p className="text-2xl font-bold">{platform.metrics.conversion}</p>
-                        <p className="text-sm text-white/60">معدل التحويل</p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <Button className="bg-orange-500 hover:bg-orange-600 text-black">
-                        <span>احصل على عرض سعر</span>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black"
-                      >
-                        <span>المزيد من المعلومات</span>
-                      </Button>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="relative">
-                      <div
-                        className={`absolute -inset-4 bg-gradient-to-r ${platform.color} rounded-lg opacity-20 blur-lg animate-pulse`}
-                      ></div>
-                      <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 relative z-10">
-                        {/* Platform Preview */}
-                        <div className="p-4 border-b border-white/10 flex items-center gap-2">
-                          <div className={`bg-gradient-to-r ${platform.color} p-2 rounded-full`}>{platform.icon}</div>
-                          <h4 className="font-bold">{platform.name}</h4>
-                        </div>
-
-                        <div className="p-6">
-                          {/* Ad Preview */}
-                          <div className="bg-white/10 rounded-lg p-4 mb-4">
-                            <div className="flex items-center gap-3 mb-3">
-                              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                                {platform.icon}
-                              </div>
-                              <div>
-                                <div className="font-bold">اسم العلامة التجارية</div>
-                                <div className="text-xs text-white/60">إعلان ممول</div>
-                              </div>
-                            </div>
-                            <div className="h-80 bg-white/5 rounded-md mb-3 flex items-center justify-center relative overflow-hidden">
-                            <img 
-                            className="w-full h-full object-cover" src="https://img.freepik.com/free-psd/we-are-hiring-job-vacancy-social-media-banner-instagram-post-template_120329-5243.jpg?ga=GA1.1.259795667.1741285641&semt=ais_hybrid" alt="Placeholder" />
-                            </div>
-                            <div className="font-bold mb-1">عنوان الإعلان الجذاب</div>
-                            <div className="text-sm text-white/70 mb-3">
-                              وصف الإعلان الذي يحفز المستخدم على اتخاذ إجراء...
-                            </div>
-                            <Button className={`bg-gradient-to-r ${platform.color} text-white w-full`}>
-                              اتصل الآن
-                            </Button>
-                          </div>
-
-                          {/* Metrics */}
-                          <div className="grid grid-cols-3 gap-2 text-center">
-                            <div className="bg-white/5 rounded-lg p-2">
-                              <div className="text-xs text-white/60">النقرات</div>
-                              <div className="font-bold text-orange-500">1,240</div>
-                            </div>
-                            <div className="bg-white/5 rounded-lg p-2">
-                              <div className="text-xs text-white/60">الظهور</div>
-                              <div className="font-bold text-orange-500">45,600</div>
-                            </div>
-                            <div className="bg-white/5 rounded-lg p-2">
-                              <div className="text-xs text-white/60">التكلفة</div>
-                              <div className="font-bold text-orange-500">$0.35</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            {[
-              {
-                icon: <Target className="h-10 w-10 text-orange-500" />,
-                title: "استهداف دقيق",
-                description: "استهدف جمهورك بدقة عالية بناءً على العمر والجنس والموقع والاهتمامات والسلوك",
-              },
-              {
-                icon: <BarChart2 className="h-10 w-10 text-orange-500" />,
-                title: "تحليلات متقدمة",
-                description: "تقارير تحليلية مفصلة عن أداء حملاتك الإعلانية لمساعدتك في اتخاذ قرارات مدروسة",
-              },
-              {
-                icon: <Zap className="h-10 w-10 text-orange-500" />,
-                title: "أداء متميز",
-                description: "حملات إعلانية عالية الأداء تحقق معدلات تحويل مرتفعة وعائد استثمار ممتاز",
-              },
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-orange-500/30 transition-all duration-300"
-                dir="rtl"
-              >
-                <div className="bg-orange-500/10 p-4 rounded-full inline-block mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-white/70">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Campaigns Showcase */}
       <section id="campaigns" className="py-20 bg-black/50 relative overflow-hidden">
@@ -789,7 +536,7 @@ export default function SponsoredAdsPage() {
           </motion.div>
 
           {/* Campaigns Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {adCampaigns.map((campaign, index) => {
               // Find platform data
               const platform = adPlatforms.find((p) => p.id === campaign.platform)
@@ -803,10 +550,11 @@ export default function SponsoredAdsPage() {
                   viewport={{ once: true }}
                   className="relative group"
                 >
-                  <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 group-hover:border-orange-500/30 transition-all duration-300 h-full flex flex-col">
+                  <div className="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden border border-white/5 transition-all duration-300 h-full flex flex-col">
                     {/* Campaign Image */}
                     <div className="relative h-60 overflow-hidden">
-                      <img
+                      <Image
+                        fill
                         src={'https://img.freepik.com/premium-photo/influencer-marketing-job-concept_23-2150410537.jpg?ga=GA1.1.259795667.1741285641&semt=ais_hybrid'}
                         alt={campaign.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -843,7 +591,7 @@ export default function SponsoredAdsPage() {
                     </div>
 
                     {/* Campaign Details */}
-                    <div className="p-6 flex-grow flex flex-col" dir="rtl">
+                    <div className="p-4 flex-grow flex flex-col" dir="rtl">
                       <p className="text-white/70 mb-4">{campaign.description}</p>
 
                       {/* Metrics */}
@@ -892,105 +640,13 @@ export default function SponsoredAdsPage() {
                     </div>
                   </div>
 
-                  {/* Glow Effect */}
-                  <div
-                    className={`absolute -inset-0.5 bg-gradient-to-r ${platform?.color || "from-orange-500 to-orange-600"} rounded-lg blur opacity-0 group-hover:opacity-20 transition duration-300 ${
-                      campaign.featured ? "group-hover:opacity-30" : "group-hover:opacity-20"
-                    }`}
-                  ></div>
                 </motion.div>
               )
             })}
           </div>
-
-          {/* View More Button */}
-          <div className="mt-12 text-center">
-            <Button className="bg-transparent border-2 border-orange-500 text-orange-500 px-8 py-2 rounded-full hover:bg-orange-500 hover:text-black transition duration-300 cursor-pointer font-bold flex items-center gap-2 mx-auto h-auto">
-              <span>عرض المزيد من الحملات</span>
-              <ArrowRight size={18} />
-            </Button>
-          </div>
         </div>
       </section>
 
-      {/* Packages Section */}
-      <section className="py-20 bg-black/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              باقات <span className="text-orange-500">الإعلانات</span>
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full mb-6 mx-auto" />
-            <p className="text-xl max-w-3xl mx-auto text-gray-300" dir="rtl">
-              اختر الباقة المناسبة لاحتياجاتك وميزانيتك وابدأ في تحقيق أهدافك التسويقية
-            </p>
-          </motion.div>
-
-          {/* Packages Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {adPackages.map((pkg, index) => (
-              <motion.div
-                key={pkg.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className={`relative ${pkg.popular ? "z-10" : ""}`}
-              >
-                <div
-                  className={`bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden border ${
-                    pkg.popular ? "border-orange-500" : "border-white/10"
-                  } transition-all duration-300 h-full flex flex-col ${pkg.popular ? "scale-105" : ""}`}
-                >
-                  {/* Package Header */}
-                  <div className={`p-6 ${pkg.popular ? "bg-orange-500 text-black" : "bg-white/10"}`}>
-                    {pkg.popular && <Badge className="bg-black text-white absolute top-3 right-3">الأكثر شيوعاً</Badge>}
-                    <h3 className="text-2xl font-bold mb-2 text-center">{pkg.title}</h3>
-                    <div className="text-center">
-                      <span className="text-3xl font-bold">{pkg.price}</span>
-                      <span className="text-sm opacity-70"> / شهرياً</span>
-                    </div>
-                  </div>
-
-                  {/* Package Content */}
-                  <div className="p-6 flex-grow flex flex-col" dir="rtl">
-                    <p className="text-center text-white/70 mb-6">{pkg.description}</p>
-
-                    <ul className="space-y-4 mb-8">
-                      {pkg.features.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Button
-                      className={`mt-auto ${
-                        pkg.popular
-                          ? "bg-orange-500 hover:bg-orange-600 text-black"
-                          : "bg-white/10 hover:bg-white/20 text-white"
-                      }`}
-                    >
-                      <span>اختر هذه الباقة</span>
-                    </Button>
-                  </div>
-                </div>
-
-
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Testimonials Section */}
       <section className="py-20 relative overflow-hidden">
@@ -1018,54 +674,7 @@ export default function SponsoredAdsPage() {
                 {testimonials.map(
                   (testimonial, index) =>
                     activeTestimonial === index && (
-                      <motion.div
-                        key={testimonial.id}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.5 }}
-                        className="bg-white/5 backdrop-blur-sm rounded-xl p-8 shadow-xl border border-white/10 relative"
-                        dir="rtl"
-                      >
-                        <div className="absolute -top-6 right-8 text-orange-500 opacity-30">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="50"
-                            height="50"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                          >
-                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                          </svg>
-                        </div>
-
-                        <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                          <div className="md:w-1/4 flex flex-col items-center">
-                            <div className="relative">
-                              <div className="absolute -inset-1 bg-orange-500 rounded-full opacity-20 blur-sm"></div>
-                              <img
-                                src={testimonial.image || "/placeholder.svg"}
-                                alt={testimonial.name}
-                                className="w-24 h-24 rounded-full object-cover relative z-10 border-2 border-orange-500"
-                              />
-                            </div>
-                            <h3 className="text-xl font-bold mt-4">{testimonial.name}</h3>
-                            <p className="text-sm text-gray-400">{testimonial.position}</p>
-                            <p className="text-sm text-gray-400">{testimonial.company}</p>
-                            <div className="flex mt-2">
-                              {[...Array(testimonial.rating)].map((_, i) => (
-                                <div key={i} className="text-orange-500">
-                                  <FaStar size={14} />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className="md:w-3/4">
-                            <p className="text-xl text-gray-300 leading-relaxed">&quot;{testimonial.text}&quot;</p>
-                          </div>
-                        </div>
-                      </motion.div>
+                      <TestimonialCard key={testimonial.id} testimonial={testimonial} />
                     ),
                 )}
               </AnimatePresence>
@@ -1090,61 +699,9 @@ export default function SponsoredAdsPage() {
 
       {/* Call to Action */}
       <section className="py-20 relative overflow-hidden">
-        {/* Background Animation */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-orange-500/20" />
-
-          {/* Animated Particles */}
-          {[...Array(50)].map((_, i) => (
-            <motion.div
-              key={`particle-${i}`}
-              className="absolute h-1 w-1 rounded-full bg-orange-500"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.5 + 0.3,
-              }}
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.3, 0.8, 0.3],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-
-          {/* Ad Frames Animation */}
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={`cta-frame-${i}`}
-              className="absolute rounded-lg border-2 border-orange-500/30 backdrop-blur-sm"
-              style={{
-                width: `${Math.random() * 200 + 150}px`,
-                height: `${Math.random() * 150 + 100}px`,
-                top: `${Math.random() * 60 + 20}%`,
-                left: `${Math.random() * 60 + 20}%`,
-                opacity: 0.2,
-              }}
-              animate={{
-                scale: [1, 1.05, 1],
-                opacity: [0.1, 0.2, 0.1],
-                rotate: [0, Math.random() * 5 - 2.5, 0],
-              }}
-              transition={{
-                duration: Math.random() * 5 + 5,
-                repeat: Number.POSITIVE_INFINITY,
-                repeatType: "reverse",
-                delay: i * 0.5,
-              }}
-            />
-          ))}
-        </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto bg-black/50 backdrop-blur-md rounded-2xl p-10 border border-orange-500/20">
+          <div className="max-w-4xl mx-auto bg-white/5 backdrop-blur-md rounded-2xl p-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1163,14 +720,13 @@ export default function SponsoredAdsPage() {
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/contact-us">
-                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-4 rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transform hover:-translate-y-1">
-                    <span>احصل على استشارة مجانية</span>
-                    <ArrowRight size={18} />
+                <Link href="/contact">
+                  <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-1.5 rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 font-bold flex items-center gap-2 shadow shadow-orange-500/20 hover:shadow-orange-500/40 transform">
+                    <span>تواصل معنا</span>
                   </button>
                 </Link>
                 <a href="https://wa.me/+201278183718">
-                  <button className="bg-green-500 text-white px-8 py-4 rounded-full hover:bg-green-600 transition duration-300 font-bold flex items-center gap-2 shadow-lg shadow-green-500/20 hover:shadow-green-500/40 transform hover:-translate-y-1">
+                  <button className="bg-green-500 text-white px-8 py-1.5 rounded-full hover:bg-green-600 transition duration-300 font-bold flex items-center gap-2 shadow shadow-green-500/20 hover:shadow-green-500/40 transform">
                     <span>تواصل عبر واتساب</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
