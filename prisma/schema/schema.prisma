@@ -86,12 +86,11 @@ model client_feedbacks {
 
 model contact_messages {
   id Int @id @default(autoincrement())
-  title String
-  content String
-  subject String
   client_name String
   client_phone String
   client_email String
+  subject String
+  message String
   sent_at String
 }
 

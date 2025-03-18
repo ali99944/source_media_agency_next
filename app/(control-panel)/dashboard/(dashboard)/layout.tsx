@@ -10,7 +10,6 @@ import {
   Users,
   FolderKanban,
   Settings,
-  BarChart3,
   FileText,
   MessageSquare,
   CreditCard,
@@ -81,162 +80,152 @@ export default function AdminLayout({
   const navItems: NavItem[] = [
     {
       title: "لوحة التحكم",
-      href: "/admin",
+      href: "/dashboard",
       icon: <LayoutDashboard className="h-5 w-5" />,
     },
     {
       title: "المشاريع",
-      href: "/admin/projects",
+      href: "/dashboard/projects",
       icon: <FolderKanban className="h-5 w-5" />,
       badge: "12",
       submenu: [
         {
           title: "كل المشاريع",
-          href: "/admin/projects",
+          href: "/dashboard/projects",
           icon: <FolderKanban className="h-4 w-4" />,
         },
         {
           title: "مشاريع جديدة",
-          href: "/admin/projects/new",
+          href: "/dashboard/projects/new",
           icon: <FolderKanban className="h-4 w-4" />,
         },
         {
           title: "قيد التنفيذ",
-          href: "/admin/projects/in-progress",
+          href: "/dashboard/projects/in-progress",
           icon: <FolderKanban className="h-4 w-4" />,
         },
         {
           title: "مكتملة",
-          href: "/admin/projects/completed",
+          href: "/dashboard/projects/completed",
           icon: <FolderKanban className="h-4 w-4" />,
         },
       ],
     },
     {
       title: "العملاء",
-      href: "/admin/clients",
+      href: "/dashboard/clients",
       icon: <Users className="h-5 w-5" />,
     },
     {
       title: "الخدمات",
-      href: "/admin/services",
+      href: "/dashboard/services",
       icon: <ShoppingCart className="h-5 w-5" />,
       submenu: [
         {
           title: "التسويق الذكي",
-          href: "/admin/services/marketing",
+          href: "/dashboard/services/marketing",
           icon: <Megaphone className="h-4 w-4" />,
         },
         {
           title: "الحلول البرمجية",
-          href: "/admin/services/solutions",
+          href: "/dashboard/services/solutions",
           icon: <Globe className="h-4 w-4" />,
         },
         {
           title: "الفيديو والمونتاج",
-          href: "/admin/services/video",
+          href: "/dashboard/services/video",
           icon: <Film className="h-4 w-4" />,
         },
         {
           title: "التصاميم",
-          href: "/admin/services/designs",
+          href: "/dashboard/services/designs",
           icon: <Image className="h-4 w-4" />,
         },
         {
           title: "قوائم الطعام الإلكترونية",
-          href: "/admin/services/emenu",
+          href: "/dashboard/services/emenu",
           icon: <FileText className="h-4 w-4" />,
         },
         {
           title: "بطاقات الأعمال الرقمية",
-          href: "/admin/services/business-cards",
+          href: "/dashboard/services/business-cards",
           icon: <Smartphone className="h-4 w-4" />,
         },
       ],
     },
     {
       title: "التسويق",
-      href: "/admin/marketing",
+      href: "/dashboard/marketing",
       icon: <Megaphone className="h-5 w-5" />,
       submenu: [
         {
           title: "الحملات الإعلانية",
-          href: "/admin/marketing/campaigns",
+          href: "/dashboard/marketing/campaigns",
           icon: <Megaphone className="h-4 w-4" />,
         },
         {
           title: "وسائل التواصل الاجتماعي",
-          href: "/admin/marketing/social-media",
+          href: "/dashboard/marketing/social-media",
           icon: <Globe className="h-4 w-4" />,
         },
         {
           title: "زيادة المتابعين",
-          href: "/admin/marketing/followers",
+          href: "/dashboard/marketing/followers",
           icon: <Users className="h-4 w-4" />,
         },
       ],
     },
     {
       title: "المحتوى",
-      href: "/admin/content",
+      href: "/dashboard/content",
       icon: <FileText className="h-5 w-5" />,
       submenu: [
         {
           title: "الصفحات",
-          href: "/admin/content/pages",
-          icon: <FileText className="h-4 w-4" />,
-        },
-        {
-          title: "المدونة",
-          href: "/admin/content/blog",
+          href: "/dashboard/content/pages",
           icon: <FileText className="h-4 w-4" />,
         },
         {
           title: "معرض الأعمال",
-          href: "/admin/content/portfolio",
+          href: "/dashboard/content/portfolio",
           icon: <Image className="h-4 w-4" />,
         },
       ],
     },
     {
       title: "الرسائل",
-      href: "/admin/messages",
+      href: "/dashboard/contact-messages",
       icon: <MessageSquare className="h-5 w-5" />,
       badge: "5",
     },
     {
-      title: "التحليلات",
-      href: "/admin/analytics",
-      icon: <BarChart3 className="h-5 w-5" />,
-    },
-    {
       title: "الفواتير",
-      href: "/admin/invoices",
+      href: "/dashboard/invoices",
       icon: <CreditCard className="h-5 w-5" />,
     },
     {
       title: "الإعدادات",
-      href: "/admin/settings",
+      href: "/dashboard/settings",
       icon: <Settings className="h-5 w-5" />,
       submenu: [
         {
           title: "الملف الشخصي",
-          href: "/admin/settings/profile",
+          href: "/dashboard/settings/profile",
           icon: <Users className="h-4 w-4" />,
         },
         {
           title: "إعدادات الموقع",
-          href: "/admin/settings/site",
+          href: "/dashboard/settings/site",
           icon: <Globe className="h-4 w-4" />,
         },
         {
           title: "المستخدمين",
-          href: "/admin/settings/users",
+          href: "/dashboard/settings/users",
           icon: <Users className="h-4 w-4" />,
         },
         {
           title: "الأدوار والصلاحيات",
-          href: "/admin/settings/roles",
+          href: "/dashboard/settings/roles",
           icon: <Users className="h-4 w-4" />,
         },
       ],
@@ -257,7 +246,7 @@ export default function AdminLayout({
           </Button>
 
           <div className="flex items-center gap-2">
-            <Link href="/admin" className="flex items-center gap-2">
+            <Link href="/dashboard" className="flex items-center gap-2">
               <div className="relative h-8 w-8 overflow-hidden rounded-full bg-orange-500">
                 <div className="absolute inset-0 flex items-center justify-center font-bold text-black">SM</div>
               </div>

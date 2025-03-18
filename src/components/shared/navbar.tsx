@@ -7,9 +7,11 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="bg-transparent p-4 flex justify-between items-center lg:max-w-7xl mx-auto z-50">
-            <div className="text-3xl font-semibold text-orange-500">Sourcemediaagency</div>
-            <ul className={`lg:flex gap-4 text-xl ${isOpen ? 'flex flex-col items-center justify-center fixed inset-0 bg-black/90 text-white z-50' : 'hidden'}`}>
+        <nav className="bg-transparent p-4 flex justify-between items-center lg:max-w-7xl mx-auto ">
+            <Link href="/">
+                <div className="text-2xl font-semibold text-orange-500">Sourcemediaagency</div>
+            </Link>
+            <ul className={`lg:flex gap-4 text-xl ${isOpen ? 'flex flex-col items-center justify-center fixed inset-0 bg-black/90 text-white' : 'hidden'}`}>
                 <li className="hover:underline hover:text-orange-500 text-white">
                     <Link href="/" onClick={() => setIsOpen(false)}>الصفحة الرئيسية</Link>
                 </li>

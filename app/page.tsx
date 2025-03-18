@@ -12,6 +12,7 @@ import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Image from "next/image"
 import EMenuPromo from "@/components/custom/emenu-promotion"
+import BusinessCardPromo from "@/components/custom/business-card-promo"
 
 
 
@@ -509,6 +510,11 @@ const [activeService, setActiveService] = useState<string | null>(null)
 
       <section className="py-20 bg-black/50 relative overflow-hidden mx-auto px-4 max-w-7xl">
         <EMenuPromo />
+      </section>
+
+      <section className="py-20 bg-black/50 relative overflow-hidden mx-auto px-4 max-w-7xl">
+      <BusinessCardPromo />
+
       </section>
 
       {/* About Us Brief Section */}

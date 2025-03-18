@@ -2,18 +2,26 @@
 
 import type React from "react"
 
-import { useState, useRef, useMemo } from "react"
+import { useState, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, ExternalLink, MessageSquare } from "lucide-react"
-import { FaFigma, FaLayerGroup, FaPaintBrush } from "react-icons/fa"
+import { ArrowRight, Download, ExternalLink, Heart, MessageSquare, Zap } from "lucide-react"
+import { FaFigma, FaInstagram, FaLayerGroup, FaPaintBrush } from "react-icons/fa"
 import { CardLoader } from "@/src/components/shared/loaders"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Navbar from "@/src/components/shared/navbar"
-import { getServicesByPage } from "@/src/server-actions/service-actions"
-import useGetServerData from "@/src/hooks/use-get-server-data"
-import Image from "next/image"
+
+// Design category type
+type DesignCategory = {
+  id: string
+  title: string
+  description: string
+  icon: React.ReactNode
+  color: string
+  image: string
+}
+
 // Design project type
 type DesignProject = {
   id: string
@@ -40,16 +48,73 @@ export default function DesignsPage() {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.9])
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [0, 50, 100])
 
-  const getServices = useMemo(
-    () => async () => {
-      const services = await getServicesByPage('designs')
-
-      return services
+  // Design categories
+  const designCategories: DesignCategory[] = [
+    {
+      id: "social-media",
+      title: "تصاميم السوشيال ميديا",
+      description: "تصاميم إبداعية لمنصات التواصل الاجتماعي تجذب الجمهور وتعزز تفاعلهم",
+      icon: <FaInstagram className="h-6 w-6" />,
+      color: "from-purple-600 to-pink-500",
+      image: "/placeholder.svg?height=400&width=600",
     },
-    [],
-  )
-
-  const { data: services } = useGetServerData(getServices, [])
+    {
+      id: "logos",
+      title: "تصميم الشعارات",
+      description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
+      icon: <FaLayerGroup className="h-6 w-6" />,
+      color: "from-blue-600 to-cyan-500",
+      image: "/placeholder.svg?height=400&width=600",
+    },
+    {
+      id: "branding",
+      title: "الهوية البصرية",
+      description: "هوية بصرية متكاملة تعزز حضور علامتك التجارية وتميزها عن المنافسين",
+      icon: <FaPaintBrush className="h-6 w-6" />,
+      color: "from-orange-600 to-amber-500",
+      image: "/placeholder.svg?height=400&width=600",
+    },
+    {
+      id: "ui-ux",
+      title: "تصميم واجهات المستخدم",
+      description: "واجهات مستخدم جذابة وسهلة الاستخدام تحسن تجربة المستخدم وتزيد من معدلات التحويل",
+      icon: <FaFigma className="h-6 w-6" />,
+      color: "from-green-600 to-emerald-500",
+      image: "/placeholder.svg?height=400&width=600",
+    },
+    {
+      id: "motion-graphics",
+      title: "موشن جرافيك",
+      description: "تصاميم متحركة تجذب الانتباه وتوصل رسالتك بطريقة مبتكرة وملفتة",
+      icon: <Zap className="h-6 w-6" />,
+      color: "from-yellow-600 to-amber-500",
+      image: "/placeholder.svg?height=400&width=600",
+    },
+    {
+      id: "print-design",
+      title: "تصاميم المطبوعات",
+      description: "تصاميم احترافية للمطبوعات تشمل البروشورات والكتالوجات وبطاقات العمل والمزيد",
+      icon: <Download className="h-6 w-6" />,
+      color: "from-red-600 to-rose-500",
+      image: "/placeholder.svg?height=400&width=600",
+    },
+    {
+      id: "packaging",
+      title: "تصميم العبوات",
+      description: "تصاميم مبتكرة للعبوات والتغليف تجذب العملاء وتعزز قيمة المنتج",
+      icon: <MessageSquare className="h-6 w-6" />,
+      color: "from-teal-600 to-emerald-500",
+      image: "/placeholder.svg?height=400&width=600",
+    },
+    {
+      id: "illustrations",
+      title: "الرسوم التوضيحية",
+      description: "رسوم توضيحية فريدة تضيف لمسة إبداعية وتساعد في توصيل الأفكار بشكل مرئي جذاب",
+      icon: <Heart className="h-6 w-6" />,
+      color: "from-indigo-600 to-violet-500",
+      image: "/placeholder.svg?height=400&width=600",
+    },
+  ]
 
   // Design projects
   const designProjects: DesignProject[] = [
@@ -336,7 +401,7 @@ export default function DesignsPage() {
 
           {/* Categories Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {services.map((category, index) => (
+            {designCategories.map((category, index) => (
               <motion.div
                 key={category.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -348,9 +413,8 @@ export default function DesignsPage() {
                 <div className="relative h-64 overflow-hidden">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0">
-                    <Image
-                      fill
-                      src={category.image}
+                    <img
+                      src={'/images/covers/designs.jpg'}
                       alt={category.title}
                       className="w-full h-full object-cover"
                     />
@@ -471,7 +535,7 @@ export default function DesignsPage() {
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/contact">
+                <Link href="/contact-us">
                   <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition duration-300 font-bold flex items-center gap-2 shadow shadow hover:shadow-orange-500/20 cursor-pointer">
                     <span>احصل على عرض سعر</span>
                   </button>

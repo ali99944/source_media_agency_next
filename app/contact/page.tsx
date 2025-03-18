@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Phone, Mail, MapPin, Send, CheckCircle, ChevronDown, ChevronUp, MessageCircle } from "lucide-react"
 import { FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa"
 import Footer from "@/src/components/shared/footer"
@@ -12,22 +12,38 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import useGetServerData from "@/src/hooks/use-get-server-data"
 import { getContactsData } from "@/src/server-actions/contacts-data-actions"
+import useServerAction from "@/src/hooks/use-server-action"
+import { createContactMessage } from "@/src/server-actions/contact-message-actions"
 
 export default function ContactUs() {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const createContactMessageAction = useServerAction(createContactMessage)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setFormStatus("submitting")
+    
+    const data = {
+      client_email: (e.currentTarget as HTMLFormElement).email.value,
+      client_name: (e.currentTarget as HTMLFormElement).client_name.value,
+      client_phone: (e.currentTarget as HTMLFormElement).phone.value,
+      message: (e.currentTarget as HTMLFormElement).message.value,
+      subject: (e.currentTarget as HTMLFormElement).subject.value
+    }
 
-    // Simulate form submission
-    setTimeout(() => {
-      setFormStatus("success")
-      // Reset form after success
-      const form = e.target as HTMLFormElement
-      form.reset()
-    }, 1500)
+    await createContactMessageAction.mutation(data, {
+      onSuccess: () => {
+        setFormStatus("success")
+        // Reset form after success
+        const form = e.target as HTMLFormElement
+        form.reset()
+      },
+      onFailure: () => {
+        setFormStatus("error")
+      }
+    })
   }
 
   const toggleAccordion = (index: number) => {
@@ -64,32 +80,6 @@ export default function ContactUs() {
   const heroRef = useRef<HTMLDivElement>(null)
 
 
-    // Particle animation for hero section
-    const [particles, setParticles] = useState<
-    Array<{ x: number; y: number; size: number; speed: number; opacity: number }>
-  >([])
-
-  useEffect(() => {
-    if (heroRef.current) {
-      const width = heroRef.current.offsetWidth
-      const height = heroRef.current.offsetHeight
-
-      const newParticles = Array.from({ length: 100 }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 4 + 1,
-        speed: Math.random() * 1 + 0.5,
-        opacity: Math.random() * 0.5 + 0.3,
-      }))
-
-      setParticles(newParticles)
-    }
-
-    return () => {
-      setParticles([])
-    }
-  }, [])
-
   const { data: contacts_data } = useGetServerData(getContactsData, {
     facebook_account_link: "",
     instagram_account_link: "",
@@ -106,40 +96,15 @@ export default function ContactUs() {
       ref={heroRef}
     >
       {/* Navbar */}
-      <div className="absolute inset-0 z-10 bg-no-repeat bg-cover bg-center">
         <Navbar />
-      </div>
 
       {/* Hero Section */}
       <div
-        className="relative h-screen overflow-hidden"
+        className="relative h-[60vh] overflow-hidden"
       >
         {/* Background Elements */}
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-background">
-          {/* Animated Particles */}
-          {particles.map((particle, index) => (
-            <motion.div
-              key={index}
-              className="absolute rounded-full bg-orange-500"
-              style={{
-                width: particle.size,
-                height: particle.size,
-                opacity: particle.opacity,
-                x: particle.x,
-                y: particle.y,
-              }}
-              animate={{
-                y: [particle.y, particle.y - 100 * particle.speed],
-                opacity: [particle.opacity, 0],
-              }}
-              transition={{
-                duration: 5 / particle.speed,
-                repeat: Number.POSITIVE_INFINITY,
-                repeatType: "loop",
-                ease: "linear",
-              }}
-            />
-          ))}
+
 
           {/* Grid Pattern */}
           <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 opacity-10">
@@ -160,18 +125,7 @@ export default function ContactUs() {
           </div>
 
 
-          {/* Decorative Elements */}
-          <div className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2">
-            <motion.div
-              className="w-64 h-64 rounded-full border border-orange-500/20 opacity-20"
-              animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 90, 180, 270, 360],
-                borderColor: ["rgba(249, 115, 22, 0.2)", "rgba(249, 115, 22, 0.3)", "rgba(249, 115, 22, 0.2)"],
-              }}
-              transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-          </div>
+
         </div>
 
         {/* Hero Content */}
@@ -196,7 +150,7 @@ export default function ContactUs() {
             </div>
 
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
+              className="text-4xl md:text-6xl lg:text-6xl font-bold mb-6 tracking-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -247,11 +201,11 @@ export default function ContactUs() {
       </div>
 
       {/* Contact Info Cards */}
-      <section className="py-16 px-4 relative -mt-20">
+      <section className="py-16 px-4 relative ">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Phone Card */}
-            <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm shadow-md">
+            <div className="bg-white/5 rounded-lg p-6 backdrop-blur-sm shadow-md">
               <div className="bg-orange-500 text-black rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Phone size={28} />
               </div>
@@ -261,7 +215,7 @@ export default function ContactUs() {
             </div>
 
             {/* Email Card */}
-            <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm shadow-md">
+            <div className="bg-white/5 rounded-lg p-6 backdrop-blur-sm shadow-md">
               <div className="bg-orange-500 text-black rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Mail size={28} />
               </div>
@@ -271,7 +225,7 @@ export default function ContactUs() {
             </div>
 
             {/* Location Card */}
-            <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm shadow-md">
+            <div className="bg-white/5 rounded-lg p-6 backdrop-blur-sm shadow-md">
               <div className="bg-orange-500 text-black rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <MapPin size={28} />
               </div>
@@ -286,18 +240,18 @@ export default function ContactUs() {
       </section>
 
       {/* Contact Form and Info Section */}
-      <section id="contact-form" className="py-16 px-4 bg-white/5">
+      <section id="contact-form" className="py-16 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="">
             {/* Contact Form */}
             <div className="">
-              <div className="bg-white/10 rounded-lg p-4 shadow-xl">
-                <h2 className="text-3xl font-bold mb-6 text-orange-500 text-right" dir="rtl">
+              <div className="bg-white/5 rounded-lg p-4 shadow-xl">
+                <h2 className="text-2xl font-bold mb-6 text-orange-500 text-right" dir="rtl">
                   أرسل لنا رسالة
                 </h2>
 
                 {formStatus === "success" ? (
-                  <div className="bg-green-500/20 border border-green-500 rounded-lg p-6 text-center">
+                  <div className="bg-green-500/20 border  rounded-lg p-6 text-center">
                     <CheckCircle className="mx-auto mb-4 text-green-500" size={48} />
                     <h3 className="text-xl font-bold mb-2">تم إرسال رسالتك بنجاح!</h3>
                     <p className="text-gray-300">سنقوم بالرد عليك في أقرب وقت ممكن.</p>
@@ -306,14 +260,16 @@ export default function ContactUs() {
                   <form onSubmit={handleSubmit} dir="rtl">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                       <div>
-                        <label htmlFor="name" className="block text-sm font-medium mb-2">
+                        <label htmlFor="client_name" className="block text-sm font-medium mb-2">
                           الاسم
                         </label>
                         <input
                           type="text"
                           id="name"
+                          name="client_name"
+                          placeholder="الاسم بالكامل"
                           required
-                          className="w-full bg-white/5 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                          className="w-full bg-white/5 border border-gray-700 rounded px-4 py-2 focus:outline-none"
                         />
                       </div>
                       <div>
@@ -323,8 +279,10 @@ export default function ContactUs() {
                         <input
                           type="email"
                           id="email"
+                          name="email"
                           required
-                          className="w-full bg-white/5 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                          placeholder="2Ks8o@example.com"
+                          className="w-full bg-white/5 border border-gray-700 rounded px-4 py-2 focus:outline-none"
                         />
                       </div>
                     </div>
@@ -335,8 +293,12 @@ export default function ContactUs() {
                       </label>
                       <input
                         type="tel"
+                        name="phone"
+                        required
+                        placeholder="0501234567"
+                        dir="rtl"
                         id="phone"
-                        className="w-full bg-white/5 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                        className="w-full bg-white/5 border border-gray-700 rounded px-4 py-2 focus:outline-none placeholder:text-right"
                       />
                     </div>
 
@@ -347,8 +309,10 @@ export default function ContactUs() {
                       <input
                         type="text"
                         id="subject"
+                        placeholder="موضوع الرسالة"
+                        name="subject"
                         required
-                        className="w-full bg-white/5 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                        className="w-full bg-white/5 border border-gray-700 rounded px-4 py-2 focus:outline-none"
                       />
                     </div>
 
@@ -360,14 +324,17 @@ export default function ContactUs() {
                         id="message"
                         rows={5}
                         required
-                        className="w-full bg-white/5 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                        className="w-full bg-white/5 border border-gray-700 rounded px-4 py-2 focus:outline-none"
+                        placeholder="اكتب رسالتك هنا..."
+                        name="message"
                       ></textarea>
                     </div>
 
+                    <div className="flex items-center justify-center">
                     <button
                       type="submit"
                       disabled={formStatus === "submitting"}
-                      className="bg-orange-500 text-black font-bold px-6 py-3 rounded-full hover:bg-orange-600 transition duration-300 w-full flex items-center justify-center gap-2"
+                      className="bg-orange-500 text-black font-bold px-6 py-2 rounded-full hover:bg-orange-600 transition duration-300 flex items-center justify-center gap-2"
                     >
                       {formStatus === "submitting" ? (
                         <>
@@ -381,12 +348,13 @@ export default function ContactUs() {
                         </>
                       )}
                     </button>
+                    </div>
                   </form>
                 )}
               </div>
             </div>
 
-            <div className="bg-white/10 rounded-lg p-6 shadow-xl my-8">
+            <div className="bg-white/5 rounded-lg p-6 shadow-xl my-8">
                 <h3 className="text-xl font-bold mb-4 text-right" dir="rtl">
                   تابعنا على وسائل التواصل الاجتماعي
                 </h3>
@@ -429,7 +397,7 @@ export default function ContactUs() {
 
           <div className="space-y-4" dir="rtl">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-white/10 rounded-lg overflow-hidden">
+              <div key={index} className="bg-white/5 rounded-lg overflow-hidden">
                 <button
                   className="w-full px-6 py-4 text-right flex items-center justify-between focus:outline-none"
                   onClick={() => toggleAccordion(index)}
@@ -455,7 +423,7 @@ export default function ContactUs() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 px-4 bg-gradient-to-r from-orange-300 to-orange-400 text-black">
+      <section className="py-16 px-4 bg-gradient-to-r from-orange-400 to-orange-500 text-black">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">جاهز لبدء مشروعك التسويقي؟</h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto">
