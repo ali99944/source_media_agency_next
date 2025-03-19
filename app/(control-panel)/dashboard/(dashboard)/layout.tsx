@@ -18,11 +18,11 @@ import {
   HelpCircle,
   Menu,
   Megaphone,
-  Image,
   Film,
   Globe,
   ShoppingCart,
   ChevronLeft,
+  Brush,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -38,6 +38,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Toaster } from "@/components/ui/sonner"
+import { FaAd } from "react-icons/fa"
 
 interface NavItem {
   title: string
@@ -136,8 +137,13 @@ export default function AdminLayout({
         },
         {
           title: "التصاميم",
-          href: "/dashboard/services/designs",
-          icon: <Image className="h-4 w-4" />,
+          href: "/dashboard/designs",
+          icon: <Brush className="h-4 w-4" />,
+        },
+        {
+          title: "الاعلانات الممولة",
+          href: "/dashboard/sponsored-ads",
+          icon: <FaAd className="h-4 w-4" />,
         },
         {
           title: "قوائم الطعام الإلكترونية",
