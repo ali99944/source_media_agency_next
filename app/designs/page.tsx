@@ -274,7 +274,7 @@ export default function DesignsPage() {
                     <img
                       src={service.image || "/placeholder.svg"}
                       alt={service.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-80" />
                   </div>
@@ -345,7 +345,7 @@ export default function DesignsPage() {
                       <img
                         src={project.image || "/placeholder.svg"}
                         alt={project.name}
-                        className="w-full h-full object-cover transition-transform duration-700"
+                        className="w-full h-full object-contain transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-black/20 bg-opacity-50 transition-opacity duration-700"></div>
                       
