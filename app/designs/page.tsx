@@ -328,7 +328,7 @@ export default function DesignsPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
               {design_showcases.map((project, index) => (
-                <Link key={project.id} href={`/designs/${project.design_service.name}`}>
+                <Link key={project.id} href={`/designs/${project.design_service.page_code}`}>
                   <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
