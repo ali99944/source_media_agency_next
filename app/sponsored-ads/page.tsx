@@ -2,268 +2,30 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 import {
-  ArrowRight,
   BarChart2,
-  DollarSign,
   ExternalLink,
   Eye,
-  Globe,
   Heart,
   LineChart,
   MessageSquare,
   MousePointer,
   PieChart,
   Target,
-  Zap,
 } from "lucide-react"
-import { FaAd, FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa"
+import { FaAd } from "react-icons/fa"
 import { Badge } from "@/components/ui/badge"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Footer from "@/src/components/shared/footer"
 import Navbar from "@/src/components/shared/navbar"
 import Image from "next/image"
 import TestimonialCard from "@/components/custom/testimonial-card"
-
-// Ad Platform type
-type AdPlatform = {
-  id: string
-  name: string
-  icon: React.ReactNode
-  color: string
-  description: string
-  metrics: {
-    reach: string
-    engagement: string
-    conversion: string
-  }
-}
-
-// Ad Campaign type
-type AdCampaign = {
-  id: string
-  title: string
-  client: string
-  platform: string
-  description: string
-  image: string
-  metrics: {
-    reach: number
-    engagement: number
-    conversion: number
-    roi: number
-  }
-  tags: string[]
-  featured?: boolean
-}
-
-// Ad platforms data
-const adPlatforms: AdPlatform[] = [
-  {
-    id: "instagram",
-    name: "انستجرام",
-    icon: <FaInstagram className="h-6 w-6" />,
-    color: "from-purple-600 to-pink-500",
-    description: "إعلانات مستهدفة على منصة انستجرام تصل إلى جمهورك المستهدف بدقة عالية",
-    metrics: {
-      reach: "+500 مليون",
-      engagement: "3.5%",
-      conversion: "1.85%",
-    },
-  },
-  {
-    id: "facebook",
-    name: "فيسبوك",
-    icon: <FaFacebook className="h-6 w-6" />,
-    color: "from-blue-600 to-blue-400",
-    description: "حملات إعلانية متكاملة على فيسبوك تستهدف الفئات العمرية والاهتمامات المختلفة",
-    metrics: {
-      reach: "+2.8 مليار",
-      engagement: "2.8%",
-      conversion: "1.65%",
-    },
-  },
-  {
-    id: "tiktok",
-    name: "تيك توك",
-    icon: <FaTiktok className="h-6 w-6" />,
-    color: "from-black to-gray-800",
-    description: "إعلانات إبداعية على تيك توك تجذب الجيل الشاب وتحقق انتشاراً واسعاً",
-    metrics: {
-      reach: "+1 مليار",
-      engagement: "5.2%",
-      conversion: "2.1%",
-    },
-  },
-  {
-    id: "twitter",
-    name: "تويتر",
-    icon: <FaTwitter className="h-6 w-6" />,
-    color: "from-blue-500 to-blue-300",
-    description: "حملات إعلانية مستهدفة على تويتر تصل إلى صناع القرار والمؤثرين",
-    metrics: {
-      reach: "+330 مليون",
-      engagement: "2.5%",
-      conversion: "1.4%",
-    },
-  },
-  {
-    id: "youtube",
-    name: "يوتيوب",
-    icon: <FaYoutube className="h-6 w-6" />,
-    color: "from-red-600 to-red-400",
-    description: "إعلانات فيديو احترافية على يوتيوب تحقق مشاهدات عالية ومعدلات تحويل مرتفعة",
-    metrics: {
-      reach: "+2.3 مليار",
-      engagement: "3.2%",
-      conversion: "1.9%",
-    },
-  },
-  {
-    id: "google",
-    name: "جوجل",
-    icon: <Globe className="h-6 w-6" />,
-    color: "from-green-500 to-green-300",
-    description: "إعلانات بحث وعرض على شبكة جوجل الإعلانية تستهدف العملاء المحتملين بدق��",
-    metrics: {
-      reach: "+4 مليار",
-      engagement: "2.1%",
-      conversion: "2.4%",
-    },
-  },
-]
-
-// Ad campaigns data
-const adCampaigns: AdCampaign[] = [
-  {
-    id: "campaign-1",
-    title: "حملة إطلاق منتج جديد",
-    client: "شركة الفا للإلكترونيات",
-    platform: "instagram",
-    description: "حملة إعلانية متكاملة لإطلاق سماعات لاسلكية جديدة استهدفت الشباب من 18-35 سنة",
-    image: "/placeholder.svg?height=600&width=800",
-    metrics: {
-      reach: 250000,
-      engagement: 4.8,
-      conversion: 2.3,
-      roi: 320,
-    },
-    tags: ["إطلاق منتج", "إعلانات فيديو", "إعلانات صور", "استهداف"],
-    featured: true,
-  },
-  {
-    id: "campaign-2",
-    title: "حملة زيادة المبيعات الموسمية",
-    client: "متجر أزياء بيتا",
-    platform: "facebook",
-    description: "حملة إعلانية لزيادة مبيعات تشكيلة الصيف الجديدة مع عروض خاصة وخصومات",
-    image: "/placeholder.svg?height=600&width=800",
-    metrics: {
-      reach: 180000,
-      engagement: 3.5,
-      conversion: 1.9,
-      roi: 280,
-    },
-    tags: ["تخفيضات", "إعلانات كاروسيل", "استهداف", "إعادة استهداف"],
-    featured: true,
-  },
-  {
-    id: "campaign-3",
-    title: "حملة توعوية صحية",
-    client: "مستشفى جاما",
-    platform: "twitter",
-    description: "حملة توعوية عن أهمية الفحص المبكر للسرطان استهدفت الفئات العمرية فوق 40 سنة",
-    image: "/placeholder.svg?height=600&width=800",
-    metrics: {
-      reach: 120000,
-      engagement: 5.2,
-      conversion: 3.1,
-      roi: 210,
-    },
-    tags: ["توعية", "صحة", "إعلانات فيديو", "استهداف دقيق"],
-  },
-  {
-    id: "campaign-4",
-    title: "حملة إطلاق تطبيق جديد",
-    client: "شركة دلتا للتقنية",
-    platform: "tiktok",
-    description: "حملة إعلانية لإطلاق تطبيق جديد للتواصل الاجتماعي استهدفت المراهقين والشباب",
-    image: "/placeholder.svg?height=600&width=800",
-    metrics: {
-      reach: 350000,
-      engagement: 6.7,
-      conversion: 2.8,
-      roi: 410,
-    },
-    tags: ["تطبيقات", "جيل Z", "فيديوهات قصيرة", "تحدي"],
-    featured: true,
-  },
-  {
-    id: "campaign-5",
-    title: "حملة تسويق عقاري",
-    client: "شركة إبسيلون العقارية",
-    platform: "google",
-    description: "حملة إعلانية لتسويق مشروع سكني جديد في منطقة راقية استهدفت أصحاب الدخل المرتفع",
-    image: "/placeholder.svg?height=600&width=800",
-    metrics: {
-      reach: 90000,
-      engagement: 2.9,
-      conversion: 1.5,
-      roi: 350,
-    },
-    tags: ["عقارات", "استهداف دقيق", "إعلانات بحث", "إعلانات عرض"],
-  },
-  {
-    id: "campaign-6",
-    title: "حملة تعليمية",
-    client: "أكاديمية زيتا",
-    platform: "youtube",
-    description: "حملة إعلانية للترويج لدورات تعليمية عبر الإنترنت في مجال البرمجة والتصميم",
-    image: "/placeholder.svg?height=600&width=800",
-    metrics: {
-      reach: 200000,
-      engagement: 4.1,
-      conversion: 2.5,
-      roi: 290,
-    },
-    tags: ["تعليم", "دورات", "فيديو", "استهداف اهتمامات"],
-  },
-]
-
-
-// Testimonials data
-const testimonials = [
-  {
-    id: "testimonial-1",
-    name: "محمد العتيبي",
-    position: "مدير التسويق",
-    company: "شركة الفا للإلكترونيات",
-    text: "حققت حملاتنا الإعلانية مع Source Media نتائج مذهلة تجاوزت توقعاتنا. زادت المبيعات بنسبة 45% خلال فترة الحملة.",
-    image: "/placeholder.svg?height=100&width=100",
-    rating: 5,
-  },
-  {
-    id: "testimonial-2",
-    name: "سارة الشمري",
-    position: "مديرة العلامة التجارية",
-    company: "متجر أزياء بيتا",
-    text: "الفريق احترافي ومبدع في تصميم الإعلانات وإدارة الحملات. استطاعوا فهم هويتنا التجارية وعكسها في الإعلانات بشكل رائع.",
-    image: "/placeholder.svg?height=100&width=100",
-    rating: 5,
-  },
-  {
-    id: "testimonial-3",
-    name: "خالد السعيد",
-    position: "الرئيس التنفيذي",
-    company: "شركة دلتا للتقنية",
-    text: "تعاملنا مع Source Media لإطلاق تطبيقنا الجديد، وكانت النتائج مبهرة. حققنا أكثر من 100,000 تحميل خلال الأسبوع الأول.",
-    image: "/placeholder.svg?height=100&width=100",
-    rating: 5,
-  },
-]
+import useGetServerData from "@/src/hooks/use-get-server-data"
+import { getServiceFeedbacks, getSponsoredAdsServices, getSponsoredAdsShowcases } from "@/src/server-actions/services-actions"
+import { services_feedback } from "@prisma/client"
 
 export default function SponsoredAdsPage() {
   const [activeTestimonial, setActiveTestimonial] = useState<number>(0)
@@ -278,6 +40,17 @@ export default function SponsoredAdsPage() {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.9])
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [0, 50, 100])
 
+
+
+
+const getSponsoredFeedbacksMemo = useCallback(async () => {
+    const feedbacks = await getServiceFeedbacks('designs')
+    return feedbacks
+}, [])
+
+const { data: testimonials } = useGetServerData(getSponsoredFeedbacksMemo, [])
+// const { data: sponsored_showcases } = useGetServerData(getSponsoredAdsShowcases, [])
+
   // Auto-rotate testimonials
   useEffect(() => {
     const interval = setInterval(() => {
@@ -286,13 +59,14 @@ export default function SponsoredAdsPage() {
     return () => clearInterval(interval)
   }, [])
 
+  const { data: sponsored_services } = useGetServerData(getSponsoredAdsServices, [])
+  const { data: sponsored_showcases } = useGetServerData(getSponsoredAdsShowcases, [])
+
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Navbar */}
-      <div className="absolute inset-0 bg-no-repeat bg-cover bg-center z-50">
         <Navbar />
-      </div>
 
       {/* Hero Section */}
       <div ref={heroRef} className="h-screen relative overflow-hidden pt-20">
@@ -451,43 +225,6 @@ export default function SponsoredAdsPage() {
             تحقق أهدافك التسويقية وتصل إلى جمهورك المستهدف بدقة عالية.
           </motion.p>
 
-          {/* Animated Metrics */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-12 mb-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-          >
-            <div className="text-center">
-              <motion.div
-                className="text-3xl md:text-4xl font-bold text-orange-500 flex items-center gap-2 justify-center"
-              >
-                <Target size={24} />
-                <span>+250%</span>
-              </motion.div>
-              <div className="text-sm text-white/70">زيادة في معدل التحويل</div>
-            </div>
-
-            <div className="text-center">
-              <motion.div
-                className="text-3xl md:text-4xl font-bold text-orange-500 flex items-center gap-2 justify-center"
-              >
-                <Eye size={24} />
-                <span>+500K</span>
-              </motion.div>
-              <div className="text-sm text-white/70">مشاهدات شهرية</div>
-            </div>
-
-            <div className="text-center">
-              <motion.div
-                className="text-3xl md:text-4xl font-bold text-orange-500 flex items-center gap-2 justify-center"
-              >
-                <DollarSign size={24} />
-                <span>+320%</span>
-              </motion.div>
-              <div className="text-sm text-white/70">عائد على الاستثمار</div>
-            </div>
-          </motion.div>
 
           <motion.div
             className="flex flex-wrap justify-center gap-4 z-50"
@@ -495,12 +232,6 @@ export default function SponsoredAdsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.8 }}
           >
-            <a href="#platforms">
-              <button className="bg-orange-500 text-black px-8 py-2 rounded-full hover:bg-orange-600 transition duration-300 cursor-pointer font-bold flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40">
-                <span>منصات الإعلان</span>
-                <ArrowRight size={18} />
-              </button>
-            </a>
             <a href="#campaigns">
               <button className="bg-transparent border-2 border-orange-500 text-orange-500 px-8 py-2 rounded-full hover:bg-orange-500 hover:text-black transition duration-300 cursor-pointer font-bold flex items-center gap-2">
                 <span>حملاتنا الناجحة</span>
@@ -513,10 +244,71 @@ export default function SponsoredAdsPage() {
         </motion.div>
       </div>
 
+      <section id="categories" className="py-20 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              خدمات <span className="text-orange-500">التصميم</span>
+            </h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full mb-6 mx-auto" />
+            <p className="text-xl max-w-3xl mx-auto text-gray-300" dir="rtl">
+              نقدم مجموعة متنوعة من خدمات التصميم الإبداعية لتلبية احتياجات عملك
+            </p>
+          </motion.div>
+
+          {/* Categories Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {sponsored_services.map((service, index) => (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="relative group overflow-hidden rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 "
+              >
+                <div className="relative h-64 overflow-hidden">
+                  {/* Background Image with Overlay */}
+                  <div className="absolute inset-0">
+                    <img
+                      src={'/images/covers/designs.jpg'}
+                      alt={service.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-80" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="absolute inset-0 p-4 flex flex-col justify-end">
+
+                    <div>
+                      <Link href={`/designs/${service.page_code}`}>
+                      <h3 className="text-xl font-bold mb-2 group-hover:text-orange-500 transition-colors duration-300">
+                        {service.name}
+                      </h3>
+                      </Link>
+                      <p className="text-gray-300 text-sm line-clamp-3">{service.description}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Glow Effect */}
+                {/* <div className="absolute -inset-0.5 bg-gradient-to-r from-transparent via-orange-500/20 to-transparent rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-300"></div> */}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* Campaigns Showcase */}
       <section id="campaigns" className="py-20 bg-black/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black" />
 
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -537,9 +329,8 @@ export default function SponsoredAdsPage() {
 
           {/* Campaigns Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {adCampaigns.map((campaign, index) => {
+            {sponsored_showcases.map((campaign, index) => {
               // Find platform data
-              const platform = adPlatforms.find((p) => p.id === campaign.platform)
 
               return (
                 <motion.div
@@ -556,87 +347,32 @@ export default function SponsoredAdsPage() {
                       <Image
                         fill
                         src={'https://img.freepik.com/premium-photo/influencer-marketing-job-concept_23-2150410537.jpg?ga=GA1.1.259795667.1741285641&semt=ais_hybrid'}
-                        alt={campaign.title}
+                        alt={campaign.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
 
                       {/* Platform Badge */}
                       <div className="absolute top-3 left-3">
-                        <Badge className={`bg-gradient-to-r ${platform?.color || "from-orange-500 to-orange-600"}`}>
+                        <Badge className={`bg-gradient-to-r ${"from-orange-500 to-orange-600"}`}>
                           <div className="flex items-center gap-1">
-                            {platform?.icon}
-                            <span className="text-white">{platform?.name}</span>
+                            <span className="text-black">{campaign.platform}</span>
                           </div>
                         </Badge>
                       </div>
 
-                      {/* Featured Badge */}
-                      {campaign.featured && (
-                        <div className="absolute top-3 right-3">
-                          <Badge className="bg-orange-500 text-black">
-                            <div className="flex items-center gap-1">
-                              <Zap size={12} />
-                              <span>مميز</span>
-                            </div>
-                          </Badge>
-                        </div>
-                      )}
 
                       {/* Content */}
                       <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <h3 className="text-xl font-bold mb-1">{campaign.title}</h3>
-                        <p className="text-sm text-white/70">{campaign.client}</p>
+                        <h3 className="text-xl font-bold mb-1">{campaign.name}</h3>
+                        <p className="text-sm text-white/70">{campaign.brand_name}</p>
                       </div>
                     </div>
 
                     {/* Campaign Details */}
                     <div className="p-4 flex-grow flex flex-col" dir="rtl">
-                      <p className="text-white/70 mb-4">{campaign.description}</p>
+                      <p className="text-white/70">{campaign.description}</p>
 
-                      {/* Metrics */}
-                      {/* <div className="grid grid-cols-2 gap-3 mb-4">
-                        <div className="bg-white/5 rounded-lg p-3">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Eye size={16} className="text-orange-500" />
-                            <span className="text-sm text-white/60">الوصول</span>
-                          </div>
-                          <div className="font-bold text-lg">{campaign.metrics.reach.toLocaleString()}</div>
-                        </div>
-
-                        <div className="bg-white/5 rounded-lg p-3">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Heart size={16} className="text-orange-500" />
-                            <span className="text-sm text-white/60">التفاعل</span>
-                          </div>
-                          <div className="font-bold text-lg">{campaign.metrics.engagement}%</div>
-                        </div>
-
-                        <div className="bg-white/5 rounded-lg p-3">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Target size={16} className="text-orange-500" />
-                            <span className="text-sm text-white/60">التحويل</span>
-                          </div>
-                          <div className="font-bold text-lg">{campaign.metrics.conversion}%</div>
-                        </div>
-
-                        <div className="bg-white/5 rounded-lg p-3">
-                          <div className="flex items-center gap-2 mb-1">
-                            <DollarSign size={16} className="text-orange-500" />
-                            <span className="text-sm text-white/60">العائد</span>
-                          </div>
-                          <div className="font-bold text-lg">{campaign.metrics.roi}%</div>
-                        </div>
-                      </div> */}
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mt-auto">
-                        {campaign.tags.map((tag, i) => (
-                          <Badge key={i} variant="outline" className="bg-white/5">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
                     </div>
                   </div>
 
@@ -674,7 +410,7 @@ export default function SponsoredAdsPage() {
                 {testimonials.map(
                   (testimonial, index) =>
                     activeTestimonial === index && (
-                      <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+                      <TestimonialCard key={testimonial.id} testimonial={testimonial as unknown as services_feedback} />
                     ),
                 )}
               </AnimatePresence>

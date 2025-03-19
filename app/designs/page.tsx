@@ -5,38 +5,18 @@ import type React from "react"
 import { useState, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, Download, ExternalLink, Heart, MessageSquare, Zap } from "lucide-react"
-import { FaFigma, FaInstagram, FaLayerGroup, FaPaintBrush } from "react-icons/fa"
+import { ArrowRight, ExternalLink, MessageSquare } from "lucide-react"
+import { FaFigma, FaLayerGroup, FaPaintBrush } from "react-icons/fa"
 import { CardLoader } from "@/src/components/shared/loaders"
 import Footer from "@/src/components/shared/footer"
 import FloatingWhatsAppIcon from "@/src/components/shared/floating-whatsapp"
 import Navbar from "@/src/components/shared/navbar"
-
-// Design category type
-type DesignCategory = {
-  id: string
-  title: string
-  description: string
-  icon: React.ReactNode
-  color: string
-  image: string
-}
-
-// Design project type
-type DesignProject = {
-  id: string
-  title: string
-  category: string
-  description: string
-  image: string
-  likes: number
-  views: number
-  featured?: boolean
-}
+import useGetServerData from "@/src/hooks/use-get-server-data"
+import { getDesignServices, getDesignShowcases } from "@/src/server-actions/services-actions"
 
 export default function DesignsPage() {
   const [isLoading] = useState<boolean>(false)
-  const [, setHoveredProject] = useState<string | null>(null)
+  const [, setHoveredProject] = useState<number | null>(null)
   const heroRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -48,133 +28,11 @@ export default function DesignsPage() {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.9])
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [0, 50, 100])
 
-  // Design categories
-  const designCategories: DesignCategory[] = [
-    {
-      id: "social-media",
-      title: "تصاميم السوشيال ميديا",
-      description: "تصاميم إبداعية لمنصات التواصل الاجتماعي تجذب الجمهور وتعزز تفاعلهم",
-      icon: <FaInstagram className="h-6 w-6" />,
-      color: "from-purple-600 to-pink-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "logos",
-      title: "تصميم الشعارات",
-      description: "شعارات فريدة ومميزة تعكس هوية علامتك التجارية وتترك انطباعاً لا يُنسى",
-      icon: <FaLayerGroup className="h-6 w-6" />,
-      color: "from-blue-600 to-cyan-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "branding",
-      title: "الهوية البصرية",
-      description: "هوية بصرية متكاملة تعزز حضور علامتك التجارية وتميزها عن المنافسين",
-      icon: <FaPaintBrush className="h-6 w-6" />,
-      color: "from-orange-600 to-amber-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "ui-ux",
-      title: "تصميم واجهات المستخدم",
-      description: "واجهات مستخدم جذابة وسهلة الاستخدام تحسن تجربة المستخدم وتزيد من معدلات التحويل",
-      icon: <FaFigma className="h-6 w-6" />,
-      color: "from-green-600 to-emerald-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "motion-graphics",
-      title: "موشن جرافيك",
-      description: "تصاميم متحركة تجذب الانتباه وتوصل رسالتك بطريقة مبتكرة وملفتة",
-      icon: <Zap className="h-6 w-6" />,
-      color: "from-yellow-600 to-amber-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "print-design",
-      title: "تصاميم المطبوعات",
-      description: "تصاميم احترافية للمطبوعات تشمل البروشورات والكتالوجات وبطاقات العمل والمزيد",
-      icon: <Download className="h-6 w-6" />,
-      color: "from-red-600 to-rose-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "packaging",
-      title: "تصميم العبوات",
-      description: "تصاميم مبتكرة للعبوات والتغليف تجذب العملاء وتعزز قيمة المنتج",
-      icon: <MessageSquare className="h-6 w-6" />,
-      color: "from-teal-600 to-emerald-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-    {
-      id: "illustrations",
-      title: "الرسوم التوضيحية",
-      description: "رسوم توضيحية فريدة تضيف لمسة إبداعية وتساعد في توصيل الأفكار بشكل مرئي جذاب",
-      icon: <Heart className="h-6 w-6" />,
-      color: "from-indigo-600 to-violet-500",
-      image: "/placeholder.svg?height=400&width=600",
-    },
-  ]
+  const { data: design_services } = useGetServerData(getDesignServices, [])
+  const { data: design_showcases } = useGetServerData(getDesignShowcases, [])
 
   // Design projects
-  const designProjects: DesignProject[] = [
-    {
-      id: "project-1",
-      title: "تصميم هوية بصرية لشركة تقنية",
-      category: "branding",
-      description: "هوية بصرية متكاملة لشركة تقنية ناشئة تشمل الشعار والألوان والخطوط وتطبيقات الهوية",
-      image: "/placeholder.svg?height=600&width=800",
-      likes: 245,
-      views: 1820,
-      featured: true,
-    },
-    {
-      id: "project-2",
-      title: "تصاميم انستجرام لمطعم",
-      category: "social-media",
-      description: "سلسلة من التصاميم الإبداعية لحساب مطعم على انستجرام لعرض الأطباق والعروض",
-      image: "/placeholder.svg?height=600&width=800",
-      likes: 189,
-      views: 1240,
-    },
-    {
-      id: "project-3",
-      title: "شعار لشركة عقارية",
-      category: "logos",
-      description: "تصميم شعار مميز لشركة عقارية يعكس قيم الشركة ويترك انطباعاً قوياً",
-      image: "/placeholder.svg?height=600&width=800",
-      likes: 312,
-      views: 2150,
-      featured: true,
-    },
-    {
-      id: "project-4",
-      title: "واجهة مستخدم لتطبيق صحي",
-      category: "ui-ux",
-      description: "تصميم واجهة مستخدم سهلة الاستخدام وجذابة لتطبيق متابعة الصحة واللياقة",
-      image: "/placeholder.svg?height=600&width=800",
-      likes: 276,
-      views: 1980,
-    },
-    {
-      id: "project-5",
-      title: "تصاميم سوشيال ميديا لحملة إعلانية",
-      category: "social-media",
-      description: "مجموعة من التصاميم الإبداعية لحملة إعلانية على منصات التواصل الاجتماعي",
-      image: "/placeholder.svg?height=600&width=800",
-      likes: 198,
-      views: 1560,
-    },
-    {
-      id: "project-6",
-      title: "هوية بصرية لمتجر إلكتروني",
-      category: "branding",
-      description: "هوية بصرية متكاملة لمتجر إلكتروني تشمل الشعار والألوان وتصميم الموقع",
-      image: "/placeholder.svg?height=600&width=800",
-      likes: 231,
-      views: 1790,
-    },
-  ]
+
 
 
   return (
@@ -401,9 +259,9 @@ export default function DesignsPage() {
 
           {/* Categories Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {designCategories.map((category, index) => (
+            {design_services.map((service, index) => (
               <motion.div
-                key={category.id}
+                key={service.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -415,7 +273,7 @@ export default function DesignsPage() {
                   <div className="absolute inset-0">
                     <img
                       src={'/images/covers/designs.jpg'}
-                      alt={category.title}
+                      alt={service.name}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-80" />
@@ -425,12 +283,12 @@ export default function DesignsPage() {
                   <div className="absolute inset-0 p-4 flex flex-col justify-end">
 
                     <div>
-                      <Link href={`/designs/${category.id}`}>
+                      <Link href={`/designs/${service.page_code}`}>
                       <h3 className="text-xl font-bold mb-2 group-hover:text-orange-500 transition-colors duration-300">
-                        {category.title}
+                        {service.name}
                       </h3>
                       </Link>
-                      <p className="text-gray-300 text-sm line-clamp-3">{category.description}</p>
+                      <p className="text-gray-300 text-sm line-clamp-3">{service.description}</p>
                     </div>
                   </div>
                 </div>
@@ -469,8 +327,8 @@ export default function DesignsPage() {
             <CardLoader count={4} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
-              {designProjects.map((project, index) => (
-                <Link key={project.id} href={`/designs/${project.category}`}>
+              {design_showcases.map((project, index) => (
+                <Link key={project.id} href={`/designs/${project.design_service.name}`}>
                   <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -486,14 +344,14 @@ export default function DesignsPage() {
                     <div className="relative h-64 overflow-hidden">
                       <img
                         src={'/images/covers/designs.jpg'}
-                        alt={project.title}
+                        alt={project.name}
                         className="w-full h-full object-cover transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-black/20 bg-opacity-50 transition-opacity duration-700"></div>
                       
                       <div className="absolute inset-0 flex items-end justify-start p-4">
                         <div className="text-right">
-                          <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+                          <h3 className="text-xl font-bold mb-2">{project.name}</h3>
                           <p className="text-gray-400 text-sm line-clamp-2">{project.description}</p>
                         </div>
                       </div>

@@ -232,7 +232,7 @@ export default function ContactUs() {
               <h3 className="text-xl font-bold text-center mb-2">موقعنا</h3>
               <p className="text-center text-gray-300 mb-4">زورنا في مكتبنا</p>
               <p className="text-center text-orange-500 font-bold" dir="rtl">
-                المملكة العربية السعودية، الرياض
+                {contacts_data?.location}
               </p>
             </div>
           </div>

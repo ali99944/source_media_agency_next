@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,49 +9,40 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { PlusCircle, Trash2, ImageIcon, FileCode, MessageSquare, HelpCircle } from 'lucide-react'
+import { PlusCircle, Trash2, Video, Play, MessageSquare, HelpCircle, LinkIcon } from 'lucide-react'
 import { toast } from "sonner"
-import useGetServerData from "@/src/hooks/use-get-server-data"
-import { createDesignService, createDesignShowcase, createServiceFaq, createServiceFeedback, deleteDesignService, deleteDesignShowcase, deleteServiceFaq, deleteServiceFeedback, getDesignServices, getDesignShowcases, getServiceFaqs, getServiceFeedbacks } from "@/src/server-actions/services-actions"
-import useServerAction from "@/src/hooks/use-server-action"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-
-
-export default function DesignsManagementPage() {
+export default function VideoMontageManagementPage() {
   const [activeTab, setActiveTab] = useState("sub-services")
-  const getDesignFaqsMemo = useCallback(async () => {
-      const faqs = await getServiceFaqs('designs')
-      return faqs
-  }, [])
-
-
-  const getDesignFeedbacksMemo = useCallback(async () => {
-      const feedbacks = await getServiceFeedbacks('designs')
-      return feedbacks
-  }, [])
-
-  const { data: design_services, refetch: refetchServices  } = useGetServerData(getDesignServices, [])
-
-  const { data: faqs, refetch: refetchFaqs  } = useGetServerData(getDesignFaqsMemo, [])
-  const { data: feedbacks, refetch: refetchFeedback  } = useGetServerData(getDesignFeedbacksMemo, [])
-  const { data: showcases, refetch:refetchShowcases  } = useGetServerData(getDesignShowcases, [])
+  
+  // State for sub-services
+  const [subServices, setSubServices] = useState([
+    { id: 1, name: "مونتاج فيديو احترافي", description: "خدمة مونتاج فيديو احترافية لمختلف الأغراض", image: "/placeholder.svg?height=200&width=300", pageCode: "professional-montage" },
+    { id: 2, name: "موشن جرافيك", description: "تصميم فيديوهات موشن جرافيك إبداعية", image: "/placeholder.svg?height=200&width=300", pageCode: "motion-graphics" },
+    { id: 3, name: "إنتاج فيديو إعلاني", description: "إنتاج فيديوهات إعلانية مميزة لعلامتك التجارية", image: "/placeholder.svg?height=200&width=300", pageCode: "advertising-video" },
+  ])
+  
+  // State for showcases
+  const [showcases, setShowcases] = useState([
+    { id: 1, name: "فيديو إعلاني لشركة تقنية", description: "فيديو إعلاني لمنتج تقني جديد", videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", clientName: "شركة تك سوليوشنز", clientPageName: "Tech Solutions" },
+    { id: 2, name: "موشن جرافيك لخدمة جديدة", description: "فيديو موشن جرافيك يشرح خدمة جديدة", videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", clientName: "شركة الفا", clientPageName: "Alpha Company" },
+  ])
+  
+  // State for feedbacks
+  const [feedbacks, setFeedbacks] = useState([
+    { id: 1, clientName: "محمد أحمد", clientPageName: "شركة ديجيتال", message: "فيديو احترافي ومميز، شكراً لفريق العمل على الجهد الرائع." },
+    { id: 2, clientName: "خالد علي", clientPageName: "متجر إلكتروني", message: "ساهم الفيديو الإعلاني في زيادة مبيعاتنا بشكل ملحوظ. عمل رائع!" },
+  ])
+  
+  // State for FAQs
+  const [faqs, setFaqs] = useState([
+    { id: 1, question: "ما هي مدة إنتاج فيديو موشن جرافيك؟", answer: "تعتمد مدة الإنتاج على تعقيد المشروع، لكن عادة ما تستغرق من 7 إلى 14 يوم عمل." },
+    { id: 2, question: "هل يمكنني طلب تعديلات على الفيديو بعد الانتهاء منه؟", answer: "نعم، نقدم جولتين من التعديلات مجانًا ضمن الباقة الأساسية. يمكن طلب تعديلات إضافية برسوم إضافية." },
+  ])
   
   // Form states
-  const [newSubService, setNewSubService] = useState<{
-    name: string
-    description: string
-    pageCode: string
-    image: File | null
-  }>({ name: "", description: "", image: null, pageCode: "" })
-  const [newShowcase, setNewShowcase] = useState<{
-    name: string
-    description: string
-    image: File | null
-    clientName: string
-    clientPageName: string
-    service_id: number
-  }>({ name: "", description: "", image: null, clientName: "", clientPageName: "", service_id: 0 })
+  const [newSubService, setNewSubService] = useState({ name: "", description: "", image: "", pageCode: "" })
+  const [newShowcase, setNewShowcase] = useState({ name: "", description: "", videoLink: "", clientName: "", clientPageName: "" })
   const [newFeedback, setNewFeedback] = useState({ clientName: "", clientPageName: "", message: "" })
   const [newFaq, setNewFaq] = useState({ question: "", answer: "" })
   
@@ -61,198 +52,88 @@ export default function DesignsManagementPage() {
   const [feedbackDialogOpen, setFeedbackDialogOpen] = useState(false)
   const [faqDialogOpen, setFaqDialogOpen] = useState(false)
   
-  const createSubServiceAction = useServerAction(createDesignService)
-  const handleAddSubService = async () => {
+  // Handle form submissions
+  const handleAddSubService = () => {
     if (!newSubService.name || !newSubService.description || !newSubService.pageCode) {
       toast.error("يرجى ملء جميع الحقول المطلوبة")
       return
     }
-
-    if(!newSubService.image) {
-      toast.error("يرجى تحميل صورة للخدمة")
-      return
-    }
     
-    await createSubServiceAction.mutation({
-      name: newSubService.name,
-      description: newSubService.description,
-      image: newSubService.image,
-      page_code: newSubService.pageCode,
-      is_published: true
-    }, {
-      onSuccess: () => {
-        setNewSubService({ name: "", description: "", image: null, pageCode: "" })
-        setSubServiceDialogOpen(false)
-        toast.success("تمت الإضافة بنجاح")
-        refetchServices()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حفظ الخدمة")
-      }
-    })
+    setSubServices([...subServices, { id: Date.now(), ...newSubService }])
+    setNewSubService({ name: "", description: "", image: "", pageCode: "" })
+    setSubServiceDialogOpen(false)
+    toast.success("تمت الإضافة بنجاح")
   }
   
-  const createShowcaseAction = useServerAction(createDesignShowcase)
-
-  const handleAddShowcase = async () => {
-    if (!newShowcase.name || !newShowcase.description || !newShowcase.clientName) {
+  const handleAddShowcase = () => {
+    if (!newShowcase.name || !newShowcase.description || !newShowcase.videoLink || !newShowcase.clientName) {
       toast.error("يرجى ملء جميع الحقول المطلوبة")
       return
     }
-
-    if(!newShowcase.image) {
-      toast.error("يرجى تحميل صورة للخدمة")
-      return
-    }
     
-    await createShowcaseAction.mutation({
-      name: newShowcase.name,
-      description: newShowcase.description,
-      image: newShowcase.image,
-      client_name: newShowcase.clientName,
-      client_page_name: newShowcase.clientPageName,
-      service_id: newShowcase.service_id
-    }, {
-      onSuccess: () => {
-        setNewShowcase({ name: "", description: "", image: null, clientName: "", clientPageName: "", service_id: 0 })
-        setShowcaseDialogOpen(false)
-        toast.success("تمت الإضافة بنجاح")
-        refetchShowcases()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حفظ الخدمة")
-      }
-    })
+    setShowcases([...showcases, { id: Date.now(), ...newShowcase }])
+    setNewShowcase({ name: "", description: "", videoLink: "", clientName: "", clientPageName: "" })
+    setShowcaseDialogOpen(false)
+    toast.success("تمت الإضافة بنجاح")
   }
-
-  const createFeedbackAction = useServerAction(createServiceFeedback)
   
-  const handleAddFeedback = async () => {
+  const handleAddFeedback = () => {
     if (!newFeedback.clientName || !newFeedback.message) {
       toast.error("يرجى ملء جميع الحقول المطلوبة")
       return
     }
-
-    await createFeedbackAction.mutation({
-      client_name: newFeedback.clientName,
-      client_page_name: newFeedback.clientPageName,
-      client_message: newFeedback.message,
-      service_type: 'designs'
-    }, {
-      onSuccess: () => {
-        setNewFeedback({ clientName: "", clientPageName: "", message: "" })
-        setFeedbackDialogOpen(false)
-        toast.success("تمت الإضافة بنجاح")
-        refetchFeedback()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حفظ الأسئلة الشائعة")
-      }
-    })
     
+    setFeedbacks([...feedbacks, { id: Date.now(), ...newFeedback }])
+    setNewFeedback({ clientName: "", clientPageName: "", message: "" })
+    setFeedbackDialogOpen(false)
+    toast.success("تمت الإضافة بنجاح")
   }
   
-
-  const addFaqAction = useServerAction(createServiceFaq)
-  
-  const handleAddFaq = async () => {
+  const handleAddFaq = () => {
     if (!newFaq.question || !newFaq.answer) {
       toast.error("يرجى ملء جميع الحقول المطلوبة")
       return
     }
     
-    await addFaqAction.mutation({
-      question: newFaq.question,
-      answer: newFaq.answer,
-      service_type: 'designs'
-    }, {
-      onSuccess: () => {
-        setNewFaq({ question: "", answer: "" })
-        setFaqDialogOpen(false)
-        toast.success("تمت الإضافة بنجاح")
-        refetchFaqs()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حفظ الأسئلة الشائعة")
-      }
-    })
+    setFaqs([...faqs, { id: Date.now(), ...newFaq }])
+    setNewFaq({ question: "", answer: "" })
+    setFaqDialogOpen(false)
+    toast.success("تمت الإضافة بنجاح")
   }
   
-  
-  const deleteServiceAction = useServerAction(deleteDesignService)
-  const handleDeleteSubService = async (id: number) => {
-    await deleteServiceAction.mutation(id, {
-      onSuccess: () => {
-        toast.success("تم الحذف بنجاح")
-        refetchServices()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حذف الخدمة")
-      }
-    })
+  // Handle delete
+  const handleDeleteSubService = (id: number) => {
+    setSubServices(subServices.filter(service => service.id !== id))
+    toast.success("تم الحذف بنجاح")
   }
   
-  const deleteShowcaseAction = useServerAction(deleteDesignShowcase)
-  const handleDeleteShowcase = async (id: number) => {
-    await deleteShowcaseAction.mutation(id, {
-      onSuccess: () => {
-        toast.success("تم الحذف بنجاح")
-        refetchShowcases()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حذف المعرض")
-      }
-    })
+  const handleDeleteShowcase = (id: number) => {
+    setShowcases(showcases.filter(showcase => showcase.id !== id))
+    toast.success("تم الحذف بنجاح")
   }
-
-  const deleteFeedbackAction = useServerAction(deleteServiceFeedback)
   
-  const handleDeleteFeedback = async (id: number) => {
-    await deleteFeedbackAction.mutation(id, {
-      onSuccess: () => {
-        toast.success("تم الحذف بنجاح")
-        refetchFeedback()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حذف الأراء")
-      }
-    })
+  const handleDeleteFeedback = (id: number) => {
+    setFeedbacks(feedbacks.filter(feedback => feedback.id !== id))
+    toast.success("تم الحذف بنجاح")
   }
-
-  const deleteFaqAction = useServerAction(deleteServiceFaq)
   
-  const handleDeleteFaq = async (id: number) => {
-    await deleteFaqAction.mutation(id, {
-      onSuccess: () => {
-        toast.success("تم الحذف بنجاح")
-        refetchFaqs()
-      },
-
-      onFailure: () => {
-        toast.error("حدث خطاء في حذف الأسئلة الشائعة")
-      }
-    })
+  const handleDeleteFaq = (id: number) => {
+    setFaqs(faqs.filter(faq => faq.id !== id))
+    toast.success("تم الحذف بنجاح")
   }
   
   return (
-    <div className="container mx-auto p-8" dir="rtl">
-      <h1 className="text-3xl font-bold mb-6">إدارة خدمات التصميم</h1>
+    <div className="container mx-auto py-10" dir="rtl">
+      <h1 className="text-3xl font-bold mb-6">إدارة خدمات مونتاج الفيديو</h1>
       
       <Tabs defaultValue="sub-services" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid grid-cols-4 mb-8">
           <TabsTrigger value="sub-services" className="flex items-center gap-2">
-            <FileCode className="h-4 w-4" />
+            <Video className="h-4 w-4" />
             الخدمات الفرعية
           </TabsTrigger>
           <TabsTrigger value="showcases" className="flex items-center gap-2">
-            <ImageIcon className="h-4 w-4" />
+            <Play className="h-4 w-4" />
             معرض الأعمال
           </TabsTrigger>
           <TabsTrigger value="feedbacks" className="flex items-center gap-2">
@@ -271,8 +152,8 @@ export default function DesignsManagementPage() {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>الخدمات الفرعية للتصميم</CardTitle>
-                  <CardDescription>إدارة الخدمات الفرعية المتاحة في قسم التصميم</CardDescription>
+                  <CardTitle>الخدمات الفرعية لمونتاج الفيديو</CardTitle>
+                  <CardDescription>إدارة الخدمات الفرعية المتاحة في قسم مونتاج الفيديو</CardDescription>
                 </div>
                 <Dialog open={subServiceDialogOpen} onOpenChange={setSubServiceDialogOpen}>
                   <DialogTrigger asChild>
@@ -306,13 +187,12 @@ export default function DesignsManagementPage() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="image">قم بتحميل صورة</Label>
+                        <Label htmlFor="image">رابط الصورة</Label>
                         <Input
                           id="image"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => setNewSubService({...newSubService, image: e.target.files![0]})}
-                          placeholder="قم بتحميل الصورة"
+                          value={newSubService.image}
+                          onChange={(e) => setNewSubService({...newSubService, image: e.target.value})}
+                          placeholder="أدخل رابط الصورة"
                         />
                       </div>
                       <div className="grid gap-2">
@@ -321,7 +201,7 @@ export default function DesignsManagementPage() {
                           id="pageCode"
                           value={newSubService.pageCode}
                           onChange={(e) => setNewSubService({...newSubService, pageCode: e.target.value})}
-                          placeholder="أدخل كود الصفحة (مثال: web-design)"
+                          placeholder="أدخل كود الصفحة (مثال: motion-graphics)"
                         />
                       </div>
                     </div>
@@ -345,14 +225,14 @@ export default function DesignsManagementPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {design_services.map((service) => (
+                  {subServices.map((service) => (
                     <TableRow key={service.id}>
                       <TableCell className="font-medium">{service.name}</TableCell>
                       <TableCell>{service.description}</TableCell>
                       <TableCell>
-                        <img src={service.image || "/placeholder.svg"} alt={service.name} className="h-auto w-16 object-cover rounded" />
+                        <img src={service.image || "/placeholder.svg"} alt={service.name} className="h-10 w-16 object-cover rounded" />
                       </TableCell>
-                      <TableCell>{service.page_code}</TableCell>
+                      <TableCell>{service.pageCode}</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="icon" onClick={() => handleDeleteSubService(service.id)}>
                           <Trash2 className="h-4 w-4 text-red-500" />
@@ -373,7 +253,7 @@ export default function DesignsManagementPage() {
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle>معرض الأعمال</CardTitle>
-                  <CardDescription>إدارة الأعمال المعروضة في قسم التصميم</CardDescription>
+                  <CardDescription>إدارة الأعمال المعروضة في قسم مونتاج الفيديو</CardDescription>
                 </div>
                 <Dialog open={showcaseDialogOpen} onOpenChange={setShowcaseDialogOpen}>
                   <DialogTrigger asChild>
@@ -407,13 +287,12 @@ export default function DesignsManagementPage() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="showcase-image">صورة</Label>
+                        <Label htmlFor="video-link">رابط الفيديو</Label>
                         <Input
-                          id="showcase-image"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => setNewShowcase({...newShowcase, image: e.target.files?.[0] || null})}
-                          placeholder="أدخل صورة"
+                          id="video-link"
+                          value={newShowcase.videoLink}
+                          onChange={(e) => setNewShowcase({...newShowcase, videoLink: e.target.value})}
+                          placeholder="أدخل رابط الفيديو (YouTube, Vimeo, إلخ)"
                         />
                       </div>
                       <div className="grid gap-2">
@@ -434,23 +313,6 @@ export default function DesignsManagementPage() {
                           placeholder="أدخل اسم صفحة العميل"
                         />
                       </div>
-                      <div className="space-y-2">
-                              <Label htmlFor="field-type">الخدمة الفرعية</Label>
-                              <Select value={newShowcase.service_id.toString()} onValueChange={
-                                (value) => setNewShowcase({...newShowcase, service_id: +value})
-                              }>
-                                <SelectTrigger className="bg-black">
-                                  <SelectValue placeholder="اختر الخدمة التابعة" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {design_services.map((service) => (
-                                    <SelectItem key={service.id} value={service.id.toString()}>
-                                      {service.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
                     </div>
                     <DialogFooter>
                       <Button variant="outline" onClick={() => setShowcaseDialogOpen(false)}>إلغاء</Button>
@@ -466,7 +328,7 @@ export default function DesignsManagementPage() {
                   <TableRow>
                     <TableHead>اسم العمل</TableHead>
                     <TableHead>الوصف</TableHead>
-                    <TableHead>الصورة</TableHead>
+                    <TableHead>رابط الفيديو</TableHead>
                     <TableHead>اسم العميل</TableHead>
                     <TableHead>اسم الصفحة</TableHead>
                     <TableHead>الإجراءات</TableHead>
@@ -478,10 +340,13 @@ export default function DesignsManagementPage() {
                       <TableCell className="font-medium">{showcase.name}</TableCell>
                       <TableCell>{showcase.description}</TableCell>
                       <TableCell>
-                        <img src={showcase.image || "/placeholder.svg"} alt={showcase.name} className="h-auto w-16 object-cover rounded" />
+                        <a href={showcase.videoLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline flex items-center gap-1">
+                          <LinkIcon className="h-4 w-4" />
+                          مشاهدة
+                        </a>
                       </TableCell>
-                      <TableCell>{showcase.client_name}</TableCell>
-                      <TableCell>{showcase.client_page_name}</TableCell>
+                      <TableCell>{showcase.clientName}</TableCell>
+                      <TableCell>{showcase.clientPageName}</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="icon" onClick={() => handleDeleteShowcase(showcase.id)}>
                           <Trash2 className="h-4 w-4 text-red-500" />
@@ -502,7 +367,7 @@ export default function DesignsManagementPage() {
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle>التقييمات</CardTitle>
-                  <CardDescription>إدارة تقييمات العملاء لخدمات التصميم</CardDescription>
+                  <CardDescription>إدارة تقييمات العملاء لخدمات مونتاج الفيديو</CardDescription>
                 </div>
                 <Dialog open={feedbackDialogOpen} onOpenChange={setFeedbackDialogOpen}>
                   <DialogTrigger asChild>
@@ -566,9 +431,9 @@ export default function DesignsManagementPage() {
                 <TableBody>
                   {feedbacks.map((feedback) => (
                     <TableRow key={feedback.id}>
-                      <TableCell className="font-medium">{feedback.client_name}</TableCell>
-                      <TableCell>{feedback.client_page_name}</TableCell>
-                      <TableCell>{feedback.client_message}</TableCell>
+                      <TableCell className="font-medium">{feedback.clientName}</TableCell>
+                      <TableCell>{feedback.clientPageName}</TableCell>
+                      <TableCell>{feedback.message}</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="icon" onClick={() => handleDeleteFeedback(feedback.id)}>
                           <Trash2 className="h-4 w-4 text-red-500" />
@@ -589,7 +454,7 @@ export default function DesignsManagementPage() {
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle>الأسئلة الشائعة</CardTitle>
-                  <CardDescription>إدارة الأسئلة الشائعة لخدمات التصميم</CardDescription>
+                  <CardDescription>إدارة الأسئلة الشائعة لخدمات مونتاج الفيديو</CardDescription>
                 </div>
                 <Dialog open={faqDialogOpen} onOpenChange={setFaqDialogOpen}>
                   <DialogTrigger asChild>

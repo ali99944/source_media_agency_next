@@ -170,3 +170,76 @@ model managers {
   email String
   password String
 }
+
+//- shared services
+
+enum service_type {
+  designs
+  sponsored_ads
+  intelligent_marketing
+  video_montage
+}
+
+model services_feedback {
+  id Int @id @default(autoincrement())
+  client_name String
+  client_page_name String
+  client_message String
+
+  service_type service_type
+}
+
+model services_faqs {
+  id Int @id @default(autoincrement())
+  question String
+  answer String
+  service_type service_type
+}
+
+//- designs
+model designs_services {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  is_published Boolean @default(true)
+  page_code String @unique
+  image String
+
+  created_at String
+
+  showcases designs_showcase[]
+}
+
+model designs_showcase {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  image String
+  client_name String
+  client_page_name String
+
+  design_service_id Int
+  design_service designs_services @relation(fields: [design_service_id], references: [id])
+}
+
+model sponsored_ads_services {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  image String
+  page_code String @unique
+
+  showcases sponsored_ads_showcases[]
+}
+
+model sponsored_ads_showcases {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  brand_name String
+  platform String
+  image String
+
+  sponsored_ads_service_id Int
+  sponsored_ads_service sponsored_ads_services @relation(fields: [sponsored_ads_service_id], references: [id])
+}

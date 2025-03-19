@@ -12,7 +12,6 @@ import {
   Settings,
   FileText,
   MessageSquare,
-  CreditCard,
   PanelRight,
   Bell,
   LogOut,
@@ -22,7 +21,6 @@ import {
   Image,
   Film,
   Globe,
-  Smartphone,
   ShoppingCart,
   ChevronLeft,
 } from "lucide-react"
@@ -143,52 +141,8 @@ export default function AdminLayout({
         },
         {
           title: "قوائم الطعام الإلكترونية",
-          href: "/dashboard/services/emenu",
+          href: "/dashboard/emenu",
           icon: <FileText className="h-4 w-4" />,
-        },
-        {
-          title: "بطاقات الأعمال الرقمية",
-          href: "/dashboard/services/business-cards",
-          icon: <Smartphone className="h-4 w-4" />,
-        },
-      ],
-    },
-    {
-      title: "التسويق",
-      href: "/dashboard/marketing",
-      icon: <Megaphone className="h-5 w-5" />,
-      submenu: [
-        {
-          title: "الحملات الإعلانية",
-          href: "/dashboard/marketing/campaigns",
-          icon: <Megaphone className="h-4 w-4" />,
-        },
-        {
-          title: "وسائل التواصل الاجتماعي",
-          href: "/dashboard/marketing/social-media",
-          icon: <Globe className="h-4 w-4" />,
-        },
-        {
-          title: "زيادة المتابعين",
-          href: "/dashboard/marketing/followers",
-          icon: <Users className="h-4 w-4" />,
-        },
-      ],
-    },
-    {
-      title: "المحتوى",
-      href: "/dashboard/content",
-      icon: <FileText className="h-5 w-5" />,
-      submenu: [
-        {
-          title: "الصفحات",
-          href: "/dashboard/content/pages",
-          icon: <FileText className="h-4 w-4" />,
-        },
-        {
-          title: "معرض الأعمال",
-          href: "/dashboard/content/portfolio",
-          icon: <Image className="h-4 w-4" />,
         },
       ],
     },
@@ -199,36 +153,9 @@ export default function AdminLayout({
       badge: "5",
     },
     {
-      title: "الفواتير",
-      href: "/dashboard/invoices",
-      icon: <CreditCard className="h-5 w-5" />,
-    },
-    {
       title: "الإعدادات",
       href: "/dashboard/settings",
       icon: <Settings className="h-5 w-5" />,
-      submenu: [
-        {
-          title: "الملف الشخصي",
-          href: "/dashboard/settings/profile",
-          icon: <Users className="h-4 w-4" />,
-        },
-        {
-          title: "إعدادات الموقع",
-          href: "/dashboard/settings/site",
-          icon: <Globe className="h-4 w-4" />,
-        },
-        {
-          title: "المستخدمين",
-          href: "/dashboard/settings/users",
-          icon: <Users className="h-4 w-4" />,
-        },
-        {
-          title: "الأدوار والصلاحيات",
-          href: "/dashboard/settings/roles",
-          icon: <Users className="h-4 w-4" />,
-        },
-      ],
     },
   ]
 

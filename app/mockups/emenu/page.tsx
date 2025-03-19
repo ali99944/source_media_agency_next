@@ -145,6 +145,8 @@ export default function EMenuTemplatesPage() {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isDesignTypeDropdownOpen, setIsDesignTypeDropdownOpen] = useState(false);
 
+  // const {} = useGetServe rData()
+
   // Filter templates based on search term, category, and design type
   useEffect(() => {
     const filtered = menuTemplates.filter(template => {

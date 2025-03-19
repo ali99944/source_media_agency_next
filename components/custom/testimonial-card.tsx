@@ -1,19 +1,12 @@
+import { services_feedback } from '@prisma/client'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React from 'react'
 import { FaStar } from 'react-icons/fa'
 
-interface TestimonialProps {
-  id: string
-  name: string
-  position: string
-  company: string
-  rating: number
-  text: string
-  image: string
-}
 
-const TestimonialCard = ({testimonial}: {testimonial: TestimonialProps}) => {
+
+const TestimonialCard = ({testimonial}: {testimonial: services_feedback}) => {
   return (
     <motion.div
                         key={testimonial.id}
@@ -37,7 +30,7 @@ const TestimonialCard = ({testimonial}: {testimonial: TestimonialProps}) => {
                         </div>
 
                         <div className="flex mt-2 absolute top-0 left-0 p-2">
-                              {[...Array(testimonial.rating)].map((_, i) => (
+                              {[...Array(5)].map((_, i) => (
                                 <div key={i} className="text-orange-500">
                                   <FaStar size={14} />
                                 </div>
@@ -52,20 +45,20 @@ const TestimonialCard = ({testimonial}: {testimonial: TestimonialProps}) => {
                                 width={60}
                                 height={60}
                                 src={'https://img.freepik.com/free-vector/mysterious-mafia-man-smoking-cigarette_52683-34828.jpg?ga=GA1.1.259795667.1741285641&semt=ais_hybrid'}
-                                alt={testimonial.name}
+                                alt={testimonial.client_name}
                                 className="w-16 h-16 rounded-full object-cover relative z-10"
                               />
                             </div>
                             <div>
-                            <h3 className="text-xl font-bold mt-4">{testimonial.name}</h3>
-                            <p className="text-sm text-gray-400">{testimonial.position} - {testimonial.company}</p>
+                            <h3 className="text-xl font-bold mt-4">{testimonial.client_name}</h3>
+                            <p className="text-sm text-gray-400">{testimonial.client_page_name}</p>
                             
                             </div>
                             
                           </div>
 
                           <div>
-                            <p className="text-xl text-gray-300 leading-relaxed">&quot;{testimonial.text}&quot;</p>
+                            <p className="text-xl text-gray-300 leading-relaxed">&quot;{testimonial.client_message}&quot;</p>
                           </div>
                         </div>
                       </motion.div>
