@@ -272,7 +272,7 @@ export default function DesignsPage() {
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0">
                     <img
-                      src={'/images/covers/designs.jpg'}
+                      src={service.image || "/placeholder.svg"}
                       alt={service.name}
                       className="w-full h-full object-cover"
                     />

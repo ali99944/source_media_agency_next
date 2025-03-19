@@ -243,3 +243,5 @@ model sponsored_ads_showcases {
   sponsored_ads_service_id Int
   sponsored_ads_service sponsored_ads_services @relation(fields: [sponsored_ads_service_id], references: [id])
 }
+
+
