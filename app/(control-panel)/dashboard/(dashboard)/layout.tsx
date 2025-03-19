@@ -23,6 +23,7 @@ import {
   ShoppingCart,
   ChevronLeft,
   Brush,
+  Contact,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -162,6 +163,11 @@ export default function AdminLayout({
       title: "الإعدادات",
       href: "/dashboard/settings",
       icon: <Settings className="h-5 w-5" />,
+    },
+    {
+      title: "بيانات التواصل",
+      href: "/dashboard/customize-contacts",
+      icon: <Contact className="h-5 w-5" />,
     },
   ]
 
