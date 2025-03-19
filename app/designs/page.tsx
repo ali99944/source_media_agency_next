@@ -343,7 +343,7 @@ export default function DesignsPage() {
                     {/* Image */}
                     <div className="relative h-64 overflow-hidden">
                       <img
-                        src={'/images/covers/designs.jpg'}
+                        src={project.image || "/placeholder.svg"}
                         alt={project.name}
                         className="w-full h-full object-cover transition-transform duration-700"
                       />
